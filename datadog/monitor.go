@@ -4,6 +4,7 @@ import (
 	"context"
 	"fmt"
 	"os"
+	"sort"
 	"strings"
 
 	dd "github.com/DataDog/datadog-api-client-go/api/v1/datadog"
@@ -62,7 +63,7 @@ func ListMonitors(
 	monitors := make([]dd.MonitorSearchResult, 0, metadata.GetTotalCount())
 
 	query := "type:integration"
-	sort := "name,asc"
+	sortKey := "name,asc"
 	perPage := int64(100)
 	pages := int(metadata.GetTotalCount()/perPage + 1)
 
@@ -72,7 +73,7 @@ func ListMonitors(
 			Query:   &query,
 			Page:    &page,
 			PerPage: &perPage,
-			Sort:    &sort,
+			Sort:    &sortKey,
 		}
 
 		resp, _, err := ddClient.MonitorsApi.SearchMonitors(ctx, optionalParams)
@@ -117,15 +118,15 @@ func GetMonitorScopesMapping(monitors []dd.MonitorSearchResult) (MonitorScopesMa
 		}
 	}
 
-	// remove duplicated scopes
 	for metric, scopes := range mapping {
-		mapping[metric] = makeUniq(scopes)
+		mapping[metric] = MakeUniq(scopes)
 	}
 
 	return mapping, nil
 }
 
-func makeUniq(arr [][]string) [][]string {
+// MakeUniq removes duplicated entries.
+func MakeUniq(arr [][]string) [][]string {
 	// remove duplicated
 	m := make(map[string]struct{})
 	for _, elmt := range arr {
@@ -135,6 +136,7 @@ func makeUniq(arr [][]string) [][]string {
 	uniq := make([][]string, 0, len(m))
 	for joined := range m {
 		if elmt := strings.Split(joined, ","); len(elmt) > 0 {
+			sort.Strings(elmt)
 			uniq = append(uniq, elmt)
 		}
 	}
