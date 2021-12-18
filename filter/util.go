@@ -1,6 +1,6 @@
 package filter
 
-// Intersect returns the product set of arguments
+// Intersect returns the product set of arguments.
 func Intersect(l1, l2 []string) []string {
 	s := make(map[string]struct{}, len(l1))
 	for _, elmt := range l1 {
@@ -19,7 +19,7 @@ func Intersect(l1, l2 []string) []string {
 	return r
 }
 
-// Difference returns the difference set of arguments
+// Difference returns the difference set of arguments.
 func Difference(l1, l2 []string) []string {
 	s := make(map[string]struct{}, len(l1))
 	for _, elmt := range l2 {

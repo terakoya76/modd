@@ -7,15 +7,15 @@ import (
 	"github.com/terakoya76/modd/datadog"
 )
 
-// AwsFilter implements Filter interface
-// it holds the metadata to filter AWS resources which should be monitored
+// AwsFilter implements Filter interface.
+// it holds the metadata to filter AWS resources which should be monitored.
 type AwsFilter struct {
 	AwsTagKey string
 	DdTagKey  string
 }
 
-// CheckScopeWithTags evaluates Datadog scope and AWS resources
-func (af AwsFilter) CheckScopeWithTags(scope datadog.Scope, tags aws.Tags) (included bool, excluded bool) {
+// CheckScopeWithTags evaluates Datadog scope and AWS resources.
+func (af AwsFilter) CheckScopeWithTags(scope datadog.Scope, tags aws.Tags) (included, excluded bool) {
 	wildcard := false
 	matchers := make([]string, 0, len(scope))
 	inverted := make([]string, 0, len(scope))
@@ -44,7 +44,7 @@ func (af AwsFilter) CheckScopeWithTags(scope datadog.Scope, tags aws.Tags) (incl
 	return false, false
 }
 
-// CheckTagsWithTags evaluates a Datadog/AWS tag matcher
+// CheckTagsWithTags evaluates a Datadog/AWS tag matcher.
 func (af AwsFilter) CheckTagsWithTags(ddTags datadog.Tags, awsTags aws.Tags) bool {
 	if af.AwsTagKey == "" || af.DdTagKey == "" {
 		return true

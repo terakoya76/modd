@@ -9,20 +9,20 @@ import (
 	dd "github.com/DataDog/datadog-api-client-go/api/v1/datadog"
 )
 
-// Scope represents Datadog monitor scope
-// cf. []string{"stage:production", "service:user"}
+// Scope represents Datadog monitor scope.
+// cf. []string{"stage:production", "service:user"}.
 type Scope = []string
 
-// MonitorScopesMapping represents a mapping of Datadog monitor ID and its scope
+// MonitorScopesMapping represents a mapping of Datadog monitor ID and its scope.
 type MonitorScopesMapping = map[string][]Scope
 
-// Tags represents Datadog tags
+// Tags represents Datadog tags.
 type Tags = []string
 
-// MonitorTagsMapping represents a mapping of Datadog monitor ID and its tags
+// MonitorTagsMapping represents a mapping of Datadog monitor ID and its tags.
 type MonitorTagsMapping = map[string]Tags
 
-// GetDatadogContext returns Datadog authentication context
+// GetDatadogContext returns Datadog authentication context.
 func GetDatadogContext() context.Context {
 	return context.WithValue(
 		context.Background(),
@@ -38,13 +38,13 @@ func GetDatadogContext() context.Context {
 	)
 }
 
-// GetDatadogClient returns Datadog client
+// GetDatadogClient returns Datadog client.
 func GetDatadogClient() *dd.APIClient {
 	configuration := dd.NewConfiguration()
 	return dd.NewAPIClient(configuration)
 }
 
-// GetMetadata returns Datadog SearchMonitors Metadata
+// GetMetadata returns Datadog SearchMonitors Metadata.
 func GetMetadata(ctx context.Context, ddClient *dd.APIClient) (*dd.MonitorSearchResponseMetadata, error) {
 	resp, _, err := ddClient.MonitorsApi.SearchMonitors(ctx)
 	if err != nil {
@@ -55,8 +55,10 @@ func GetMetadata(ctx context.Context, ddClient *dd.APIClient) (*dd.MonitorSearch
 	return &m, nil
 }
 
-// ListMonitors returns a list of Datadog monitors
-func ListMonitors(ctx context.Context, ddClient *dd.APIClient, metadata *dd.MonitorSearchResponseMetadata) ([]dd.MonitorSearchResult, error) {
+// ListMonitors returns a list of Datadog monitors.
+func ListMonitors(
+	ctx context.Context, ddClient *dd.APIClient, metadata *dd.MonitorSearchResponseMetadata,
+) ([]dd.MonitorSearchResult, error) {
 	monitors := make([]dd.MonitorSearchResult, 0, metadata.GetTotalCount())
 
 	query := "type:integration"
@@ -84,7 +86,7 @@ func ListMonitors(ctx context.Context, ddClient *dd.APIClient, metadata *dd.Moni
 	return monitors, nil
 }
 
-// GetMonitorTagsMapping returns the latest MonitorTagsMapping
+// GetMonitorTagsMapping returns the latest MonitorTagsMapping.
 func GetMonitorTagsMapping(monitors []dd.MonitorSearchResult) (MonitorTagsMapping, error) {
 	mapping := make(MonitorTagsMapping)
 
@@ -103,7 +105,7 @@ func GetMonitorTagsMapping(monitors []dd.MonitorSearchResult) (MonitorTagsMappin
 	return mapping, nil
 }
 
-// GetMonitorScopesMapping returns the latest MonitorScopesMapping
+// GetMonitorScopesMapping returns the latest MonitorScopesMapping.
 func GetMonitorScopesMapping(monitors []dd.MonitorSearchResult) (MonitorScopesMapping, error) {
 	mapping := make(MonitorScopesMapping)
 
@@ -111,11 +113,7 @@ func GetMonitorScopesMapping(monitors []dd.MonitorSearchResult) (MonitorScopesMa
 		scopes := monitor.GetScopes()
 
 		for _, metric := range monitor.GetMetrics() {
-			if _, ok := mapping[metric]; ok {
-				mapping[metric] = append(mapping[metric], scopes)
-			} else {
-				mapping[metric] = [][]string{scopes}
-			}
+			mapping[metric] = append(mapping[metric], scopes)
 		}
 	}
 

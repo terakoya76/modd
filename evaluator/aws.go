@@ -9,7 +9,7 @@ import (
 	"github.com/terakoya76/modd/filter"
 )
 
-// AwsRdsEvaluate returns a list of unmonitored AWS RDS identifiers
+// AwsRdsEvaluate returns a list of unmonitored AWS RDS identifiers.
 func AwsRdsEvaluate(ctx context.Context, scopes []datadog.Scope, ddTags datadog.Tags) ([]string, error) {
 	rdsClient, err := aws.GetRdsClient(ctx)
 	if err != nil {
