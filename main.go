@@ -43,7 +43,8 @@ func main() {
 
 		switch {
 		case datadog.IsAwsRdsMetric(metric):
-			ms, err := evaluator.AwsRdsEvaluate(ctx, scopes, ddTags)
+			are := evaluator.AwsRdsEvaluator{}
+			ms, err := are.Evaluate(ctx, scopes, ddTags)
 			if err != nil {
 				fmt.Fprintf(os.Stderr, "failed to filter monitors: %v\n", err)
 				os.Exit(1)

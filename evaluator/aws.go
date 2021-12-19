@@ -9,28 +9,34 @@ import (
 	"github.com/terakoya76/modd/filter"
 )
 
-// AwsRdsEvaluate returns a list of unmonitored AWS RDS identifiers.
-func AwsRdsEvaluate(ctx context.Context, scopes []datadog.Scope, ddTags datadog.Tags) ([]string, error) {
+type AwsRdsEvaluator struct{}
+
+func (are AwsRdsEvaluator) GetMaaping(ctx context.Context) (map[string][]string, error) {
 	rdsClient, err := aws.GetRdsClient(ctx)
 	if err != nil {
 		return nil, fmt.Errorf("failed to get RdsClient: %w", err)
 	}
 
-	awsRdsMapping, err := aws.GetRdsTagsMapping(ctx, rdsClient)
-	if err != nil {
-		return nil, fmt.Errorf("failed to get rds mapping: %w", err)
-	}
+	return aws.GetRdsTagsMapping(ctx, rdsClient)
+}
 
-	identifiers := aws.GetRdsIdentifiers(awsRdsMapping)
-	monitoredIdents := make([]string, 0, len(awsRdsMapping))
-	excludedIdents := make([]string, 0, len(awsRdsMapping))
+// AwsRdsEvaluator returns a list of unmonitored AWS RDS identifiers.
+func (are AwsRdsEvaluator) Evaluate(ctx context.Context, scopes []datadog.Scope, ddTags datadog.Tags) ([]string, error) {
+	mapping, err := are.GetMaaping(ctx)
+	if err != nil {
+		return nil, fmt.Errorf("failed to get AWS RDS Mapping: %w", err)
+	}
 
 	f, err := filter.BuildFilter(datadog.AwsRds)
 	if err != nil {
 		return nil, fmt.Errorf("failed to build Filter object: %w", err)
 	}
 
-	for id, awsTags := range awsRdsMapping {
+	identifiers := aws.GetRdsIdentifiers(mapping)
+	monitoredIdents := make([]string, 0, len(mapping))
+	excludedIdents := make([]string, 0, len(mapping))
+
+	for id, awsTags := range mapping {
 		for _, scope := range scopes {
 			monitored, excluded := f.CheckScopeWithTags(scope, awsTags)
 			if monitored {
