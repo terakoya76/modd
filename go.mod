@@ -1,0 +1,36 @@
+module github.com/terakoya76/modd
+
+go 1.17
+
+require (
+	github.com/DataDog/datadog-api-client-go v1.6.0
+	github.com/aws/aws-sdk-go-v2/config v1.10.2
+	github.com/aws/aws-sdk-go-v2/service/rds v1.12.1
+	github.com/kelseyhightower/envconfig v1.4.0
+	github.com/stretchr/testify v1.7.0
+)
+
+require (
+	github.com/aws/aws-sdk-go-v2 v1.11.1 // indirect
+	github.com/aws/aws-sdk-go-v2/credentials v1.6.2 // indirect
+	github.com/aws/aws-sdk-go-v2/feature/ec2/imds v1.8.1 // indirect
+	github.com/aws/aws-sdk-go-v2/internal/configsources v1.1.1 // indirect
+	github.com/aws/aws-sdk-go-v2/internal/endpoints/v2 v2.0.1 // indirect
+	github.com/aws/aws-sdk-go-v2/internal/ini v1.3.1 // indirect
+	github.com/aws/aws-sdk-go-v2/service/internal/presigned-url v1.5.1 // indirect
+	github.com/aws/aws-sdk-go-v2/service/sso v1.6.1 // indirect
+	github.com/aws/aws-sdk-go-v2/service/sts v1.10.1 // indirect
+	github.com/aws/smithy-go v1.9.0 // indirect
+	github.com/davecgh/go-spew v1.1.1 // indirect
+	github.com/golang/protobuf v1.5.2 // indirect
+	github.com/jmespath/go-jmespath v0.4.0 // indirect
+	github.com/kr/pretty v0.2.0 // indirect
+	github.com/pmezard/go-difflib v1.0.0 // indirect
+	golang.org/x/net v0.0.0-20210813160813-60bc85c4be6d // indirect
+	golang.org/x/oauth2 v0.0.0-20211104180415-d3ed0bb246c8 // indirect
+	google.golang.org/appengine v1.6.7 // indirect
+	google.golang.org/protobuf v1.27.1 // indirect
+	gopkg.in/check.v1 v1.0.0-20190902080502-41f04d3bba15 // indirect
+	gopkg.in/yaml.v2 v2.4.0 // indirect
+	gopkg.in/yaml.v3 v3.0.0-20210107192922-496545a6307b // indirect
+)
