@@ -7,11 +7,23 @@ import (
 // IntegrationTarget represents datadog integration service type.
 type IntegrationTarget string
 
-// AwsRds represents AWS RDS integration.
-var AwsRds IntegrationTarget = "aws.rds"
+var (
+	// AwsMetricsPrefix represents Datadog AWS Integration metrics prefix.
+	AwsMetricsPrefix = "aws"
+	// AwsRds represents AWS RDS integration.
+	AwsRds IntegrationTarget = "aws.rds"
+	// AwsElasticache represents AWS Elasticache integration.
+	AwsElasticache IntegrationTarget = "aws.elasticache"
+)
 
 // IsAwsRdsMetric determines if the given metric belongs to AWS RDS.
 func IsAwsRdsMetric(metric string) bool {
 	parts := strings.Split(metric, ".")
-	return len(parts) >= 2 && parts[0] == "aws" && parts[1] == "rds"
+	return len(parts) >= 2 && parts[0] == AwsMetricsPrefix && parts[1] == "rds"
+}
+
+// IsAwsElasticacheMetric determines if the given metric belongs to AWS Elasticache.
+func IsAwsElasticacheMetric(metric string) bool {
+	parts := strings.Split(metric, ".")
+	return len(parts) >= 2 && parts[0] == AwsMetricsPrefix && parts[1] == "elasticache"
 }

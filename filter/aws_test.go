@@ -5,16 +5,16 @@ import (
 
 	"github.com/stretchr/testify/assert"
 
-	"github.com/terakoya76/modd/aws"
 	"github.com/terakoya76/modd/datadog"
 	"github.com/terakoya76/modd/filter"
+	"github.com/terakoya76/modd/mapper"
 )
 
 func TestCheckScopeWithTags(t *testing.T) {
 	cases := []struct {
 		name     string
 		scope    datadog.Scope
-		tags     aws.Tags
+		tags     mapper.Tags
 		included bool
 		excluded bool
 	}{
@@ -98,7 +98,7 @@ func TestCheckTagsWithTags_Aws(t *testing.T) {
 		name     string
 		filter   filter.Filter
 		ddTags   datadog.Tags
-		awsTags  aws.Tags
+		awsTags  mapper.Tags
 		expected bool
 	}{
 		{

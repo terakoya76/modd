@@ -52,6 +52,9 @@ github.com/aws/aws-sdk-go-v2/internal/endpoints/v2 v2.0.2 h1:EauRoYZVNPlidZSZJDs
 github.com/aws/aws-sdk-go-v2/internal/endpoints/v2 v2.0.2/go.mod h1:xT4XX6w5Sa3dhg50JrYyy3e4WPYo/+WjY/BXtqXVunU=
 github.com/aws/aws-sdk-go-v2/internal/ini v1.3.1 h1:fdQSN/ieDwbxdj7ptvFKjS2cS2a91l/WdjacCt5GgTE=
 github.com/aws/aws-sdk-go-v2/internal/ini v1.3.1/go.mod h1:5eEM4wZ6I2GaeOaVXsiJexIH4P1sFnK5Yp2Tlw9Ah3c=
+github.com/aws/aws-sdk-go-v2/service/elasticache v1.15.1 h1:WWsQ+eBwzewhHxQ1foJghzgFgX1vLgvmEmMH5FMjS58=
+github.com/aws/aws-sdk-go-v2/service/elasticache v1.15.1/go.mod h1:6O2ce+L9zaOcKzEYG+vGJHSgDVcz+ucETuwNvkKTzeQ=
+github.com/aws/aws-sdk-go-v2/service/internal/presigned-url v1.5.1 h1:ZFSfgetO5kf4WXy+a2B8zug6DXGUYjsWacyvwx5cgXU=
 github.com/aws/aws-sdk-go-v2/service/internal/presigned-url v1.5.1/go.mod h1:fEaHB2bi+wVZw4uKMHEXTL9LwtT4EL//DOhTeflqIVo=
 github.com/aws/aws-sdk-go-v2/service/internal/presigned-url v1.5.2 h1:CKdUNKmuilw/KNmO2Q53Av8u+ZyXMC2M9aX8Z+c/gzg=
 github.com/aws/aws-sdk-go-v2/service/internal/presigned-url v1.5.2/go.mod h1:FgR1tCsn8C6+Hf+N5qkfrE4IXvUL1RgW87sunJ+5J4I=
@@ -149,6 +152,8 @@ github.com/kr/pretty v0.2.0/go.mod h1:ipq/a2n7PKx3OHsz4KJII5eveXtPO4qwEXGdVfWzfn
 github.com/kr/pty v1.1.1/go.mod h1:pFQYn66WHrOpPYNljwOMqo10TkYh1fy3cYio2l3bCsQ=
 github.com/kr/text v0.1.0 h1:45sCR5RtlFHMR4UwH9sdQ5TC8v0qDQCHnXt+kaKSTVE=
 github.com/kr/text v0.1.0/go.mod h1:4Jbv+DJW3UT/LiOwJeYQe1efqtUx/iVham/4vfdArNI=
+github.com/patrickmn/go-cache v2.1.0+incompatible h1:HRMgzkcYKYpi3C8ajMPV8OFXaaRUnok+kx1WdO15EQc=
+github.com/patrickmn/go-cache v2.1.0+incompatible/go.mod h1:3Qf8kWWT7OJRJbdiICTKqZju1ZixQ/KpMGzzAfe6+WQ=
 github.com/pmezard/go-difflib v1.0.0 h1:4DBwDE0NGyQoBHbLQYPwSUPoCMWR5BEzIk/f1lZbAQM=
 github.com/pmezard/go-difflib v1.0.0/go.mod h1:iKH77koFhYxTK1pcRnkKkqfTogsbg7gZNVY4sRDYZ/4=
 github.com/prometheus/client_model v0.0.0-20190812154241-14fe0d1b01d4/go.mod h1:xMI15A0UPsDsEKsMN9yxemIoYk6Tm2C1GtYGdfGttqA=
