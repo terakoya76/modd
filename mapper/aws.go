@@ -11,13 +11,22 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/elasticache"
 	elasticacheTypes "github.com/aws/aws-sdk-go-v2/service/elasticache/types"
 	"github.com/aws/aws-sdk-go-v2/service/rds"
+	"github.com/patrickmn/go-cache"
+)
+
+const (
+	awsRdsCache         string = "aws_rds_cache"
+	awsElasticacheCache string = "aws_elasticache_cache"
 )
 
 // AwsRdsTagsMapper implements TagsMapper for AWS RDS.
-type AwsRdsTagsMapper struct{}
+type AwsRdsTagsMapper struct {
+	cache  *cache.Cache
+	client *rds.Client
+}
 
-// GetClient returns AWS RDS client.
-func (artm AwsRdsTagsMapper) GetClient(ctx context.Context) (*rds.Client, error) {
+// GetAwsRdsClient returns AWS RDS client.
+func GetAwsRdsClient(ctx context.Context) (*rds.Client, error) {
 	cfg, err := config.LoadDefaultConfig(ctx)
 	if err != nil {
 		return nil, fmt.Errorf("%w", err)
@@ -28,9 +37,9 @@ func (artm AwsRdsTagsMapper) GetClient(ctx context.Context) (*rds.Client, error)
 
 // GetTagsMapping returns the latest tags mapping.
 func (artm AwsRdsTagsMapper) GetTagsMapping(ctx context.Context) (map[string]Tags, error) {
-	client, err := artm.GetClient(ctx)
-	if err != nil {
-		return nil, fmt.Errorf("%w", err)
+	if cv, found := artm.cache.Get(awsRdsCache); found {
+		mapping := cv.(map[string]Tags)
+		return mapping, nil
 	}
 
 	mapping := make(map[string]Tags)
@@ -40,7 +49,7 @@ func (artm AwsRdsTagsMapper) GetTagsMapping(ctx context.Context) (map[string]Tag
 
 	for marker != nil {
 		input := rds.DescribeDBInstancesInput{Marker: marker}
-		output, err := client.DescribeDBInstances(ctx, &input)
+		output, err := artm.client.DescribeDBInstances(ctx, &input)
 		if err != nil {
 			return nil, fmt.Errorf("%w", err)
 		}
@@ -57,14 +66,18 @@ func (artm AwsRdsTagsMapper) GetTagsMapping(ctx context.Context) (map[string]Tag
 		marker = output.Marker
 	}
 
+	artm.cache.Set(awsRdsCache, mapping, cache.DefaultExpiration)
 	return mapping, nil
 }
 
 // AwsElasticacheTagsMapper implements TagsMapper for AWS Elasticache.
-type AwsElasticacheTagsMapper struct{}
+type AwsElasticacheTagsMapper struct {
+	cache  *cache.Cache
+	client *elasticache.Client
+}
 
-// GetClient returns AWS Elasticache client.
-func (aetm AwsElasticacheTagsMapper) GetClient(ctx context.Context) (*elasticache.Client, error) {
+// GetAwsElasticacheClient returns AWS Elasticache client.
+func GetAwsElasticacheClient(ctx context.Context) (*elasticache.Client, error) {
 	cfg, err := config.LoadDefaultConfig(ctx, config.WithRetryer(func() aws.Retryer {
 		return retry.AddWithErrorCodes(retry.NewStandard(), (*elasticacheTypes.APICallRateForCustomerExceededFault)(nil).ErrorCode())
 	}))
@@ -77,9 +90,9 @@ func (aetm AwsElasticacheTagsMapper) GetClient(ctx context.Context) (*elasticach
 
 // GetTagsMapping returns the latest tags mapping.
 func (aetm AwsElasticacheTagsMapper) GetTagsMapping(ctx context.Context) (map[string]Tags, error) {
-	client, err := aetm.GetClient(ctx)
-	if err != nil {
-		return nil, fmt.Errorf("%w", err)
+	if cv, found := aetm.cache.Get(awsElasticacheCache); found {
+		mapping := cv.(map[string]Tags)
+		return mapping, nil
 	}
 
 	mapping := make(map[string]Tags)
@@ -89,7 +102,7 @@ func (aetm AwsElasticacheTagsMapper) GetTagsMapping(ctx context.Context) (map[st
 
 	for marker != nil {
 		input := elasticache.DescribeCacheClustersInput{Marker: marker}
-		output, err := client.DescribeCacheClusters(ctx, &input)
+		output, err := aetm.client.DescribeCacheClusters(ctx, &input)
 		if err != nil {
 			return nil, fmt.Errorf("%w", err)
 		}
@@ -97,7 +110,7 @@ func (aetm AwsElasticacheTagsMapper) GetTagsMapping(ctx context.Context) (map[st
 		for i := 0; i < len(output.CacheClusters); i++ {
 			cluster := output.CacheClusters[i]
 			tagsInput := elasticache.ListTagsForResourceInput{ResourceName: cluster.ARN}
-			tagsOutput, err := client.ListTagsForResource(ctx, &tagsInput)
+			tagsOutput, err := aetm.client.ListTagsForResource(ctx, &tagsInput)
 			if err != nil {
 				return nil, fmt.Errorf("%w", err)
 			}
@@ -112,5 +125,6 @@ func (aetm AwsElasticacheTagsMapper) GetTagsMapping(ctx context.Context) (map[st
 		marker = output.Marker
 	}
 
+	aetm.cache.Set(awsElasticacheCache, mapping, cache.DefaultExpiration)
 	return mapping, nil
 }

@@ -11,7 +11,7 @@ import (
 
 // Evaluator gets target resources and tags via TagsMapper and filter them via Filter.
 type Evaluator struct {
-	filter     filter.Filter
+	filter    filter.Filter
 	tagMapper mapper.TagsMapper
 }
 
@@ -28,7 +28,7 @@ func BuildEvaluator(it datadog.IntegrationTarget) (Evaluator, error) {
 	}
 
 	e := Evaluator{
-		filter:     f,
+		filter:    f,
 		tagMapper: m,
 	}
 
