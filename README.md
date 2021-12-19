@@ -39,4 +39,6 @@ export AWS_RDS_DATADOG_TAG_KEY=dbengine
 
 AWS
 * RDS
+* Elasticache
+* OpenSearch Service
 
