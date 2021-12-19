@@ -11,3 +11,9 @@ type AwsElasticacheConfig struct {
 	AwsTagKey string `envconfig:"aws_tag_key" default:""`
 	DdTagKey  string `envconfig:"datadog_tag_key" default:""`
 }
+
+// AwsOpenSeardhServiceConfig holds metadata for AwsFilter for AWS OpenSearch Service.
+type AwsOpenSeardhServiceConfig struct {
+	AwsTagKey string `envconfig:"aws_tag_key" default:""`
+	DdTagKey  string `envconfig:"datadog_tag_key" default:""`
+}

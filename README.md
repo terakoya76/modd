@@ -1,4 +1,6 @@
 # modd
+[![test](https://github.com/terakoya76/modd/actions/workflows/test.yml/badge.svg)](https://github.com/terakoya76/modd/actions/workflows/test.yml)
+
 monitor of datadog monitors
 
 modd uniformly targets the resources belonging to the metrics monitored by Datadog monitors, and detects their leakage.
@@ -39,4 +41,6 @@ export AWS_RDS_DATADOG_TAG_KEY=dbengine
 
 AWS
 * RDS
+* Elasticache
+* OpenSearch Service
 

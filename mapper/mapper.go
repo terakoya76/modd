@@ -20,7 +20,7 @@ type TagsMapper interface {
 
 // BuildTagsMapper build the proper TagsMapper implementation.
 func BuildTagsMapper(it datadog.IntegrationTarget) (TagsMapper, error) {
-	c := cache.New(5*time.Minute, 1*time.Minute)
+	c := cache.New(10*time.Minute, 1*time.Minute)
 
 	switch it {
 	case datadog.AwsRds:
@@ -42,6 +42,18 @@ func BuildTagsMapper(it datadog.IntegrationTarget) (TagsMapper, error) {
 		}
 
 		m := AwsElasticacheTagsMapper{
+			cache:  c,
+			client: client,
+		}
+
+		return m, nil
+	case datadog.AwsOpenSearchService:
+		client, err := GetAwsOpenSearchServiceClient(context.TODO())
+		if err != nil {
+			return nil, fmt.Errorf("%w", err)
+		}
+
+		m := AwsOpenSearchServiceTagsMapper{
 			cache:  c,
 			client: client,
 		}
