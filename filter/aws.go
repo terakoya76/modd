@@ -3,8 +3,8 @@ package filter
 import (
 	"strings"
 
-	"github.com/terakoya76/modd/aws"
 	"github.com/terakoya76/modd/datadog"
+	"github.com/terakoya76/modd/mapper"
 )
 
 // AwsFilter implements Filter interface.
@@ -15,7 +15,7 @@ type AwsFilter struct {
 }
 
 // CheckScopeWithTags evaluates Datadog scope and AWS resources.
-func (af AwsFilter) CheckScopeWithTags(scope datadog.Scope, tags aws.Tags) (included, excluded bool) {
+func (af AwsFilter) CheckScopeWithTags(scope datadog.Scope, tags mapper.Tags) (included, excluded bool) {
 	wildcard := false
 	matchers := make([]string, 0, len(scope))
 	inverted := make([]string, 0, len(scope))
@@ -45,7 +45,7 @@ func (af AwsFilter) CheckScopeWithTags(scope datadog.Scope, tags aws.Tags) (incl
 }
 
 // CheckTagsWithTags evaluates a Datadog/AWS tag matcher.
-func (af AwsFilter) CheckTagsWithTags(ddTags datadog.Tags, awsTags aws.Tags) bool {
+func (af AwsFilter) CheckTagsWithTags(ddTags datadog.Tags, resourceTags mapper.Tags) bool {
 	if af.AwsTagKey == "" || af.DdTagKey == "" {
 		return true
 	}
@@ -57,7 +57,7 @@ func (af AwsFilter) CheckTagsWithTags(ddTags datadog.Tags, awsTags aws.Tags) boo
 			continue
 		}
 
-		for _, at := range awsTags {
+		for _, at := range resourceTags {
 			aparts := strings.Split(at, ":")
 			ak, av := aparts[0], aparts[1]
 			if ak != af.AwsTagKey {

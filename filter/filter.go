@@ -1,26 +1,23 @@
 package filter
 
 import (
+	"fmt"
+
 	"github.com/kelseyhightower/envconfig"
 
-	"github.com/terakoya76/modd/aws"
 	"github.com/terakoya76/modd/datadog"
+	"github.com/terakoya76/modd/mapper"
 )
 
 // Filter is an interface to filter AWS resources which should be monitored.
 type Filter interface {
-	CheckScopeWithTags(scope datadog.Scope, tags aws.Tags) (included bool, excluded bool)
-	CheckTagsWithTags(ddTags datadog.Tags, awsTags aws.Tags) bool
+	CheckScopeWithTags(scope datadog.Scope, tags mapper.Tags) (included bool, excluded bool)
+	CheckTagsWithTags(ddTags datadog.Tags, resourceTags mapper.Tags) bool
 }
 
-// BuildFilter build the proper filter object.
+// BuildFilter build the proper Filter implementation.
 func BuildFilter(it datadog.IntegrationTarget) (Filter, error) {
-	f := AwsFilter{
-		AwsTagKey: "",
-		DdTagKey:  "",
-	}
-
-	switch it { //nolint:gocritic
+	switch it {
 	case datadog.AwsRds:
 		var c AwsRdsConfig
 		err := envconfig.Process("aws_rds", &c)
@@ -28,8 +25,18 @@ func BuildFilter(it datadog.IntegrationTarget) (Filter, error) {
 			return nil, err
 		}
 
-		f = AwsFilter(c)
-	}
+		f := AwsFilter(c)
+		return f, nil
+	case datadog.AwsElasticache:
+		var c AwsElasticacheConfig
+		err := envconfig.Process("aws_elasticache", &c)
+		if err != nil {
+			return nil, err
+		}
 
-	return f, nil
+		f := AwsFilter(c)
+		return f, nil
+	default:
+		return nil, fmt.Errorf("unsupported IntegrationTarget")
+	}
 }
