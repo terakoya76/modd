@@ -36,6 +36,15 @@ func BuildFilter(it datadog.IntegrationTarget) (Filter, error) {
 
 		f := AwsFilter(c)
 		return f, nil
+	case datadog.AwsOpenSearchService:
+		var c AwsOpenSeardhServiceConfig
+		err := envconfig.Process("aws_open_search_service", &c)
+		if err != nil {
+			return nil, err
+		}
+
+		f := AwsFilter(c)
+		return f, nil
 	default:
 		return nil, fmt.Errorf("unsupported IntegrationTarget")
 	}
