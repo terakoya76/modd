@@ -14,14 +14,14 @@ import (
 type Tags = []string
 
 const (
-    awsAutoScalingGroupCache string = "aws_autoscaling_group_cache"
-    awsClbCache string = "aws_clb_cache"
-    awsElasticacheCache string = "aws_elasticache_cache"
-    awsElbCache string = "aws_elb_cache"
-    awsKinesisCache string = "aws_kinesis_cache"
-    awsOpenSearchServiceCache string = "aws_elasticsearchservice_cache"
-    awsRdsCache string = "aws_rds_cache"
-    awsSqsCache string = "aws_sqs_cache"
+	awsAutoScalingGroupCache  string = "aws_autoscaling_group_cache"
+	awsClbCache               string = "aws_clb_cache"
+	awsElasticacheCache       string = "aws_elasticache_cache"
+	awsElbCache               string = "aws_elb_cache"
+	awsKinesisCache           string = "aws_kinesis_cache"
+	awsOpenSearchServiceCache string = "aws_elasticsearchservice_cache"
+	awsRdsCache               string = "aws_rds_cache"
+	awsSqsCache               string = "aws_sqs_cache"
 )
 
 // TagsMapper is an interface to fetch resources and map their ids and tags.

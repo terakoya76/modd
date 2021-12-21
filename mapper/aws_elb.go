@@ -49,9 +49,20 @@ func (aetm AwsElbTagsMapper) GetTagsMapping(ctx context.Context) (map[string]Tag
 			return nil, fmt.Errorf("%w", err)
 		}
 
-		for i := 0; i < len(output.LoadBalancers); i++ {
-			lb := output.LoadBalancers[i]
-			tagsInput := elasticloadbalancingv2.DescribeTagsInput{ResourceArns: []string{*lb.LoadBalancerArn}}
+		iter := len(output.LoadBalancers)/20 + 1
+		for i := 0; i < iter; i++ {
+			arns := []string{}
+			for j := 0; j < 20; j++ {
+				idx := iter*i + j
+				if j >= len(output.LoadBalancers) {
+					continue
+				}
+
+				lb := output.LoadBalancers[idx]
+				arns = append(arns, *lb.LoadBalancerArn)
+			}
+
+			tagsInput := elasticloadbalancingv2.DescribeTagsInput{ResourceArns: arns}
 			tagsOutput, err := aetm.client.DescribeTags(ctx, &tagsInput)
 			if err != nil {
 				return nil, fmt.Errorf("%w", err)
@@ -62,6 +73,9 @@ func (aetm AwsElbTagsMapper) GetTagsMapping(ctx context.Context) (map[string]Tag
 				for k, tag := range tagsOutput.TagDescriptions[j].Tags {
 					tags[k] = fmt.Sprintf("%s:%s", strings.ToLower(*tag.Key), strings.ToLower(*tag.Value))
 				}
+
+				idx := iter*i + j
+				lb := output.LoadBalancers[idx]
 				mapping[*lb.LoadBalancerName] = tags
 			}
 		}

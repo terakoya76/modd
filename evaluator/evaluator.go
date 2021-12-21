@@ -4,13 +4,18 @@ import (
 	"context"
 	"fmt"
 
+	"golang.org/x/sync/singleflight"
+
 	"github.com/terakoya76/modd/datadog"
 	"github.com/terakoya76/modd/filter"
 	"github.com/terakoya76/modd/mapper"
 )
 
+var group singleflight.Group
+
 // Evaluator gets target resources and tags via TagsMapper and filter them via Filter.
 type Evaluator struct {
+	it        datadog.IntegrationTarget
 	filter    filter.Filter
 	tagMapper mapper.TagsMapper
 }
@@ -28,6 +33,7 @@ func BuildEvaluator(it datadog.IntegrationTarget) (Evaluator, error) {
 	}
 
 	e := Evaluator{
+		it:        it,
 		filter:    f,
 		tagMapper: m,
 	}
@@ -37,12 +43,19 @@ func BuildEvaluator(it datadog.IntegrationTarget) (Evaluator, error) {
 
 // Evaluate returns a list of unmonitored resource identifiers.
 func (e Evaluator) Evaluate(ctx context.Context, scopes []datadog.Scope, ddTags datadog.Tags) ([]string, error) {
-	mapping, err := e.tagMapper.GetTagsMapping(ctx)
+	name := string(e.it)
+	v, err, _ := group.Do(name, func() (interface{}, error) {
+		return e.tagMapper.GetTagsMapping(ctx)
+	})
 	if err != nil {
 		return nil, fmt.Errorf("failed to get resource tags mapping: %w", err)
 	}
-	identifiers := GetIdentifiersFromMaaping(mapping)
+	mapping, ok := v.(map[string][]string)
+	if !ok {
+		return nil, fmt.Errorf("failed type assertion: %w", err)
+	}
 
+	identifiers := GetIdentifiersFromMaaping(mapping)
 	monitoredIdents := make([]string, 0, len(mapping))
 	excludedIdents := make([]string, 0, len(mapping))
 

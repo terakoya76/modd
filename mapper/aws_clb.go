@@ -49,9 +49,20 @@ func (actm AwsClbTagsMapper) GetTagsMapping(ctx context.Context) (map[string]Tag
 			return nil, fmt.Errorf("%w", err)
 		}
 
-		for i := 0; i < len(output.LoadBalancerDescriptions); i++ {
-			lb := output.LoadBalancerDescriptions[i]
-			tagsInput := elasticloadbalancing.DescribeTagsInput{LoadBalancerNames: []string{*lb.LoadBalancerName}}
+		iter := len(output.LoadBalancerDescriptions)/20 + 1
+		for i := 0; i < iter; i++ {
+			names := []string{}
+			for j := 0; j < 20; j++ {
+				idx := iter*i + j
+				if j >= len(output.LoadBalancerDescriptions) {
+					continue
+				}
+
+				lb := output.LoadBalancerDescriptions[idx]
+				names = append(names, *lb.LoadBalancerName)
+			}
+
+			tagsInput := elasticloadbalancing.DescribeTagsInput{LoadBalancerNames: names}
 			tagsOutput, err := actm.client.DescribeTags(ctx, &tagsInput)
 			if err != nil {
 				return nil, fmt.Errorf("%w", err)
@@ -62,6 +73,9 @@ func (actm AwsClbTagsMapper) GetTagsMapping(ctx context.Context) (map[string]Tag
 				for k, tag := range tagsOutput.TagDescriptions[j].Tags {
 					tags[k] = fmt.Sprintf("%s:%s", strings.ToLower(*tag.Key), strings.ToLower(*tag.Value))
 				}
+
+				idx := iter*i + j
+				lb := output.LoadBalancerDescriptions[idx]
 				mapping[*lb.LoadBalancerName] = tags
 			}
 		}
