@@ -57,8 +57,36 @@ func main() {
 			}
 
 			notMonitored[metric] = ms
+		case datadog.IsAwsClbMetric(metric):
+			e, err := evaluator.BuildEvaluator(datadog.AwsClb)
+			if err != nil {
+				fmt.Fprintf(os.Stderr, "failed to get Evaluator object: %v\n", err)
+				os.Exit(1)
+			}
+
+			ms, err := e.Evaluate(ctx, scopes, ddTags)
+			if err != nil {
+				fmt.Fprintf(os.Stderr, "failed to filter monitors: %v\n", err)
+				os.Exit(1)
+			}
+
+			notMonitored[metric] = ms
 		case datadog.IsAwsElasticacheMetric(metric):
 			e, err := evaluator.BuildEvaluator(datadog.AwsElasticache)
+			if err != nil {
+				fmt.Fprintf(os.Stderr, "failed to get Evaluator object: %v\n", err)
+				os.Exit(1)
+			}
+
+			ms, err := e.Evaluate(ctx, scopes, ddTags)
+			if err != nil {
+				fmt.Fprintf(os.Stderr, "failed to filter monitors: %v\n", err)
+				os.Exit(1)
+			}
+
+			notMonitored[metric] = ms
+		case datadog.IsAwsElbMetric(metric):
+			e, err := evaluator.BuildEvaluator(datadog.AwsElb)
 			if err != nil {
 				fmt.Fprintf(os.Stderr, "failed to get Evaluator object: %v\n", err)
 				os.Exit(1)

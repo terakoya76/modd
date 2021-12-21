@@ -13,8 +13,12 @@ var (
 
 	// AwsAutoScalingGroup represents AWS AutoScalingGroup integration.
 	AwsAutoScalingGroup IntegrationTarget = "aws.autoscaling"
+	// AwsClb represents AWS CLB integration.
+	AwsClb IntegrationTarget = "aws.elb"
 	// AwsElasticache represents AWS Elasticache integration.
 	AwsElasticache IntegrationTarget = "aws.elasticache"
+	// AwsElb represents AWS ALB/NLB integration.
+	AwsElb IntegrationTarget = "aws.applicationelb"
 	// AwsKinesis represents AWS Kinesis integration.
 	AwsKinesis IntegrationTarget = "aws.kinesis"
 	// AwsOpenSeardhService represents AWS OpenSearch Service integration.
@@ -31,10 +35,22 @@ func IsAwsAutoScalingGroupMetric(metric string) bool {
 	return len(parts) >= 2 && parts[0] == AwsMetricsPrefix && parts[1] == "autoscaling"
 }
 
+// IsAwsClbMetric determines if the given metric belongs to AWS CLB.
+func IsAwsClbMetric(metric string) bool {
+	parts := strings.Split(metric, ".")
+	return len(parts) >= 2 && parts[0] == AwsMetricsPrefix && parts[1] == "elb"
+}
+
 // IsAwsElasticacheMetric determines if the given metric belongs to AWS Elasticache.
 func IsAwsElasticacheMetric(metric string) bool {
 	parts := strings.Split(metric, ".")
 	return len(parts) >= 2 && parts[0] == AwsMetricsPrefix && parts[1] == "elasticache"
+}
+
+// IsAwsElbMetric determines if the given metric belongs to AWS ALB/NLB.
+func IsAwsElbMetric(metric string) bool {
+	parts := strings.Split(metric, ".")
+	return len(parts) >= 2 && parts[0] == AwsMetricsPrefix && parts[1] == "applicationelb"
 }
 
 // IsAwsKinesisMetric determines if the given metric belongs to AWS Kinesis.

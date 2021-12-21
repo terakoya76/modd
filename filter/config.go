@@ -1,7 +1,13 @@
 package filter
 
-// AwsRdsConfig holds metadata for AwsFilter for AWS RDS.
-type AwsRdsConfig struct {
+// AwsAutoScalingGroupConfig holds metadata for AwsFilter for AWS AutoScalingGroup.
+type AwsAutoScalingGroupConfig struct {
+	AwsTagKey string `envconfig:"aws_tag_key" default:""`
+	DdTagKey  string `envconfig:"datadog_tag_key" default:""`
+}
+
+// AwsClbConfig holds metadata for AwsFilter for AWS CLB.
+type AwsClbConfig struct {
 	AwsTagKey string `envconfig:"aws_tag_key" default:""`
 	DdTagKey  string `envconfig:"datadog_tag_key" default:""`
 }
@@ -12,14 +18,8 @@ type AwsElasticacheConfig struct {
 	DdTagKey  string `envconfig:"datadog_tag_key" default:""`
 }
 
-// AwsOpenSeardhServiceConfig holds metadata for AwsFilter for AWS OpenSearch Service.
-type AwsOpenSeardhServiceConfig struct {
-	AwsTagKey string `envconfig:"aws_tag_key" default:""`
-	DdTagKey  string `envconfig:"datadog_tag_key" default:""`
-}
-
-// AwsSqsConfig holds metadata for AwsFilter for AWS SQS.
-type AwsSqsConfig struct {
+// AwsElbConfig holds metadata for AwsFilter for AWS ALB.
+type AwsElbConfig struct {
 	AwsTagKey string `envconfig:"aws_tag_key" default:""`
 	DdTagKey  string `envconfig:"datadog_tag_key" default:""`
 }
@@ -30,8 +30,20 @@ type AwsKinesisConfig struct {
 	DdTagKey  string `envconfig:"datadog_tag_key" default:""`
 }
 
-// AwsAutoScalingGroupConfig holds metadata for AwsFilter for AWS AutoScalingGroup.
-type AwsAutoScalingGroupConfig struct {
+// AwsOpenSeardhServiceConfig holds metadata for AwsFilter for AWS OpenSearch Service.
+type AwsOpenSeardhServiceConfig struct {
+	AwsTagKey string `envconfig:"aws_tag_key" default:""`
+	DdTagKey  string `envconfig:"datadog_tag_key" default:""`
+}
+
+// AwsRdsConfig holds metadata for AwsFilter for AWS RDS.
+type AwsRdsConfig struct {
+	AwsTagKey string `envconfig:"aws_tag_key" default:""`
+	DdTagKey  string `envconfig:"datadog_tag_key" default:""`
+}
+
+// AwsSqsConfig holds metadata for AwsFilter for AWS SQS.
+type AwsSqsConfig struct {
 	AwsTagKey string `envconfig:"aws_tag_key" default:""`
 	DdTagKey  string `envconfig:"datadog_tag_key" default:""`
 }

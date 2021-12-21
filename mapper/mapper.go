@@ -19,6 +19,7 @@ type TagsMapper interface {
 }
 
 // BuildTagsMapper build the proper TagsMapper implementation.
+//nolint:funlen,gocyclo
 func BuildTagsMapper(it datadog.IntegrationTarget) (TagsMapper, error) {
 	c := cache.New(30*time.Minute, 5*time.Minute)
 
@@ -35,6 +36,18 @@ func BuildTagsMapper(it datadog.IntegrationTarget) (TagsMapper, error) {
 		}
 
 		return m, nil
+	case datadog.AwsClb:
+		client, err := GetAwsClbClient(context.TODO())
+		if err != nil {
+			return nil, fmt.Errorf("%w", err)
+		}
+
+		m := AwsClbTagsMapper{
+			cache:  c,
+			client: client,
+		}
+
+		return m, nil
 	case datadog.AwsElasticache:
 		client, err := GetAwsElasticacheClient(context.TODO())
 		if err != nil {
@@ -42,6 +55,18 @@ func BuildTagsMapper(it datadog.IntegrationTarget) (TagsMapper, error) {
 		}
 
 		m := AwsElasticacheTagsMapper{
+			cache:  c,
+			client: client,
+		}
+
+		return m, nil
+	case datadog.AwsElb:
+		client, err := GetAwsElbClient(context.TODO())
+		if err != nil {
+			return nil, fmt.Errorf("%w", err)
+		}
+
+		m := AwsElbTagsMapper{
 			cache:  c,
 			client: client,
 		}
