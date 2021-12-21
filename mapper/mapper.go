@@ -20,7 +20,7 @@ type TagsMapper interface {
 
 // BuildTagsMapper build the proper TagsMapper implementation.
 func BuildTagsMapper(it datadog.IntegrationTarget) (TagsMapper, error) {
-	c := cache.New(10*time.Minute, 1*time.Minute)
+	c := cache.New(30*time.Minute, 5*time.Minute)
 
 	switch it {
 	case datadog.AwsAutoScalingGroup:
