@@ -20,6 +20,8 @@ var (
 	AwsSqs IntegrationTarget = "aws.sqs"
 	// AwsKinesis represents AWS Kinesis integration.
 	AwsKinesis IntegrationTarget = "aws.kinesis"
+	// AwsAutoScalingGroup represents AWS AutoScalingGroup integration.
+	AwsAutoScalingGroup IntegrationTarget = "aws.autoscaling"
 )
 
 // IsAwsRdsMetric determines if the given metric belongs to AWS RDS.
@@ -50,4 +52,10 @@ func IsAwsSqsMetric(metric string) bool {
 func IsAwsKinesisMetric(metric string) bool {
 	parts := strings.Split(metric, ".")
 	return len(parts) >= 2 && parts[0] == AwsMetricsPrefix && parts[1] == "kinesis"
+}
+
+// IsAwsAutoScalingGroupMetric determines if the given metric belongs to AWS AutoScalingGroup.
+func IsAwsAutoScalingGroupMetric(metric string) bool {
+	parts := strings.Split(metric, ".")
+	return len(parts) >= 2 && parts[0] == AwsMetricsPrefix && parts[1] == "autoscaling"
 }

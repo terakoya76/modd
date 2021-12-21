@@ -113,6 +113,20 @@ func main() {
 			}
 
 			notMonitored[metric] = ms
+		case datadog.IsAwsAutoScalingGroupMetric(metric):
+			e, err := evaluator.BuildEvaluator(datadog.AwsAutoScalingGroup)
+			if err != nil {
+				fmt.Fprintf(os.Stderr, "failed to get Evaluator object: %v\n", err)
+				os.Exit(1)
+			}
+
+			ms, err := e.Evaluate(ctx, scopes, ddTags)
+			if err != nil {
+				fmt.Fprintf(os.Stderr, "failed to filter monitors: %v\n", err)
+				os.Exit(1)
+			}
+
+			notMonitored[metric] = ms
 		default:
 			fmt.Printf("unsupported metrics: %s\n", metric)
 		}

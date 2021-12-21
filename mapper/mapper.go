@@ -83,6 +83,18 @@ func BuildTagsMapper(it datadog.IntegrationTarget) (TagsMapper, error) {
 		}
 
 		return m, nil
+	case datadog.AwsAutoScalingGroup:
+		client, err := GetAwsAutoScalingGroupClient(context.TODO())
+		if err != nil {
+			return nil, fmt.Errorf("%w", err)
+		}
+
+		m := AwsAutoScalingGroupTagsMapper{
+			cache:  c,
+			client: client,
+		}
+
+		return m, nil
 	default:
 		return nil, fmt.Errorf("unsupported IntegrationTarget")
 	}

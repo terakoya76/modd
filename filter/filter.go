@@ -63,6 +63,15 @@ func BuildFilter(it datadog.IntegrationTarget) (Filter, error) {
 
 		f := AwsFilter(c)
 		return f, nil
+	case datadog.AwsAutoScalingGroup:
+		var c AwsAutoScalingGroupConfig
+		err := envconfig.Process("aws_autoscaling_group", &c)
+		if err != nil {
+			return nil, err
+		}
+
+		f := AwsFilter(c)
+		return f, nil
 	default:
 		return nil, fmt.Errorf("unsupported IntegrationTarget")
 	}

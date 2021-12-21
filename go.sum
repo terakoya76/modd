@@ -51,6 +51,8 @@ github.com/aws/aws-sdk-go-v2/internal/endpoints/v2 v2.0.2 h1:EauRoYZVNPlidZSZJDs
 github.com/aws/aws-sdk-go-v2/internal/endpoints/v2 v2.0.2/go.mod h1:xT4XX6w5Sa3dhg50JrYyy3e4WPYo/+WjY/BXtqXVunU=
 github.com/aws/aws-sdk-go-v2/internal/ini v1.3.2 h1:IQup8Q6lorXeiA/rK72PeToWoWK8h7VAPgHNWdSrtgE=
 github.com/aws/aws-sdk-go-v2/internal/ini v1.3.2/go.mod h1:VITe/MdW6EMXPb0o0txu/fsonXbMHUU2OC2Qp7ivU4o=
+github.com/aws/aws-sdk-go-v2/service/autoscaling v1.16.1 h1:Zl0p3qSrV3cUNOGi2sUmtZ6RREsQd473RUOpTsG3JZ0=
+github.com/aws/aws-sdk-go-v2/service/autoscaling v1.16.1/go.mod h1:Wu0SF1d/ibUOY3Nu3iHQaPufB4SM2XkgQP64sd7r888=
 github.com/aws/aws-sdk-go-v2/service/elasticache v1.15.1 h1:WWsQ+eBwzewhHxQ1foJghzgFgX1vLgvmEmMH5FMjS58=
 github.com/aws/aws-sdk-go-v2/service/elasticache v1.15.1/go.mod h1:6O2ce+L9zaOcKzEYG+vGJHSgDVcz+ucETuwNvkKTzeQ=
 github.com/aws/aws-sdk-go-v2/service/elasticsearchservice v1.10.1 h1:WLn8LMg3x51QFVXnSok1oVaX15vM4FS/mcM7nTHlOvo=

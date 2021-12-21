@@ -29,3 +29,9 @@ type AwsKinesisConfig struct {
 	AwsTagKey string `envconfig:"aws_tag_key" default:""`
 	DdTagKey  string `envconfig:"datadog_tag_key" default:""`
 }
+
+// AwsAutoScalingGroupConfig holds metadata for AwsFilter for AWS AutoScalingGroup.
+type AwsAutoScalingGroupConfig struct {
+	AwsTagKey string `envconfig:"aws_tag_key" default:""`
+	DdTagKey  string `envconfig:"datadog_tag_key" default:""`
+}

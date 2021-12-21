@@ -40,6 +40,7 @@ export AWS_RDS_DATADOG_TAG_KEY=dbengine
 ## Support Integration
 
 AWS
+* AutoScalingGroup
 * Elasticache
 * Kinesis
 * OpenSearch Service
