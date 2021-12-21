@@ -9,7 +9,7 @@ import (
 	"github.com/terakoya76/modd/evaluator"
 )
 
-//nolint:funlen
+//nolint:funlen,gocyclo
 func main() {
 	ctx := datadog.GetDatadogContext()
 
@@ -73,6 +73,20 @@ func main() {
 			notMonitored[metric] = ms
 		case datadog.IsAwsOpenSearchServiceMetric(metric):
 			e, err := evaluator.BuildEvaluator(datadog.AwsOpenSearchService)
+			if err != nil {
+				fmt.Fprintf(os.Stderr, "failed to get Evaluator object: %v\n", err)
+				os.Exit(1)
+			}
+
+			ms, err := e.Evaluate(ctx, scopes, ddTags)
+			if err != nil {
+				fmt.Fprintf(os.Stderr, "failed to filter monitors: %v\n", err)
+				os.Exit(1)
+			}
+
+			notMonitored[metric] = ms
+		case datadog.IsAwsSqsMetric(metric):
+			e, err := evaluator.BuildEvaluator(datadog.AwsSqs)
 			if err != nil {
 				fmt.Fprintf(os.Stderr, "failed to get Evaluator object: %v\n", err)
 				os.Exit(1)

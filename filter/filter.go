@@ -45,6 +45,15 @@ func BuildFilter(it datadog.IntegrationTarget) (Filter, error) {
 
 		f := AwsFilter(c)
 		return f, nil
+	case datadog.AwsSqs:
+		var c AwsSqsConfig
+		err := envconfig.Process("aws_sqs", &c)
+		if err != nil {
+			return nil, err
+		}
+
+		f := AwsFilter(c)
+		return f, nil
 	default:
 		return nil, fmt.Errorf("unsupported IntegrationTarget")
 	}

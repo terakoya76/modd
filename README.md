@@ -43,4 +43,5 @@ AWS
 * RDS
 * Elasticache
 * OpenSearch Service
+* SQS
 
