@@ -16,6 +16,8 @@ var (
 	AwsElasticache IntegrationTarget = "aws.elasticache"
 	// AwsOpenSeardhService represents AWS OpenSearch Service integration.
 	AwsOpenSearchService IntegrationTarget = "aws.elasticsearchservice"
+	// AwsSqs represents AWS SQS integration.
+	AwsSqs IntegrationTarget = "aws.sqs"
 )
 
 // IsAwsRdsMetric determines if the given metric belongs to AWS RDS.
@@ -34,4 +36,10 @@ func IsAwsElasticacheMetric(metric string) bool {
 func IsAwsOpenSearchServiceMetric(metric string) bool {
 	parts := strings.Split(metric, ".")
 	return len(parts) >= 2 && parts[0] == AwsMetricsPrefix && parts[1] == "es"
+}
+
+// IsAwsSqsMetric determines if the given metric belongs to AWS SQS.
+func IsAwsSqsMetric(metric string) bool {
+	parts := strings.Split(metric, ".")
+	return len(parts) >= 2 && parts[0] == AwsMetricsPrefix && parts[1] == "sqs"
 }

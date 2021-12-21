@@ -17,3 +17,9 @@ type AwsOpenSeardhServiceConfig struct {
 	AwsTagKey string `envconfig:"aws_tag_key" default:""`
 	DdTagKey  string `envconfig:"datadog_tag_key" default:""`
 }
+
+// AwsSqsConfig holds metadata for AwsFilter for AWS SQS.
+type AwsSqsConfig struct {
+	AwsTagKey string `envconfig:"aws_tag_key" default:""`
+	DdTagKey  string `envconfig:"datadog_tag_key" default:""`
+}
