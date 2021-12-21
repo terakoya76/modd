@@ -16,11 +16,30 @@ type Filter interface {
 }
 
 // BuildFilter build the proper Filter implementation.
+//nolint:funlen,gocyclo
 func BuildFilter(it datadog.IntegrationTarget) (Filter, error) {
 	switch it {
+	case datadog.AwsElb:
+		var c AwsElbConfig
+		err := envconfig.Process("aws_elb", &c)
+		if err != nil {
+			return nil, err
+		}
+
+		f := AwsFilter(c)
+		return f, nil
 	case datadog.AwsAutoScalingGroup:
 		var c AwsAutoScalingGroupConfig
 		err := envconfig.Process("aws_autoscaling_group", &c)
+		if err != nil {
+			return nil, err
+		}
+
+		f := AwsFilter(c)
+		return f, nil
+	case datadog.AwsClb:
+		var c AwsClbConfig
+		err := envconfig.Process("aws_clb", &c)
 		if err != nil {
 			return nil, err
 		}
@@ -72,6 +91,8 @@ func BuildFilter(it datadog.IntegrationTarget) (Filter, error) {
 
 		f := AwsFilter(c)
 		return f, nil
+	case datadog.UnknownIntegration:
+		return nil, fmt.Errorf("unsupported IntegrationTarget")
 	default:
 		return nil, fmt.Errorf("unsupported IntegrationTarget")
 	}

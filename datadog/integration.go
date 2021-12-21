@@ -11,10 +11,16 @@ var (
 	// AwsMetricsPrefix represents Datadog AWS Integration metrics prefix.
 	AwsMetricsPrefix = "aws"
 
+	// UnknownIntegration represents unknonwn integration.
+	UnknownIntegration IntegrationTarget = "unknown"
 	// AwsAutoScalingGroup represents AWS AutoScalingGroup integration.
 	AwsAutoScalingGroup IntegrationTarget = "aws.autoscaling"
+	// AwsClb represents AWS CLB integration.
+	AwsClb IntegrationTarget = "aws.elb"
 	// AwsElasticache represents AWS Elasticache integration.
 	AwsElasticache IntegrationTarget = "aws.elasticache"
+	// AwsElb represents AWS ALB/NLB integration.
+	AwsElb IntegrationTarget = "aws.applicationelb"
 	// AwsKinesis represents AWS Kinesis integration.
 	AwsKinesis IntegrationTarget = "aws.kinesis"
 	// AwsOpenSeardhService represents AWS OpenSearch Service integration.
@@ -25,38 +31,28 @@ var (
 	AwsSqs IntegrationTarget = "aws.sqs"
 )
 
-// IsAwsAutoScalingGroupMetric determines if the given metric belongs to AWS AutoScalingGroup.
-func IsAwsAutoScalingGroupMetric(metric string) bool {
+// MetricToIntegrationTarget returns the IntegrationTarget to which the specified metric belongs.
+//nolint:gocyclo
+func MetricToIntegrationTarget(metric string) IntegrationTarget {
 	parts := strings.Split(metric, ".")
-	return len(parts) >= 2 && parts[0] == AwsMetricsPrefix && parts[1] == "autoscaling"
-}
-
-// IsAwsElasticacheMetric determines if the given metric belongs to AWS Elasticache.
-func IsAwsElasticacheMetric(metric string) bool {
-	parts := strings.Split(metric, ".")
-	return len(parts) >= 2 && parts[0] == AwsMetricsPrefix && parts[1] == "elasticache"
-}
-
-// IsAwsKinesisMetric determines if the given metric belongs to AWS Kinesis.
-func IsAwsKinesisMetric(metric string) bool {
-	parts := strings.Split(metric, ".")
-	return len(parts) >= 2 && parts[0] == AwsMetricsPrefix && parts[1] == "kinesis"
-}
-
-// IsAwsOpenSearchServiceMetric determines if the given metric belongs to AWS OpenSearch Service.
-func IsAwsOpenSearchServiceMetric(metric string) bool {
-	parts := strings.Split(metric, ".")
-	return len(parts) >= 2 && parts[0] == AwsMetricsPrefix && parts[1] == "es"
-}
-
-// IsAwsRdsMetric determines if the given metric belongs to AWS RDS.
-func IsAwsRdsMetric(metric string) bool {
-	parts := strings.Split(metric, ".")
-	return len(parts) >= 2 && parts[0] == AwsMetricsPrefix && parts[1] == "rds"
-}
-
-// IsAwsSqsMetric determines if the given metric belongs to AWS SQS.
-func IsAwsSqsMetric(metric string) bool {
-	parts := strings.Split(metric, ".")
-	return len(parts) >= 2 && parts[0] == AwsMetricsPrefix && parts[1] == "sqs"
+	switch {
+	case len(parts) >= 2 && parts[0] == AwsMetricsPrefix && parts[1] == "autoscaling":
+		return AwsAutoScalingGroup
+	case len(parts) >= 2 && parts[0] == AwsMetricsPrefix && parts[1] == "elb":
+		return AwsClb
+	case len(parts) >= 2 && parts[0] == AwsMetricsPrefix && parts[1] == "elasticache":
+		return AwsElasticache
+	case len(parts) >= 2 && parts[0] == AwsMetricsPrefix && parts[1] == "applicationelb":
+		return AwsElb
+	case len(parts) >= 2 && parts[0] == AwsMetricsPrefix && parts[1] == "kinesis":
+		return AwsKinesis
+	case len(parts) >= 2 && parts[0] == AwsMetricsPrefix && parts[1] == "es":
+		return AwsOpenSearchService
+	case len(parts) >= 2 && parts[0] == AwsMetricsPrefix && parts[1] == "rds":
+		return AwsRds
+	case len(parts) >= 2 && parts[0] == AwsMetricsPrefix && parts[1] == "sqs":
+		return AwsSqs
+	default:
+		return UnknownIntegration
+	}
 }
