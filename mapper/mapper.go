@@ -21,7 +21,7 @@ type TagsMapper interface {
 // BuildTagsMapper build the proper TagsMapper implementation.
 //nolint:funlen,gocyclo
 func BuildTagsMapper(it datadog.IntegrationTarget) (TagsMapper, error) {
-	c := cache.New(30*time.Minute, 5*time.Minute)
+	c := cache.New(60*time.Minute, 10*time.Minute)
 
 	switch it {
 	case datadog.AwsAutoScalingGroup:
