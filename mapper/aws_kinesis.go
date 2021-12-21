@@ -14,13 +14,13 @@ import (
 
 const awsKinesisCache string = "aws_kinesis_cache"
 
-// AwsKinesisTagsMapper implements TagsMapper for AWS RDS.
+// AwsKinesisTagsMapper implements TagsMapper for AWS Kinesis.
 type AwsKinesisTagsMapper struct {
 	cache  *cache.Cache
 	client *kinesis.Client
 }
 
-// GetAwsKinesisClient returns AWS SQS client.
+// GetAwsKinesisClient returns AWS Kinesis client.
 func GetAwsKinesisClient(ctx context.Context) (*kinesis.Client, error) {
 	cfg, err := config.LoadDefaultConfig(ctx, config.WithRetryer(func() aws.Retryer {
 		return retry.AddWithMaxAttempts(retry.NewStandard(), 10)
@@ -41,9 +41,9 @@ func (aktm AwsKinesisTagsMapper) GetTagsMapping(ctx context.Context) (map[string
 
 	mapping := make(map[string]Tags)
 
-    hasMoreStream := true
+	hasMoreStream := true
 	for hasMoreStream {
-        input := kinesis.ListStreamsInput{}
+		input := kinesis.ListStreamsInput{}
 
 		output, err := aktm.client.ListStreams(ctx, &input)
 		if err != nil {
@@ -52,7 +52,7 @@ func (aktm AwsKinesisTagsMapper) GetTagsMapping(ctx context.Context) (map[string
 
 		for i := 0; i < len(output.StreamNames); i++ {
 			name := output.StreamNames[i]
-            tagsInput := kinesis.ListTagsForStreamInput{StreamName: &name}
+			tagsInput := kinesis.ListTagsForStreamInput{StreamName: &name}
 			tagsOutput, err := aktm.client.ListTagsForStream(ctx, &tagsInput)
 			if err != nil {
 				return nil, fmt.Errorf("%w", err)

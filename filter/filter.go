@@ -18,9 +18,9 @@ type Filter interface {
 // BuildFilter build the proper Filter implementation.
 func BuildFilter(it datadog.IntegrationTarget) (Filter, error) {
 	switch it {
-	case datadog.AwsRds:
-		var c AwsRdsConfig
-		err := envconfig.Process("aws_rds", &c)
+	case datadog.AwsAutoScalingGroup:
+		var c AwsAutoScalingGroupConfig
+		err := envconfig.Process("aws_autoscaling_group", &c)
 		if err != nil {
 			return nil, err
 		}
@@ -36,6 +36,15 @@ func BuildFilter(it datadog.IntegrationTarget) (Filter, error) {
 
 		f := AwsFilter(c)
 		return f, nil
+	case datadog.AwsKinesis:
+		var c AwsKinesisConfig
+		err := envconfig.Process("aws_kinesis", &c)
+		if err != nil {
+			return nil, err
+		}
+
+		f := AwsFilter(c)
+		return f, nil
 	case datadog.AwsOpenSearchService:
 		var c AwsOpenSeardhServiceConfig
 		err := envconfig.Process("aws_open_search_service", &c)
@@ -45,18 +54,18 @@ func BuildFilter(it datadog.IntegrationTarget) (Filter, error) {
 
 		f := AwsFilter(c)
 		return f, nil
-	case datadog.AwsSqs:
-		var c AwsSqsConfig
-		err := envconfig.Process("aws_sqs", &c)
+	case datadog.AwsRds:
+		var c AwsRdsConfig
+		err := envconfig.Process("aws_rds", &c)
 		if err != nil {
 			return nil, err
 		}
 
 		f := AwsFilter(c)
 		return f, nil
-	case datadog.AwsKinesis:
-		var c AwsKinesisConfig
-		err := envconfig.Process("aws_kinesis", &c)
+	case datadog.AwsSqs:
+		var c AwsSqsConfig
+		err := envconfig.Process("aws_sqs", &c)
 		if err != nil {
 			return nil, err
 		}
