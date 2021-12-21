@@ -71,6 +71,18 @@ func BuildTagsMapper(it datadog.IntegrationTarget) (TagsMapper, error) {
 		}
 
 		return m, nil
+	case datadog.AwsKinesis:
+		client, err := GetAwsKinesisClient(context.TODO())
+		if err != nil {
+			return nil, fmt.Errorf("%w", err)
+		}
+
+		m := AwsKinesisTagsMapper{
+			cache:  c,
+			client: client,
+		}
+
+		return m, nil
 	default:
 		return nil, fmt.Errorf("unsupported IntegrationTarget")
 	}

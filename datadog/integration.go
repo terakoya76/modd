@@ -18,6 +18,8 @@ var (
 	AwsOpenSearchService IntegrationTarget = "aws.elasticsearchservice"
 	// AwsSqs represents AWS SQS integration.
 	AwsSqs IntegrationTarget = "aws.sqs"
+	// AwsKinesis represents AWS Kinesis integration.
+	AwsKinesis IntegrationTarget = "aws.kinesis"
 )
 
 // IsAwsRdsMetric determines if the given metric belongs to AWS RDS.
@@ -42,4 +44,10 @@ func IsAwsOpenSearchServiceMetric(metric string) bool {
 func IsAwsSqsMetric(metric string) bool {
 	parts := strings.Split(metric, ".")
 	return len(parts) >= 2 && parts[0] == AwsMetricsPrefix && parts[1] == "sqs"
+}
+
+// IsAwsKinesisMetric determines if the given metric belongs to AWS Kinesis.
+func IsAwsKinesisMetric(metric string) bool {
+	parts := strings.Split(metric, ".")
+	return len(parts) >= 2 && parts[0] == AwsMetricsPrefix && parts[1] == "kinesis"
 }
