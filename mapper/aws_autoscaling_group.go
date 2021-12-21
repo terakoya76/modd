@@ -12,8 +12,6 @@ import (
 	"github.com/patrickmn/go-cache"
 )
 
-const awsAutoScalingGroupCache string = "aws_autoscaling_group_cache"
-
 // AwsAutoScalingGroupTagsMapper implements TagsMapper for AWS AutoScalingGroup.
 type AwsAutoScalingGroupTagsMapper struct {
 	cache  *cache.Cache

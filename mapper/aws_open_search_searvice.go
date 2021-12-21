@@ -12,8 +12,6 @@ import (
 	"github.com/patrickmn/go-cache"
 )
 
-const awsOpenSearchServiceCache string = "aws_elasticsearchservice_cache"
-
 // AwsOpenSearchServiceTagsMapper implements TagsMapper for AWS OpenSearch Service.
 type AwsOpenSearchServiceTagsMapper struct {
 	cache  *cache.Cache

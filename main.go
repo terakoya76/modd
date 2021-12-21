@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"os"
+	"sync"
 
 	"github.com/terakoya76/modd/datadog"
 	"github.com/terakoya76/modd/evaluator"
@@ -37,6 +38,9 @@ func main() {
 		os.Exit(1)
 	}
 
+	var wg sync.WaitGroup
+	var mu sync.Mutex
+
 	notMonitored := make(map[string][]string)
 	for metric, scopes := range ddMonitorScopesMapping {
 		ddTags := ddMonitorTagsMapping[metric]
@@ -53,14 +57,24 @@ func main() {
 			os.Exit(1)
 		}
 
-		ms, err := e.Evaluate(ctx, scopes, ddTags)
-		if err != nil {
-			fmt.Fprintf(os.Stderr, "failed to filter monitors: %v\n", err)
-			os.Exit(1)
-		}
+		wg.Add(1)
+		go func(metric string, scopes []datadog.Scope) {
+			defer wg.Done()
 
-		notMonitored[metric] = ms
+			ms, err := e.Evaluate(ctx, scopes, ddTags)
+			if err != nil {
+				fmt.Fprintf(os.Stderr, "failed to filter monitors: %v\n", err)
+				return
+			}
+
+			mu.Lock()
+			defer mu.Unlock()
+
+			notMonitored[metric] = ms
+		}(metric, scopes)
 	}
+
+	wg.Wait()
 
 	j, _ := json.MarshalIndent(notMonitored, "", "  ")
 	fmt.Fprintf(os.Stdout, "%s\n", j)

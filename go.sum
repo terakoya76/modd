@@ -61,8 +61,6 @@ github.com/aws/aws-sdk-go-v2/service/elasticloadbalancingv2 v1.13.1 h1:HTcy8LAab
 github.com/aws/aws-sdk-go-v2/service/elasticloadbalancingv2 v1.13.1/go.mod h1:K19IPbjJzW6rWEm7pPNODMmTio71n1/rRE+96nHJ9sU=
 github.com/aws/aws-sdk-go-v2/service/elasticsearchservice v1.10.1 h1:WLn8LMg3x51QFVXnSok1oVaX15vM4FS/mcM7nTHlOvo=
 github.com/aws/aws-sdk-go-v2/service/elasticsearchservice v1.10.1/go.mod h1:Vb8LcnQzd5geZ+tZh49YwjtYZFj/NyzXNZOmeB4ncRM=
-github.com/aws/aws-sdk-go-v2/service/internal/presigned-url v1.5.1 h1:ZFSfgetO5kf4WXy+a2B8zug6DXGUYjsWacyvwx5cgXU=
-github.com/aws/aws-sdk-go-v2/service/internal/presigned-url v1.5.1/go.mod h1:fEaHB2bi+wVZw4uKMHEXTL9LwtT4EL//DOhTeflqIVo=
 github.com/aws/aws-sdk-go-v2/service/internal/presigned-url v1.5.2 h1:CKdUNKmuilw/KNmO2Q53Av8u+ZyXMC2M9aX8Z+c/gzg=
 github.com/aws/aws-sdk-go-v2/service/internal/presigned-url v1.5.2/go.mod h1:FgR1tCsn8C6+Hf+N5qkfrE4IXvUL1RgW87sunJ+5J4I=
 github.com/aws/aws-sdk-go-v2/service/kinesis v1.10.0 h1:vOqqOA8jhE2Ivo54feqTmh/gqn3kJsdCb+CZZZsCSWU=
@@ -259,6 +257,7 @@ golang.org/x/sync v0.0.0-20190423024810-112230192c58/go.mod h1:RxMgew5VJxzue5/jJ
 golang.org/x/sync v0.0.0-20190911185100-cd5d95a43a6e/go.mod h1:RxMgew5VJxzue5/jJTE5uejpjVlOe/izrB70Jof72aM=
 golang.org/x/sync v0.0.0-20200317015054-43a5402ce75a/go.mod h1:RxMgew5VJxzue5/jJTE5uejpjVlOe/izrB70Jof72aM=
 golang.org/x/sync v0.0.0-20200625203802-6e8e738ad208/go.mod h1:RxMgew5VJxzue5/jJTE5uejpjVlOe/izrB70Jof72aM=
+golang.org/x/sync v0.0.0-20210220032951-036812b2e83c h1:5KslGYwFpkhGh+Q16bwMP3cOontH8FOep7tGV86Y7SQ=
 golang.org/x/sync v0.0.0-20210220032951-036812b2e83c/go.mod h1:RxMgew5VJxzue5/jJTE5uejpjVlOe/izrB70Jof72aM=
 golang.org/x/sys v0.0.0-20180830151530-49385e6e1522/go.mod h1:STP8DvDyc/dI5b8T5hshtkjS+E42TnysNCUPdjciGhY=
 golang.org/x/sys v0.0.0-20190215142949-d0b11bdaac8a/go.mod h1:STP8DvDyc/dI5b8T5hshtkjS+E42TnysNCUPdjciGhY=
