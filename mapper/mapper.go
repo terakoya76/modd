@@ -120,6 +120,8 @@ func BuildTagsMapper(it datadog.IntegrationTarget) (TagsMapper, error) {
 		}
 
 		return m, nil
+	case datadog.UnknownIntegration:
+		return nil, fmt.Errorf("unsupported IntegrationTarget")
 	default:
 		return nil, fmt.Errorf("unsupported IntegrationTarget")
 	}

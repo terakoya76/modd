@@ -91,6 +91,8 @@ func BuildFilter(it datadog.IntegrationTarget) (Filter, error) {
 
 		f := AwsFilter(c)
 		return f, nil
+	case datadog.UnknownIntegration:
+		return nil, fmt.Errorf("unsupported IntegrationTarget")
 	default:
 		return nil, fmt.Errorf("unsupported IntegrationTarget")
 	}
