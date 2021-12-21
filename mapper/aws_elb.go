@@ -12,8 +12,6 @@ import (
 	"github.com/patrickmn/go-cache"
 )
 
-const awsElbCache string = "aws_elb_cache"
-
 // AwsElbTagsMapper implements TagsMapper for AWS ALB/NLB.
 type AwsElbTagsMapper struct {
 	cache  *cache.Cache

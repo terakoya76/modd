@@ -12,8 +12,6 @@ import (
 	"github.com/patrickmn/go-cache"
 )
 
-const awsRdsCache string = "aws_rds_cache"
-
 // AwsRdsTagsMapper implements TagsMapper for AWS RDS.
 type AwsRdsTagsMapper struct {
 	cache  *cache.Cache

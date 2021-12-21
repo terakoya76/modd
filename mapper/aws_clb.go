@@ -12,8 +12,6 @@ import (
 	"github.com/patrickmn/go-cache"
 )
 
-const awsClbCache string = "aws_clb_cache"
-
 // AwsClbTagsMapper implements TagsMapper for AWS CLB.
 type AwsClbTagsMapper struct {
 	cache  *cache.Cache

@@ -12,8 +12,6 @@ import (
 	"github.com/patrickmn/go-cache"
 )
 
-const awsSqsCache string = "aws_sqs_cache"
-
 // AwsSqsTagsMapper implements TagsMapper for AWS SQS.
 type AwsSqsTagsMapper struct {
 	cache  *cache.Cache

@@ -12,8 +12,6 @@ import (
 	"github.com/patrickmn/go-cache"
 )
 
-const awsElasticacheCache string = "aws_elasticache_cache"
-
 // AwsElasticacheTagsMapper implements TagsMapper for AWS Elasticache.
 type AwsElasticacheTagsMapper struct {
 	cache  *cache.Cache

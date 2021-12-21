@@ -12,8 +12,6 @@ import (
 	"github.com/patrickmn/go-cache"
 )
 
-const awsKinesisCache string = "aws_kinesis_cache"
-
 // AwsKinesisTagsMapper implements TagsMapper for AWS Kinesis.
 type AwsKinesisTagsMapper struct {
 	cache  *cache.Cache
