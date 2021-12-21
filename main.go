@@ -43,8 +43,8 @@ func main() {
 		ddTags := ddMonitorTagsMapping[metric]
 
 		switch {
-		case datadog.IsAwsRdsMetric(metric):
-			e, err := evaluator.BuildEvaluator(datadog.AwsRds)
+		case datadog.IsAwsAutoScalingGroupMetric(metric):
+			e, err := evaluator.BuildEvaluator(datadog.AwsAutoScalingGroup)
 			if err != nil {
 				fmt.Fprintf(os.Stderr, "failed to get Evaluator object: %v\n", err)
 				os.Exit(1)
@@ -71,34 +71,6 @@ func main() {
 			}
 
 			notMonitored[metric] = ms
-		case datadog.IsAwsOpenSearchServiceMetric(metric):
-			e, err := evaluator.BuildEvaluator(datadog.AwsOpenSearchService)
-			if err != nil {
-				fmt.Fprintf(os.Stderr, "failed to get Evaluator object: %v\n", err)
-				os.Exit(1)
-			}
-
-			ms, err := e.Evaluate(ctx, scopes, ddTags)
-			if err != nil {
-				fmt.Fprintf(os.Stderr, "failed to filter monitors: %v\n", err)
-				os.Exit(1)
-			}
-
-			notMonitored[metric] = ms
-		case datadog.IsAwsSqsMetric(metric):
-			e, err := evaluator.BuildEvaluator(datadog.AwsSqs)
-			if err != nil {
-				fmt.Fprintf(os.Stderr, "failed to get Evaluator object: %v\n", err)
-				os.Exit(1)
-			}
-
-			ms, err := e.Evaluate(ctx, scopes, ddTags)
-			if err != nil {
-				fmt.Fprintf(os.Stderr, "failed to filter monitors: %v\n", err)
-				os.Exit(1)
-			}
-
-			notMonitored[metric] = ms
 		case datadog.IsAwsKinesisMetric(metric):
 			e, err := evaluator.BuildEvaluator(datadog.AwsKinesis)
 			if err != nil {
@@ -113,8 +85,36 @@ func main() {
 			}
 
 			notMonitored[metric] = ms
-		case datadog.IsAwsAutoScalingGroupMetric(metric):
-			e, err := evaluator.BuildEvaluator(datadog.AwsAutoScalingGroup)
+		case datadog.IsAwsOpenSearchServiceMetric(metric):
+			e, err := evaluator.BuildEvaluator(datadog.AwsOpenSearchService)
+			if err != nil {
+				fmt.Fprintf(os.Stderr, "failed to get Evaluator object: %v\n", err)
+				os.Exit(1)
+			}
+
+			ms, err := e.Evaluate(ctx, scopes, ddTags)
+			if err != nil {
+				fmt.Fprintf(os.Stderr, "failed to filter monitors: %v\n", err)
+				os.Exit(1)
+			}
+
+			notMonitored[metric] = ms
+		case datadog.IsAwsRdsMetric(metric):
+			e, err := evaluator.BuildEvaluator(datadog.AwsRds)
+			if err != nil {
+				fmt.Fprintf(os.Stderr, "failed to get Evaluator object: %v\n", err)
+				os.Exit(1)
+			}
+
+			ms, err := e.Evaluate(ctx, scopes, ddTags)
+			if err != nil {
+				fmt.Fprintf(os.Stderr, "failed to filter monitors: %v\n", err)
+				os.Exit(1)
+			}
+
+			notMonitored[metric] = ms
+		case datadog.IsAwsSqsMetric(metric):
+			e, err := evaluator.BuildEvaluator(datadog.AwsSqs)
 			if err != nil {
 				fmt.Fprintf(os.Stderr, "failed to get Evaluator object: %v\n", err)
 				os.Exit(1)

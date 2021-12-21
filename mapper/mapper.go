@@ -23,13 +23,13 @@ func BuildTagsMapper(it datadog.IntegrationTarget) (TagsMapper, error) {
 	c := cache.New(10*time.Minute, 1*time.Minute)
 
 	switch it {
-	case datadog.AwsRds:
-		client, err := GetAwsRdsClient(context.TODO())
+	case datadog.AwsAutoScalingGroup:
+		client, err := GetAwsAutoScalingGroupClient(context.TODO())
 		if err != nil {
 			return nil, fmt.Errorf("%w", err)
 		}
 
-		m := AwsRdsTagsMapper{
+		m := AwsAutoScalingGroupTagsMapper{
 			cache:  c,
 			client: client,
 		}
@@ -47,30 +47,6 @@ func BuildTagsMapper(it datadog.IntegrationTarget) (TagsMapper, error) {
 		}
 
 		return m, nil
-	case datadog.AwsOpenSearchService:
-		client, err := GetAwsOpenSearchServiceClient(context.TODO())
-		if err != nil {
-			return nil, fmt.Errorf("%w", err)
-		}
-
-		m := AwsOpenSearchServiceTagsMapper{
-			cache:  c,
-			client: client,
-		}
-
-		return m, nil
-	case datadog.AwsSqs:
-		client, err := GetAwsSqsClient(context.TODO())
-		if err != nil {
-			return nil, fmt.Errorf("%w", err)
-		}
-
-		m := AwsSqsTagsMapper{
-			cache:  c,
-			client: client,
-		}
-
-		return m, nil
 	case datadog.AwsKinesis:
 		client, err := GetAwsKinesisClient(context.TODO())
 		if err != nil {
@@ -83,13 +59,37 @@ func BuildTagsMapper(it datadog.IntegrationTarget) (TagsMapper, error) {
 		}
 
 		return m, nil
-	case datadog.AwsAutoScalingGroup:
-		client, err := GetAwsAutoScalingGroupClient(context.TODO())
+	case datadog.AwsOpenSearchService:
+		client, err := GetAwsOpenSearchServiceClient(context.TODO())
 		if err != nil {
 			return nil, fmt.Errorf("%w", err)
 		}
 
-		m := AwsAutoScalingGroupTagsMapper{
+		m := AwsOpenSearchServiceTagsMapper{
+			cache:  c,
+			client: client,
+		}
+
+		return m, nil
+	case datadog.AwsRds:
+		client, err := GetAwsRdsClient(context.TODO())
+		if err != nil {
+			return nil, fmt.Errorf("%w", err)
+		}
+
+		m := AwsRdsTagsMapper{
+			cache:  c,
+			client: client,
+		}
+
+		return m, nil
+	case datadog.AwsSqs:
+		client, err := GetAwsSqsClient(context.TODO())
+		if err != nil {
+			return nil, fmt.Errorf("%w", err)
+		}
+
+		m := AwsSqsTagsMapper{
 			cache:  c,
 			client: client,
 		}
