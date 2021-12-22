@@ -6,7 +6,7 @@ require (
 	github.com/DataDog/datadog-api-client-go v1.7.0
 	github.com/aws/aws-sdk-go-v2 v1.11.2
 	github.com/aws/aws-sdk-go-v2/config v1.11.1
-	github.com/aws/aws-sdk-go-v2/service/autoscaling v1.16.1
+	github.com/aws/aws-sdk-go-v2/service/autoscaling v1.17.0
 	github.com/aws/aws-sdk-go-v2/service/elasticache v1.15.1
 	github.com/aws/aws-sdk-go-v2/service/elasticloadbalancing v1.9.2
 	github.com/aws/aws-sdk-go-v2/service/elasticloadbalancingv2 v1.13.1
