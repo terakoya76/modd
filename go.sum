@@ -63,8 +63,8 @@ github.com/aws/aws-sdk-go-v2/service/elasticsearchservice v1.10.1 h1:WLn8LMg3x51
 github.com/aws/aws-sdk-go-v2/service/elasticsearchservice v1.10.1/go.mod h1:Vb8LcnQzd5geZ+tZh49YwjtYZFj/NyzXNZOmeB4ncRM=
 github.com/aws/aws-sdk-go-v2/service/internal/presigned-url v1.5.2 h1:CKdUNKmuilw/KNmO2Q53Av8u+ZyXMC2M9aX8Z+c/gzg=
 github.com/aws/aws-sdk-go-v2/service/internal/presigned-url v1.5.2/go.mod h1:FgR1tCsn8C6+Hf+N5qkfrE4IXvUL1RgW87sunJ+5J4I=
-github.com/aws/aws-sdk-go-v2/service/kinesis v1.10.0 h1:vOqqOA8jhE2Ivo54feqTmh/gqn3kJsdCb+CZZZsCSWU=
-github.com/aws/aws-sdk-go-v2/service/kinesis v1.10.0/go.mod h1:B1x58TfECuYHFX/bga902rUvMqQu9C/v2XiCi2GZZXE=
+github.com/aws/aws-sdk-go-v2/service/kinesis v1.11.0 h1:s47dGRX/fBy9s/Zculav/cyqRhkMKsE/5hjg6rWAH6E=
+github.com/aws/aws-sdk-go-v2/service/kinesis v1.11.0/go.mod h1:B1x58TfECuYHFX/bga902rUvMqQu9C/v2XiCi2GZZXE=
 github.com/aws/aws-sdk-go-v2/service/rds v1.13.1 h1:BpJ/vrbyJJvMk+TEnjrLoEZEcsSjWSGo0dYBW4IX6UU=
 github.com/aws/aws-sdk-go-v2/service/rds v1.13.1/go.mod h1:Dw97zw/NALZ7oB0NLSGbRNXO9aPkip5cDnjSgudHbCE=
 github.com/aws/aws-sdk-go-v2/service/sqs v1.14.0 h1:8Jq7KQDOK81r4VPKuufMCNZ5ngQjMgNnLxYKJaZvg3s=
