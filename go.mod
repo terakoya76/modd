@@ -9,7 +9,7 @@ require (
 	github.com/aws/aws-sdk-go-v2/service/autoscaling v1.17.0
 	github.com/aws/aws-sdk-go-v2/service/elasticache v1.16.0
 	github.com/aws/aws-sdk-go-v2/service/elasticloadbalancing v1.10.0
-	github.com/aws/aws-sdk-go-v2/service/elasticloadbalancingv2 v1.13.1
+	github.com/aws/aws-sdk-go-v2/service/elasticloadbalancingv2 v1.14.0
 	github.com/aws/aws-sdk-go-v2/service/elasticsearchservice v1.10.1
 	github.com/aws/aws-sdk-go-v2/service/kinesis v1.11.0
 	github.com/aws/aws-sdk-go-v2/service/rds v1.13.1
