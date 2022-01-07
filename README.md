@@ -5,6 +5,61 @@ monitor of datadog monitors
 
 modd uniformly targets the resources belonging to the metrics monitored by Datadog monitors, and detects their leakage.
 
+## How to use
+```bash
+# Filters out monitors with arbitrary metrics name prefixes.
+$ ./modd | jq '.Monitors[] | select(.Name | contains("aws.rds"))'
+{
+  "Name": "aws.rds.burst_balance",
+  "NotMonitored": [
+    "test-db-1",
+    "test-db-2"
+  ]
+}
+{
+  "Name": "aws.rds.disk_queue_depth",
+  "NotMonitored": [
+    "test-db-1",
+    "test-db-2"
+  ]
+}
+{
+  "Name": "aws.rds.total_storage_space",
+  "NotMonitored": [
+    "test-db-1",
+    "test-db-2"
+  ]
+}
+{
+  "Name": "aws.rds.database_connections",
+  "NotMonitored": [
+    "test-db-1",
+    "test-db-2"
+  ]
+}
+{
+  "Name": "aws.rds.free_storage_space",
+  "NotMonitored": [
+    "test-db-1",
+    "test-db-2"
+  ]
+}
+{
+  "Name": "aws.rds.cpuutilization",
+  "NotMonitored": [
+    "test-db-1",
+    "test-db-2"
+  ]
+}
+{
+  "Name": "aws.rds.replica_lag",
+  "NotMonitored": [
+    "test-db-1",
+    "test-db-2"
+  ]
+}
+```
+
 ## Required
 To run modd, datadog API/App keys environment variables are required.
 
