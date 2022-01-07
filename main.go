@@ -10,6 +10,11 @@ import (
 	"github.com/terakoya76/modd/evaluator"
 )
 
+type monitorStatus struct {
+	Name         string
+	NotMonitored []string
+}
+
 func main() {
 	ctx := datadog.GetDatadogContext()
 
@@ -41,13 +46,14 @@ func main() {
 	var wg sync.WaitGroup
 	var mu sync.Mutex
 
-	notMonitored := make(map[string][]string)
+	unsupported := make([]string, 0)
+	notMonitored := make([]monitorStatus, 0)
 	for metric, scopes := range ddMonitorScopesMapping {
 		ddTags := ddMonitorTagsMapping[metric]
 
 		it := datadog.MetricToIntegrationTarget(metric)
 		if it == datadog.UnknownIntegration {
-			fmt.Printf("unsupported metrics: %s\n", metric)
+			unsupported = append(unsupported, metric)
 			continue
 		}
 
@@ -61,7 +67,7 @@ func main() {
 		go func(metric string, scopes []datadog.Scope) {
 			defer wg.Done()
 
-			ms, err := e.Evaluate(ctx, scopes, ddTags)
+			notMonitoredTargets, err := e.Evaluate(ctx, scopes, ddTags)
 			if err != nil {
 				fmt.Fprintf(os.Stderr, "failed to filter monitors: %v\n", err)
 				return
@@ -70,12 +76,21 @@ func main() {
 			mu.Lock()
 			defer mu.Unlock()
 
-			notMonitored[metric] = ms
+			ms := monitorStatus{
+				Name:         metric,
+				NotMonitored: notMonitoredTargets,
+			}
+
+			notMonitored = append(notMonitored, ms)
 		}(metric, scopes)
 	}
 
 	wg.Wait()
 
-	j, _ := json.MarshalIndent(notMonitored, "", "  ")
-	fmt.Fprintf(os.Stdout, "%s\n", j)
+	result := make(map[string]interface{})
+	result["Monitors"] = notMonitored
+	result["Unsupported"] = unsupported
+
+	j, _ := json.Marshal(result)
+	fmt.Fprintf(os.Stdout, "%s", j)
 }
