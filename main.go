@@ -11,8 +11,8 @@ import (
 )
 
 type monitorStatus struct {
-	Name         string
-	NotMonitored []string
+	Name        string
+	Unmonitored []string
 }
 
 func main() {
@@ -47,7 +47,7 @@ func main() {
 	var mu sync.Mutex
 
 	unsupported := make([]string, 0)
-	notMonitored := make([]monitorStatus, 0)
+	monitorStatuses := make([]monitorStatus, 0)
 	for metric, scopes := range ddMonitorScopesMapping {
 		ddTags := ddMonitorTagsMapping[metric]
 
@@ -67,7 +67,7 @@ func main() {
 		go func(metric string, scopes []datadog.Scope) {
 			defer wg.Done()
 
-			notMonitoredTargets, err := e.Evaluate(ctx, scopes, ddTags)
+			unmonitored, err := e.Evaluate(ctx, scopes, ddTags)
 			if err != nil {
 				fmt.Fprintf(os.Stderr, "failed to filter monitors: %v\n", err)
 				return
@@ -77,18 +77,18 @@ func main() {
 			defer mu.Unlock()
 
 			ms := monitorStatus{
-				Name:         metric,
-				NotMonitored: notMonitoredTargets,
+				Name:        metric,
+				Unmonitored: unmonitored,
 			}
 
-			notMonitored = append(notMonitored, ms)
+			monitorStatuses = append(monitorStatuses, ms)
 		}(metric, scopes)
 	}
 
 	wg.Wait()
 
 	result := make(map[string]interface{})
-	result["Monitors"] = notMonitored
+	result["Monitors"] = monitorStatuses
 	result["Unsupported"] = unsupported
 
 	j, _ := json.Marshal(result)
