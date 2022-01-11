@@ -11,7 +11,7 @@ require (
 	github.com/aws/aws-sdk-go-v2/service/elasticloadbalancing v1.10.0
 	github.com/aws/aws-sdk-go-v2/service/elasticloadbalancingv2 v1.14.0
 	github.com/aws/aws-sdk-go-v2/service/elasticsearchservice v1.12.0
-	github.com/aws/aws-sdk-go-v2/service/kinesis v1.11.0
+	github.com/aws/aws-sdk-go-v2/service/kinesis v1.12.0
 	github.com/aws/aws-sdk-go-v2/service/rds v1.15.0
 	github.com/aws/aws-sdk-go-v2/service/sqs v1.15.0
 	github.com/kelseyhightower/envconfig v1.4.0
@@ -21,7 +21,7 @@ require (
 )
 
 require (
-	github.com/aws/aws-sdk-go-v2/aws/protocol/eventstream v1.0.0 // indirect
+	github.com/aws/aws-sdk-go-v2/aws/protocol/eventstream v1.1.0 // indirect
 	github.com/aws/aws-sdk-go-v2/credentials v1.7.0 // indirect
 	github.com/aws/aws-sdk-go-v2/feature/ec2/imds v1.9.0 // indirect
 	github.com/aws/aws-sdk-go-v2/internal/configsources v1.1.3 // indirect
