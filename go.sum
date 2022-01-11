@@ -64,13 +64,12 @@ github.com/aws/aws-sdk-go-v2/service/elasticloadbalancingv2 v1.14.0 h1:zoEOsNxvI
 github.com/aws/aws-sdk-go-v2/service/elasticloadbalancingv2 v1.14.0/go.mod h1:K19IPbjJzW6rWEm7pPNODMmTio71n1/rRE+96nHJ9sU=
 github.com/aws/aws-sdk-go-v2/service/elasticsearchservice v1.11.0 h1:8euMqLCr8tFea7nsJTF4eAdHVt9HW30OdwscPFhqIrI=
 github.com/aws/aws-sdk-go-v2/service/elasticsearchservice v1.11.0/go.mod h1:Vb8LcnQzd5geZ+tZh49YwjtYZFj/NyzXNZOmeB4ncRM=
-github.com/aws/aws-sdk-go-v2/service/internal/presigned-url v1.5.2/go.mod h1:FgR1tCsn8C6+Hf+N5qkfrE4IXvUL1RgW87sunJ+5J4I=
 github.com/aws/aws-sdk-go-v2/service/internal/presigned-url v1.6.0 h1:rwE0kWa5qm0yEoNPwC3zhrt1tFVXTmkWRlUxLayAwyc=
 github.com/aws/aws-sdk-go-v2/service/internal/presigned-url v1.6.0/go.mod h1:wTgFkG6t7jS/6Y0SILXwfspV3IXowb6ngsAlSajW0Kc=
 github.com/aws/aws-sdk-go-v2/service/kinesis v1.11.0 h1:s47dGRX/fBy9s/Zculav/cyqRhkMKsE/5hjg6rWAH6E=
 github.com/aws/aws-sdk-go-v2/service/kinesis v1.11.0/go.mod h1:B1x58TfECuYHFX/bga902rUvMqQu9C/v2XiCi2GZZXE=
-github.com/aws/aws-sdk-go-v2/service/rds v1.14.0 h1:5b2q6oYmh2pZA6Ys2kPnzlKfKT+Z7s5hn4RGHBDOTmg=
-github.com/aws/aws-sdk-go-v2/service/rds v1.14.0/go.mod h1:Dw97zw/NALZ7oB0NLSGbRNXO9aPkip5cDnjSgudHbCE=
+github.com/aws/aws-sdk-go-v2/service/rds v1.15.0 h1:Vv3LJSGUpphoj1bBgh7/n7CGMuwUn6szNTuAZZWuXMQ=
+github.com/aws/aws-sdk-go-v2/service/rds v1.15.0/go.mod h1:dSG0wL563FGEeYBFGjbTouj1hR661nMBdidTzdy4eb4=
 github.com/aws/aws-sdk-go-v2/service/sqs v1.14.0 h1:8Jq7KQDOK81r4VPKuufMCNZ5ngQjMgNnLxYKJaZvg3s=
 github.com/aws/aws-sdk-go-v2/service/sqs v1.14.0/go.mod h1:gOsepb5p+dWNJqP37uG78TR3cO0zYlGFLJT9zCCaaX8=
 github.com/aws/aws-sdk-go-v2/service/sso v1.8.0 h1:X77LUt6Djy3Z02r6tW7Z+4FNr6GCnEG54EXfskc19M4=
