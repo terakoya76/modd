@@ -1,9 +1,11 @@
 package main
 
 import (
+	"context"
 	"encoding/json"
 	"fmt"
 	"os"
+	"sort"
 	"sync"
 
 	"github.com/terakoya76/modd/datadog"
@@ -43,13 +45,32 @@ func main() {
 		os.Exit(1)
 	}
 
+	monitorStatuses, unsupported, err := checkUnmonitored(ctx, ddMonitorScopesMapping, ddMonitorTagsMapping)
+	if err != nil {
+		fmt.Fprintf(os.Stderr, "failed to check monitor status: %v\n", err)
+		os.Exit(1)
+	}
+
+	result := make(map[string]interface{})
+	result["Monitors"] = monitorStatuses
+	result["Unsupported"] = unsupported
+
+	j, _ := json.Marshal(result)
+	fmt.Fprintf(os.Stdout, "%s", j)
+}
+
+func checkUnmonitored(
+	ctx context.Context,
+	monitorScopesMapping datadog.MonitorScopesMapping,
+	monitorTagsMapping datadog.MonitorTagsMapping,
+) ([]monitorStatus, []string, error) {
 	var wg sync.WaitGroup
 	var mu sync.Mutex
 
 	unsupported := make([]string, 0)
 	monitorStatuses := make([]monitorStatus, 0)
-	for metric, scopes := range ddMonitorScopesMapping {
-		ddTags := ddMonitorTagsMapping[metric]
+	for metric, scopes := range monitorScopesMapping {
+		ddTags := monitorTagsMapping[metric]
 
 		it := datadog.MetricToIntegrationTarget(metric)
 		if it == datadog.UnknownIntegration {
@@ -59,8 +80,7 @@ func main() {
 
 		e, err := evaluator.BuildEvaluator(it)
 		if err != nil {
-			fmt.Fprintf(os.Stderr, "failed to get Evaluator object: %v\n", err)
-			os.Exit(1)
+			return nil, nil, fmt.Errorf("failed to get Evaluator object: %v", err)
 		}
 
 		wg.Add(1)
@@ -87,10 +107,13 @@ func main() {
 
 	wg.Wait()
 
-	result := make(map[string]interface{})
-	result["Monitors"] = monitorStatuses
-	result["Unsupported"] = unsupported
+	sort.Slice(monitorStatuses, func(i, j int) bool {
+		return monitorStatuses[i].Name < monitorStatuses[j].Name
+	})
+	for i := 0; i < len(monitorStatuses); i++ {
+		sort.Strings(monitorStatuses[i].Unmonitored)
+	}
+	sort.Strings(unsupported)
 
-	j, _ := json.Marshal(result)
-	fmt.Fprintf(os.Stdout, "%s", j)
+	return monitorStatuses, unsupported, nil
 }
