@@ -76,6 +76,6 @@ func (addtm AwsDynamoDBTagsMapper) GetTagsMapping(ctx context.Context) (map[stri
 		marker = output.LastEvaluatedTableName
 	}
 
-	addtm.cache.Set(awsClbCache, mapping, cache.DefaultExpiration)
+	addtm.cache.Set(awsDynamoDBCache, mapping, cache.DefaultExpiration)
 	return mapping, nil
 }
