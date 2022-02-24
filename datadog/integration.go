@@ -17,13 +17,13 @@ var (
 	AwsAutoScalingGroup IntegrationTarget = "aws.autoscaling"
 	// AwsClb represents AWS CLB integration.
 	AwsClb IntegrationTarget = "aws.elb"
-	// AwsElasticache represents AWS Elasticache integration.
-	AwsElasticache IntegrationTarget = "aws.elasticache"
+	// AwsElastiCache represents AWS ElastiCache integration.
+	AwsElastiCache IntegrationTarget = "aws.elasticache"
 	// AwsElb represents AWS ALB/NLB integration.
 	AwsElb IntegrationTarget = "aws.applicationelb"
 	// AwsKinesis represents AWS Kinesis integration.
 	AwsKinesis IntegrationTarget = "aws.kinesis"
-	// AwsOpenSeardhService represents AWS OpenSearch Service integration.
+	// AwsOpenSearchService represents AWS OpenSearch Service integration.
 	AwsOpenSearchService IntegrationTarget = "aws.elasticsearchservice"
 	// AwsRds represents AWS RDS integration.
 	AwsRds IntegrationTarget = "aws.rds"
@@ -41,7 +41,7 @@ func MetricToIntegrationTarget(metric string) IntegrationTarget {
 	case len(parts) >= 2 && parts[0] == AwsMetricsPrefix && parts[1] == "elb":
 		return AwsClb
 	case len(parts) >= 2 && parts[0] == AwsMetricsPrefix && parts[1] == "elasticache":
-		return AwsElasticache
+		return AwsElastiCache
 	case len(parts) >= 2 && parts[0] == AwsMetricsPrefix && parts[1] == "applicationelb":
 		return AwsElb
 	case len(parts) >= 2 && parts[0] == AwsMetricsPrefix && parts[1] == "kinesis":

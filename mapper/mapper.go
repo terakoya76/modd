@@ -16,7 +16,7 @@ type Tags = []string
 const (
 	awsAutoScalingGroupCache  string = "aws_autoscaling_group_cache"
 	awsClbCache               string = "aws_clb_cache"
-	awsElasticacheCache       string = "aws_elasticache_cache"
+	awsElastiCacheCache       string = "aws_elasticache_cache"
 	awsElbCache               string = "aws_elb_cache"
 	awsKinesisCache           string = "aws_kinesis_cache"
 	awsOpenSearchServiceCache string = "aws_elasticsearchservice_cache"
@@ -59,13 +59,13 @@ func BuildTagsMapper(it datadog.IntegrationTarget) (TagsMapper, error) {
 		}
 
 		return m, nil
-	case datadog.AwsElasticache:
-		client, err := GetAwsElasticacheClient(context.TODO())
+	case datadog.AwsElastiCache:
+		client, err := GetAwsElastiCacheClient(context.TODO())
 		if err != nil {
 			return nil, fmt.Errorf("%w", err)
 		}
 
-		m := AwsElasticacheTagsMapper{
+		m := AwsElastiCacheTagsMapper{
 			cache:  c,
 			client: client,
 		}

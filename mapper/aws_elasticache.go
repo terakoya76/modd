@@ -12,14 +12,14 @@ import (
 	"github.com/patrickmn/go-cache"
 )
 
-// AwsElasticacheTagsMapper implements TagsMapper for AWS Elasticache.
-type AwsElasticacheTagsMapper struct {
+// AwsElastiCacheTagsMapper implements TagsMapper for AWS ElastiCache.
+type AwsElastiCacheTagsMapper struct {
 	cache  *cache.Cache
 	client *elasticache.Client
 }
 
-// GetAwsElasticacheClient returns AWS Elasticache client.
-func GetAwsElasticacheClient(ctx context.Context) (*elasticache.Client, error) {
+// GetAwsElastiCacheClient returns AWS ElastiCache client.
+func GetAwsElastiCacheClient(ctx context.Context) (*elasticache.Client, error) {
 	cfg, err := config.LoadDefaultConfig(ctx, config.WithRetryer(func() aws.Retryer {
 		return retry.AddWithMaxAttempts(retry.NewStandard(), 10)
 	}))
@@ -31,8 +31,8 @@ func GetAwsElasticacheClient(ctx context.Context) (*elasticache.Client, error) {
 }
 
 // GetTagsMapping returns the latest tags mapping.
-func (aetm AwsElasticacheTagsMapper) GetTagsMapping(ctx context.Context) (map[string]Tags, error) {
-	if cv, found := aetm.cache.Get(awsElasticacheCache); found {
+func (aetm AwsElastiCacheTagsMapper) GetTagsMapping(ctx context.Context) (map[string]Tags, error) {
+	if cv, found := aetm.cache.Get(awsElastiCacheCache); found {
 		mapping := cv.(map[string]Tags)
 		return mapping, nil
 	}
@@ -67,6 +67,6 @@ func (aetm AwsElasticacheTagsMapper) GetTagsMapping(ctx context.Context) (map[st
 		marker = output.Marker
 	}
 
-	aetm.cache.Set(awsElasticacheCache, mapping, cache.DefaultExpiration)
+	aetm.cache.Set(awsElastiCacheCache, mapping, cache.DefaultExpiration)
 	return mapping, nil
 }

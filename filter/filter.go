@@ -46,8 +46,8 @@ func BuildFilter(it datadog.IntegrationTarget) (Filter, error) {
 
 		f := AwsFilter(c)
 		return f, nil
-	case datadog.AwsElasticache:
-		var c AwsElasticacheConfig
+	case datadog.AwsElastiCache:
+		var c AwsElastiCacheConfig
 		err := envconfig.Process("aws_elasticache", &c)
 		if err != nil {
 			return nil, err
