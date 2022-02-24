@@ -60,7 +60,7 @@ $ ./modd | jq '.Monitors[] | select(.Name | contains("aws.rds"))'
 }
 ```
 
-## Required
+## Requirements
 To run modd, datadog API/App keys environment variables are required.
 
 ```bash
@@ -92,7 +92,7 @@ export AWS_RDS_AWS_TAG_KEY=dbengine
 export AWS_RDS_DATADOG_TAG_KEY=dbengine
 ```
 
-## Support Integration
+## Supported Integration
 
 AWS
 * AutoScalingGroup
@@ -102,4 +102,3 @@ AWS
 * OpenSearch Service
 * RDS
 * SQS
-
