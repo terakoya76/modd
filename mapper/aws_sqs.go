@@ -10,7 +10,11 @@ import (
 	"github.com/aws/aws-sdk-go-v2/config"
 	"github.com/aws/aws-sdk-go-v2/service/sqs"
 	"github.com/patrickmn/go-cache"
+
+	"github.com/terakoya76/modd/datadog"
 )
+
+const awsSqsCacheKey string = string(datadog.AwsSqs)
 
 // AwsSqsTagsMapper implements TagsMapper for AWS SQS.
 type AwsSqsTagsMapper struct {
@@ -32,7 +36,7 @@ func GetAwsSqsClient(ctx context.Context) (*sqs.Client, error) {
 
 // GetTagsMapping returns the latest tags mapping.
 func (astm AwsSqsTagsMapper) GetTagsMapping(ctx context.Context) (map[string]Tags, error) {
-	if cv, found := astm.cache.Get(awsSqsCache); found {
+	if cv, found := astm.cache.Get(awsSqsCacheKey); found {
 		mapping := cv.(map[string]Tags)
 		return mapping, nil
 	}
@@ -79,6 +83,6 @@ func (astm AwsSqsTagsMapper) GetTagsMapping(ctx context.Context) (map[string]Tag
 		token = output.NextToken
 	}
 
-	astm.cache.Set(awsSqsCache, mapping, cache.DefaultExpiration)
+	astm.cache.Set(awsSqsCacheKey, mapping, cache.DefaultExpiration)
 	return mapping, nil
 }

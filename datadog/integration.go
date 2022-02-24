@@ -7,7 +7,7 @@ import (
 // IntegrationTarget represents datadog integration service type.
 type IntegrationTarget string
 
-var (
+const (
 	// AwsMetricsPrefix represents Datadog AWS Integration metrics prefix.
 	AwsMetricsPrefix = "aws"
 

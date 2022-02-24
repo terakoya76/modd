@@ -10,7 +10,11 @@ import (
 	"github.com/aws/aws-sdk-go-v2/config"
 	"github.com/aws/aws-sdk-go-v2/service/elasticloadbalancingv2"
 	"github.com/patrickmn/go-cache"
+
+	"github.com/terakoya76/modd/datadog"
 )
+
+const awsElbCacheKey string = string(datadog.AwsElb)
 
 // AwsElbTagsMapper implements TagsMapper for AWS ALB/NLB.
 type AwsElbTagsMapper struct {
@@ -32,7 +36,7 @@ func GetAwsElbClient(ctx context.Context) (*elasticloadbalancingv2.Client, error
 
 // GetTagsMapping returns the latest tags mapping.
 func (aetm AwsElbTagsMapper) GetTagsMapping(ctx context.Context) (map[string]Tags, error) {
-	if cv, found := aetm.cache.Get(awsElbCache); found {
+	if cv, found := aetm.cache.Get(awsElbCacheKey); found {
 		mapping := cv.(map[string]Tags)
 		return mapping, nil
 	}
@@ -83,6 +87,6 @@ func (aetm AwsElbTagsMapper) GetTagsMapping(ctx context.Context) (map[string]Tag
 		marker = output.NextMarker
 	}
 
-	aetm.cache.Set(awsElbCache, mapping, cache.DefaultExpiration)
+	aetm.cache.Set(awsElbCacheKey, mapping, cache.DefaultExpiration)
 	return mapping, nil
 }
