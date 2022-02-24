@@ -10,7 +10,11 @@ import (
 	"github.com/aws/aws-sdk-go-v2/config"
 	"github.com/aws/aws-sdk-go-v2/service/elasticsearchservice"
 	"github.com/patrickmn/go-cache"
+
+	"github.com/terakoya76/modd/datadog"
 )
+
+const awsOpenSearchServiceCacheKey string = string(datadog.AwsOpenSearchService)
 
 // AwsOpenSearchServiceTagsMapper implements TagsMapper for AWS OpenSearch Service.
 type AwsOpenSearchServiceTagsMapper struct {
@@ -32,7 +36,7 @@ func GetAwsOpenSearchServiceClient(ctx context.Context) (*elasticsearchservice.C
 
 // GetTagsMapping returns the latest tags mapping.
 func (aosstm AwsOpenSearchServiceTagsMapper) GetTagsMapping(ctx context.Context) (map[string]Tags, error) {
-	if cv, found := aosstm.cache.Get(awsOpenSearchServiceCache); found {
+	if cv, found := aosstm.cache.Get(awsOpenSearchServiceCacheKey); found {
 		mapping := cv.(map[string]Tags)
 		return mapping, nil
 	}
@@ -78,6 +82,6 @@ func (aosstm AwsOpenSearchServiceTagsMapper) GetTagsMapping(ctx context.Context)
 		}
 	}
 
-	aosstm.cache.Set(awsOpenSearchServiceCache, mapping, cache.DefaultExpiration)
+	aosstm.cache.Set(awsOpenSearchServiceCacheKey, mapping, cache.DefaultExpiration)
 	return mapping, nil
 }

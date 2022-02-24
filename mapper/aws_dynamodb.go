@@ -10,7 +10,11 @@ import (
 	"github.com/aws/aws-sdk-go-v2/config"
 	"github.com/aws/aws-sdk-go-v2/service/dynamodb"
 	"github.com/patrickmn/go-cache"
+
+	"github.com/terakoya76/modd/datadog"
 )
+
+const awsDynamoDBCacheKey string = string(datadog.AwsDynamoDB)
 
 // AwsDynamoDBTagsMapper implements TagsMapper for AWS DynamoDB.
 type AwsDynamoDBTagsMapper struct {
@@ -32,7 +36,7 @@ func GetAwsDynamoDBClient(ctx context.Context) (*dynamodb.Client, error) {
 
 // GetTagsMapping returns the latest tags mapping.
 func (addtm AwsDynamoDBTagsMapper) GetTagsMapping(ctx context.Context) (map[string]Tags, error) {
-	if cv, found := addtm.cache.Get(awsDynamoDBCache); found {
+	if cv, found := addtm.cache.Get(awsDynamoDBCacheKey); found {
 		mapping := cv.(map[string]Tags)
 		return mapping, nil
 	}
@@ -76,6 +80,6 @@ func (addtm AwsDynamoDBTagsMapper) GetTagsMapping(ctx context.Context) (map[stri
 		marker = output.LastEvaluatedTableName
 	}
 
-	addtm.cache.Set(awsClbCache, mapping, cache.DefaultExpiration)
+	addtm.cache.Set(awsDynamoDBCacheKey, mapping, cache.DefaultExpiration)
 	return mapping, nil
 }

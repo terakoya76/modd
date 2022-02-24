@@ -10,7 +10,11 @@ import (
 	"github.com/aws/aws-sdk-go-v2/config"
 	"github.com/aws/aws-sdk-go-v2/service/elasticache"
 	"github.com/patrickmn/go-cache"
+
+	"github.com/terakoya76/modd/datadog"
 )
+
+const awsElastiCacheCacheKey string = string(datadog.AwsElastiCache)
 
 // AwsElastiCacheTagsMapper implements TagsMapper for AWS ElastiCache.
 type AwsElastiCacheTagsMapper struct {
@@ -32,7 +36,7 @@ func GetAwsElastiCacheClient(ctx context.Context) (*elasticache.Client, error) {
 
 // GetTagsMapping returns the latest tags mapping.
 func (aetm AwsElastiCacheTagsMapper) GetTagsMapping(ctx context.Context) (map[string]Tags, error) {
-	if cv, found := aetm.cache.Get(awsElastiCacheCache); found {
+	if cv, found := aetm.cache.Get(awsElastiCacheCacheKey); found {
 		mapping := cv.(map[string]Tags)
 		return mapping, nil
 	}
@@ -67,6 +71,6 @@ func (aetm AwsElastiCacheTagsMapper) GetTagsMapping(ctx context.Context) (map[st
 		marker = output.Marker
 	}
 
-	aetm.cache.Set(awsElastiCacheCache, mapping, cache.DefaultExpiration)
+	aetm.cache.Set(awsElastiCacheCacheKey, mapping, cache.DefaultExpiration)
 	return mapping, nil
 }

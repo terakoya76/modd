@@ -10,7 +10,11 @@ import (
 	"github.com/aws/aws-sdk-go-v2/config"
 	"github.com/aws/aws-sdk-go-v2/service/rds"
 	"github.com/patrickmn/go-cache"
+
+	"github.com/terakoya76/modd/datadog"
 )
+
+const awsRdsCacheKey string = string(datadog.AwsRds)
 
 // AwsRdsTagsMapper implements TagsMapper for AWS RDS.
 type AwsRdsTagsMapper struct {
@@ -32,7 +36,7 @@ func GetAwsRdsClient(ctx context.Context) (*rds.Client, error) {
 
 // GetTagsMapping returns the latest tags mapping.
 func (artm AwsRdsTagsMapper) GetTagsMapping(ctx context.Context) (map[string]Tags, error) {
-	if cv, found := artm.cache.Get(awsRdsCache); found {
+	if cv, found := artm.cache.Get(awsRdsCacheKey); found {
 		mapping := cv.(map[string]Tags)
 		return mapping, nil
 	}
@@ -61,6 +65,6 @@ func (artm AwsRdsTagsMapper) GetTagsMapping(ctx context.Context) (map[string]Tag
 		marker = output.Marker
 	}
 
-	artm.cache.Set(awsRdsCache, mapping, cache.DefaultExpiration)
+	artm.cache.Set(awsRdsCacheKey, mapping, cache.DefaultExpiration)
 	return mapping, nil
 }

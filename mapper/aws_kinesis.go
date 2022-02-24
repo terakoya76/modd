@@ -10,7 +10,11 @@ import (
 	"github.com/aws/aws-sdk-go-v2/config"
 	"github.com/aws/aws-sdk-go-v2/service/kinesis"
 	"github.com/patrickmn/go-cache"
+
+	"github.com/terakoya76/modd/datadog"
 )
+
+const awsKinesisCacheKey string = string(datadog.AwsKinesis)
 
 // AwsKinesisTagsMapper implements TagsMapper for AWS Kinesis.
 type AwsKinesisTagsMapper struct {
@@ -32,7 +36,7 @@ func GetAwsKinesisClient(ctx context.Context) (*kinesis.Client, error) {
 
 // GetTagsMapping returns the latest tags mapping.
 func (aktm AwsKinesisTagsMapper) GetTagsMapping(ctx context.Context) (map[string]Tags, error) {
-	if cv, found := aktm.cache.Get(awsKinesisCache); found {
+	if cv, found := aktm.cache.Get(awsKinesisCacheKey); found {
 		mapping := cv.(map[string]Tags)
 		return mapping, nil
 	}
@@ -66,6 +70,6 @@ func (aktm AwsKinesisTagsMapper) GetTagsMapping(ctx context.Context) (map[string
 		hasMoreStream = *output.HasMoreStreams
 	}
 
-	aktm.cache.Set(awsKinesisCache, mapping, cache.DefaultExpiration)
+	aktm.cache.Set(awsKinesisCacheKey, mapping, cache.DefaultExpiration)
 	return mapping, nil
 }

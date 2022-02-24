@@ -10,7 +10,11 @@ import (
 	"github.com/aws/aws-sdk-go-v2/config"
 	"github.com/aws/aws-sdk-go-v2/service/autoscaling"
 	"github.com/patrickmn/go-cache"
+
+	"github.com/terakoya76/modd/datadog"
 )
+
+const awsAutoScalingGroupCacheKey string = string(datadog.AwsAutoScalingGroup)
 
 // AwsAutoScalingGroupTagsMapper implements TagsMapper for AWS AutoScalingGroup.
 type AwsAutoScalingGroupTagsMapper struct {
@@ -32,7 +36,7 @@ func GetAwsAutoScalingGroupClient(ctx context.Context) (*autoscaling.Client, err
 
 // GetTagsMapping returns the latest tags mapping.
 func (aasgtm AwsAutoScalingGroupTagsMapper) GetTagsMapping(ctx context.Context) (map[string]Tags, error) {
-	if cv, found := aasgtm.cache.Get(awsAutoScalingGroupCache); found {
+	if cv, found := aasgtm.cache.Get(awsAutoScalingGroupCacheKey); found {
 		mapping := cv.(map[string]Tags)
 		return mapping, nil
 	}
@@ -67,6 +71,6 @@ func (aasgtm AwsAutoScalingGroupTagsMapper) GetTagsMapping(ctx context.Context) 
 		token = output.NextToken
 	}
 
-	aasgtm.cache.Set(awsAutoScalingGroupCache, mapping, cache.DefaultExpiration)
+	aasgtm.cache.Set(awsAutoScalingGroupCacheKey, mapping, cache.DefaultExpiration)
 	return mapping, nil
 }

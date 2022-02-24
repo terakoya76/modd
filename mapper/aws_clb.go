@@ -10,7 +10,11 @@ import (
 	"github.com/aws/aws-sdk-go-v2/config"
 	"github.com/aws/aws-sdk-go-v2/service/elasticloadbalancing"
 	"github.com/patrickmn/go-cache"
+
+	"github.com/terakoya76/modd/datadog"
 )
+
+const awsClbCacheKey string = string(datadog.AwsClb)
 
 // AwsClbTagsMapper implements TagsMapper for AWS CLB.
 type AwsClbTagsMapper struct {
@@ -32,7 +36,7 @@ func GetAwsClbClient(ctx context.Context) (*elasticloadbalancing.Client, error) 
 
 // GetTagsMapping returns the latest tags mapping.
 func (actm AwsClbTagsMapper) GetTagsMapping(ctx context.Context) (map[string]Tags, error) {
-	if cv, found := actm.cache.Get(awsClbCache); found {
+	if cv, found := actm.cache.Get(awsClbCacheKey); found {
 		mapping := cv.(map[string]Tags)
 		return mapping, nil
 	}
@@ -83,6 +87,6 @@ func (actm AwsClbTagsMapper) GetTagsMapping(ctx context.Context) (map[string]Tag
 		marker = output.NextMarker
 	}
 
-	actm.cache.Set(awsClbCache, mapping, cache.DefaultExpiration)
+	actm.cache.Set(awsClbCacheKey, mapping, cache.DefaultExpiration)
 	return mapping, nil
 }
