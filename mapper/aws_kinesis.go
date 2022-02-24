@@ -43,6 +43,7 @@ func (aktm AwsKinesisTagsMapper) GetTagsMapping(ctx context.Context) (map[string
 
 	mapping := make(map[string]Tags)
 
+	// https://pkg.go.dev/github.com/aws/aws-sdk-go-v2/service/kinesis#ListStreamsInput
 	hasMoreStream := true
 	for hasMoreStream {
 		input := kinesis.ListStreamsInput{}

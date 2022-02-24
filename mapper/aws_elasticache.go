@@ -43,11 +43,19 @@ func (aetm AwsElastiCacheTagsMapper) GetTagsMapping(ctx context.Context) (map[st
 
 	mapping := make(map[string]Tags)
 
+	// https://pkg.go.dev/github.com/aws/aws-sdk-go-v2/service/elasticache#DescribeCacheClustersInput
 	initMarker := ""
 	marker := &initMarker
 
 	for marker != nil {
-		input := elasticache.DescribeCacheClustersInput{Marker: marker}
+		// Marker could not be empty string
+		var input elasticache.DescribeCacheClustersInput
+		if *marker == "" {
+			input = elasticache.DescribeCacheClustersInput{}
+		} else {
+			input = elasticache.DescribeCacheClustersInput{Marker: marker}
+		}
+
 		output, err := aetm.client.DescribeCacheClusters(ctx, &input)
 		if err != nil {
 			return nil, fmt.Errorf("%w", err)

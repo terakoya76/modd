@@ -43,17 +43,20 @@ func (astm AwsSqsTagsMapper) GetTagsMapping(ctx context.Context) (map[string]Tag
 
 	mapping := make(map[string]Tags)
 
+	// https://pkg.go.dev/github.com/aws/aws-sdk-go-v2/service/sqs#ListQueuesInput
 	initToken := ""
 	token := &initToken
 
-	var maxResult int32 = 1000
+	// https://pkg.go.dev/github.com/aws/aws-sdk-go-v2/service/sqs#ListQueuesInput
+	var maxResults int32 = 1000
 
 	for token != nil {
+		// NextToken could not be empty string
 		var input sqs.ListQueuesInput
 		if *token == "" {
-			input = sqs.ListQueuesInput{MaxResults: &maxResult}
+			input = sqs.ListQueuesInput{MaxResults: &maxResults}
 		} else {
-			input = sqs.ListQueuesInput{MaxResults: &maxResult, NextToken: token}
+			input = sqs.ListQueuesInput{MaxResults: &maxResults, NextToken: token}
 		}
 
 		output, err := astm.client.ListQueues(ctx, &input)
@@ -69,6 +72,7 @@ func (astm AwsSqsTagsMapper) GetTagsMapping(ctx context.Context) (map[string]Tag
 				return nil, fmt.Errorf("%w", err)
 			}
 
+			// https://pkg.go.dev/github.com/aws/aws-sdk-go-v2/service/sqs#ListQueueTagsOutput
 			tags := make(Tags, len(tagsOutput.Tags))
 			j := 0
 			for k, v := range tagsOutput.Tags {

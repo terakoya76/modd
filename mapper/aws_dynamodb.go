@@ -76,7 +76,7 @@ func (addtm AwsDynamoDBTagsMapper) GetTagsMapping(ctx context.Context) (map[stri
 		}
 
 		// When output.LastEvaluatedTableName is nil, it means all table names have already fetched.
-		// cf. https://pkg.go.dev/github.com/aws/aws-sdk-go-v2/service/dynamodb#ListTablesOutput
+		// https://pkg.go.dev/github.com/aws/aws-sdk-go-v2/service/dynamodb#ListTablesOutput
 		marker = output.LastEvaluatedTableName
 	}
 

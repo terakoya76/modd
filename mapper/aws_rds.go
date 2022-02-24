@@ -43,11 +43,19 @@ func (artm AwsRdsTagsMapper) GetTagsMapping(ctx context.Context) (map[string]Tag
 
 	mapping := make(map[string]Tags)
 
+	// https://pkg.go.dev/github.com/aws/aws-sdk-go-v2/service/rds#DescribeDBInstancesInput
 	initMarker := ""
 	marker := &initMarker
 
 	for marker != nil {
-		input := rds.DescribeDBInstancesInput{Marker: marker}
+		// Marker could not be empty string
+		var input rds.DescribeDBInstancesInput
+		if *marker == "" {
+			input = rds.DescribeDBInstancesInput{}
+		} else {
+			input = rds.DescribeDBInstancesInput{Marker: marker}
+		}
+
 		output, err := artm.client.DescribeDBInstances(ctx, &input)
 		if err != nil {
 			return nil, fmt.Errorf("%w", err)
@@ -55,6 +63,7 @@ func (artm AwsRdsTagsMapper) GetTagsMapping(ctx context.Context) (map[string]Tag
 
 		for i := 0; i < len(output.DBInstances); i++ {
 			db := output.DBInstances[i]
+
 			tags := make(Tags, len(db.TagList))
 			for j, tag := range db.TagList {
 				tags[j] = fmt.Sprintf("%s:%s", strings.ToLower(*tag.Key), strings.ToLower(*tag.Value))
