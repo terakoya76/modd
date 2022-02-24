@@ -12,8 +12,8 @@ type AwsClbConfig struct {
 	DdTagKey  string `envconfig:"datadog_tag_key" default:""`
 }
 
-// AwsElasticacheConfig holds metadata for AwsFilter for AWS Elasticache.
-type AwsElasticacheConfig struct {
+// AwsElastiCacheConfig holds metadata for AwsFilter for AWS ElastiCache.
+type AwsElastiCacheConfig struct {
 	AwsTagKey string `envconfig:"aws_tag_key" default:""`
 	DdTagKey  string `envconfig:"datadog_tag_key" default:""`
 }
