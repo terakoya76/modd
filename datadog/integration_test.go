@@ -25,6 +25,11 @@ func TestMetricToIntegrationTarget(t *testing.T) {
 			expected: datadog.AwsClb,
 		},
 		{
+			name:     "when AWS DynamoDB",
+			metric:   "aws.dynamodb.item_count",
+			expected: datadog.AwsDynamoDB,
+		},
+		{
 			name:     "when AWS ElastiCache",
 			metric:   "aws.elasticache.cache_hits",
 			expected: datadog.AwsElastiCache,

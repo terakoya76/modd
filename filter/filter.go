@@ -48,6 +48,15 @@ func BuildFilter(it datadog.IntegrationTarget) (Filter, error) {
 
 		f := AwsFilter(c)
 		return f, nil
+	case datadog.AwsDynamoDB:
+		var c AwsDynamoDBConfig
+		err := envconfig.Process(envPrefix, &c)
+		if err != nil {
+			return nil, err
+		}
+
+		f := AwsFilter(c)
+		return f, nil
 	case datadog.AwsElastiCache:
 		var c AwsElastiCacheConfig
 		err := envconfig.Process(envPrefix, &c)
