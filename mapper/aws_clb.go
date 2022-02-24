@@ -43,20 +43,32 @@ func (actm AwsClbTagsMapper) GetTagsMapping(ctx context.Context) (map[string]Tag
 
 	mapping := make(map[string]Tags)
 
+	// https://pkg.go.dev/github.com/aws/aws-sdk-go-v2/service/elasticloadbalancing#DescribeLoadBalancersInput
 	initMarker := ""
 	marker := &initMarker
 
+	// Although there is no description, we can fetch load balancers upto 20 in a single call.
+	// https://pkg.go.dev/github.com/aws/aws-sdk-go-v2/service/elasticloadbalancing#DescribeLoadBalancersInput
+	maxItemsPerReq := 20
+
 	for marker != nil {
-		input := elasticloadbalancing.DescribeLoadBalancersInput{}
+		// Marker could not be empty string
+		var input elasticloadbalancing.DescribeLoadBalancersInput
+		if *marker == "" {
+			input = elasticloadbalancing.DescribeLoadBalancersInput{}
+		} else {
+			input = elasticloadbalancing.DescribeLoadBalancersInput{Marker: marker}
+		}
+
 		output, err := actm.client.DescribeLoadBalancers(ctx, &input)
 		if err != nil {
 			return nil, fmt.Errorf("%w", err)
 		}
 
-		iter := len(output.LoadBalancerDescriptions)/20 + 1
+		iter := len(output.LoadBalancerDescriptions)/maxItemsPerReq + 1
 		for i := 0; i < iter; i++ {
 			names := []string{}
-			for j := 0; j < 20; j++ {
+			for j := 0; j < maxItemsPerReq; j++ {
 				idx := iter*i + j
 				if j >= len(output.LoadBalancerDescriptions) {
 					continue

@@ -43,10 +43,12 @@ func (aasgtm AwsAutoScalingGroupTagsMapper) GetTagsMapping(ctx context.Context) 
 
 	mapping := make(map[string]Tags)
 
+	// https://pkg.go.dev/github.com/aws/aws-sdk-go-v2/service/autoscaling#DescribeAutoScalingGroupsInput
 	initToken := ""
 	token := &initToken
 
 	for token != nil {
+		// NextToken could not be empty string
 		var input autoscaling.DescribeAutoScalingGroupsInput
 		if *token == "" {
 			input = autoscaling.DescribeAutoScalingGroupsInput{}

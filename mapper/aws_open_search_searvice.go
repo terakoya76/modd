@@ -49,9 +49,12 @@ func (aosstm AwsOpenSearchServiceTagsMapper) GetTagsMapping(ctx context.Context)
 		return nil, fmt.Errorf("%w", err)
 	}
 
-	domainNames := make([]string, 5)
+	maxItemsPerReq := 5
+
+	// https://pkg.go.dev/github.com/aws/aws-sdk-go-v2/service/elasticsearchservice#DescribeElasticsearchDomainsInput
+	domainNames := make([]string, maxItemsPerReq)
 	for i := 0; i < len(domainsOutput.DomainNames); i++ {
-		idx := (i + 1) % 5
+		idx := (i + 1) % maxItemsPerReq
 		domainNames[idx] = *domainsOutput.DomainNames[i].DomainName
 
 		if idx != 0 {
