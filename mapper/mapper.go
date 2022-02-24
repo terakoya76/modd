@@ -16,6 +16,7 @@ type Tags = []string
 const (
 	awsAutoScalingGroupCache  string = "aws_autoscaling_group_cache"
 	awsClbCache               string = "aws_clb_cache"
+	awsDynamoDBCache          string = "aws_dynamodb"
 	awsElastiCacheCache       string = "aws_elasticache_cache"
 	awsElbCache               string = "aws_elb_cache"
 	awsKinesisCache           string = "aws_kinesis_cache"
@@ -54,6 +55,18 @@ func BuildTagsMapper(it datadog.IntegrationTarget) (TagsMapper, error) {
 		}
 
 		m := AwsClbTagsMapper{
+			cache:  c,
+			client: client,
+		}
+
+		return m, nil
+	case datadog.AwsDynamoDB:
+		client, err := GetAwsDynamoDBClient(context.TODO())
+		if err != nil {
+			return nil, fmt.Errorf("%w", err)
+		}
+
+		m := AwsDynamoDBTagsMapper{
 			cache:  c,
 			client: client,
 		}

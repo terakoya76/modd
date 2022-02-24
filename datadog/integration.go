@@ -17,6 +17,8 @@ var (
 	AwsAutoScalingGroup IntegrationTarget = "aws_autoscaling"
 	// AwsClb represents AWS CLB integration.
 	AwsClb IntegrationTarget = "aws_elb"
+	// AwsDynamoDB represents AWS DynamoDB integration.
+	AwsDynamoDB IntegrationTarget = "aws_dynamodb"
 	// AwsElastiCache represents AWS ElastiCache integration.
 	AwsElastiCache IntegrationTarget = "aws_elasticache"
 	// AwsElb represents AWS ALB/NLB integration.
@@ -40,6 +42,8 @@ func MetricToIntegrationTarget(metric string) IntegrationTarget {
 		return AwsAutoScalingGroup
 	case len(parts) >= 2 && parts[0] == AwsMetricsPrefix && parts[1] == "elb":
 		return AwsClb
+	case len(parts) >= 2 && parts[0] == AwsMetricsPrefix && parts[1] == "dynamodb":
+		return AwsDynamoDB
 	case len(parts) >= 2 && parts[0] == AwsMetricsPrefix && parts[1] == "elasticache":
 		return AwsElastiCache
 	case len(parts) >= 2 && parts[0] == AwsMetricsPrefix && parts[1] == "applicationelb":

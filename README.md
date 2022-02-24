@@ -96,8 +96,9 @@ export AWS_RDS_DATADOG_TAG_KEY=dbengine
 
 AWS
 * AutoScalingGroup
+* DynamoDB
 * Elasticache
-* ELB
+* ELB (CLB, ALB, NLB)
 * Kinesis
 * OpenSearch Service
 * RDS
