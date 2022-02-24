@@ -14,21 +14,21 @@ var (
 	// UnknownIntegration represents unknonwn integration.
 	UnknownIntegration IntegrationTarget = "unknown"
 	// AwsAutoScalingGroup represents AWS AutoScalingGroup integration.
-	AwsAutoScalingGroup IntegrationTarget = "aws.autoscaling"
+	AwsAutoScalingGroup IntegrationTarget = "aws_autoscaling"
 	// AwsClb represents AWS CLB integration.
-	AwsClb IntegrationTarget = "aws.elb"
+	AwsClb IntegrationTarget = "aws_elb"
 	// AwsElastiCache represents AWS ElastiCache integration.
-	AwsElastiCache IntegrationTarget = "aws.elasticache"
+	AwsElastiCache IntegrationTarget = "aws_elasticache"
 	// AwsElb represents AWS ALB/NLB integration.
-	AwsElb IntegrationTarget = "aws.applicationelb"
+	AwsElb IntegrationTarget = "aws_applicationelb"
 	// AwsKinesis represents AWS Kinesis integration.
-	AwsKinesis IntegrationTarget = "aws.kinesis"
+	AwsKinesis IntegrationTarget = "aws_kinesis"
 	// AwsOpenSearchService represents AWS OpenSearch Service integration.
-	AwsOpenSearchService IntegrationTarget = "aws.elasticsearchservice"
+	AwsOpenSearchService IntegrationTarget = "aws_elasticsearchservice"
 	// AwsRds represents AWS RDS integration.
-	AwsRds IntegrationTarget = "aws.rds"
+	AwsRds IntegrationTarget = "aws_rds"
 	// AwsSqs represents AWS SQS integration.
-	AwsSqs IntegrationTarget = "aws.sqs"
+	AwsSqs IntegrationTarget = "aws_sqs"
 )
 
 // MetricToIntegrationTarget returns the IntegrationTarget to which the specified metric belongs.

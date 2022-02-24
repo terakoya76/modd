@@ -18,10 +18,12 @@ type Filter interface {
 // BuildFilter build the proper Filter implementation.
 //nolint:funlen,gocyclo
 func BuildFilter(it datadog.IntegrationTarget) (Filter, error) {
+	envPrefix := string(it)
+
 	switch it {
 	case datadog.AwsElb:
 		var c AwsElbConfig
-		err := envconfig.Process("aws_elb", &c)
+		err := envconfig.Process(envPrefix, &c)
 		if err != nil {
 			return nil, err
 		}
@@ -30,7 +32,7 @@ func BuildFilter(it datadog.IntegrationTarget) (Filter, error) {
 		return f, nil
 	case datadog.AwsAutoScalingGroup:
 		var c AwsAutoScalingGroupConfig
-		err := envconfig.Process("aws_autoscaling_group", &c)
+		err := envconfig.Process(envPrefix, &c)
 		if err != nil {
 			return nil, err
 		}
@@ -39,7 +41,7 @@ func BuildFilter(it datadog.IntegrationTarget) (Filter, error) {
 		return f, nil
 	case datadog.AwsClb:
 		var c AwsClbConfig
-		err := envconfig.Process("aws_clb", &c)
+		err := envconfig.Process(envPrefix, &c)
 		if err != nil {
 			return nil, err
 		}
@@ -48,7 +50,7 @@ func BuildFilter(it datadog.IntegrationTarget) (Filter, error) {
 		return f, nil
 	case datadog.AwsElastiCache:
 		var c AwsElastiCacheConfig
-		err := envconfig.Process("aws_elasticache", &c)
+		err := envconfig.Process(envPrefix, &c)
 		if err != nil {
 			return nil, err
 		}
@@ -57,7 +59,7 @@ func BuildFilter(it datadog.IntegrationTarget) (Filter, error) {
 		return f, nil
 	case datadog.AwsKinesis:
 		var c AwsKinesisConfig
-		err := envconfig.Process("aws_kinesis", &c)
+		err := envconfig.Process(envPrefix, &c)
 		if err != nil {
 			return nil, err
 		}
@@ -66,7 +68,7 @@ func BuildFilter(it datadog.IntegrationTarget) (Filter, error) {
 		return f, nil
 	case datadog.AwsOpenSearchService:
 		var c AwsOpenSeardhServiceConfig
-		err := envconfig.Process("aws_open_search_service", &c)
+		err := envconfig.Process(envPrefix, &c)
 		if err != nil {
 			return nil, err
 		}
@@ -75,7 +77,7 @@ func BuildFilter(it datadog.IntegrationTarget) (Filter, error) {
 		return f, nil
 	case datadog.AwsRds:
 		var c AwsRdsConfig
-		err := envconfig.Process("aws_rds", &c)
+		err := envconfig.Process(envPrefix, &c)
 		if err != nil {
 			return nil, err
 		}
@@ -84,7 +86,7 @@ func BuildFilter(it datadog.IntegrationTarget) (Filter, error) {
 		return f, nil
 	case datadog.AwsSqs:
 		var c AwsSqsConfig
-		err := envconfig.Process("aws_sqs", &c)
+		err := envconfig.Process(envPrefix, &c)
 		if err != nil {
 			return nil, err
 		}
