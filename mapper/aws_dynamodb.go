@@ -43,11 +43,19 @@ func (tm AwsDynamoDBTagsMapper) GetTagsMapping(ctx context.Context) (map[string]
 
 	mapping := make(map[string]Tags)
 
+	// https://pkg.go.dev/github.com/aws/aws-sdk-go-v2/service/dynamodb#ListTablesInput
 	initMarker := ""
 	marker := &initMarker
 
 	for marker != nil {
-		input := dynamodb.ListTablesInput{}
+		// ExclusiveStartTableName could not be empty string
+		var input dynamodb.ListTablesInput
+		if *marker == "" {
+			input = dynamodb.ListTablesInput{}
+		} else {
+			input = dynamodb.ListTablesInput{ExclusiveStartTableName: marker}
+		}
+
 		output, err := tm.client.ListTables(ctx, &input)
 		if err != nil {
 			return nil, fmt.Errorf("%w", err)
@@ -62,16 +70,33 @@ func (tm AwsDynamoDBTagsMapper) GetTagsMapping(ctx context.Context) (map[string]
 				return nil, fmt.Errorf("%w", err)
 			}
 
-			tagsInput := dynamodb.ListTagsOfResourceInput{ResourceArn: tableOutput.Table.TableArn}
-			tagsOutput, err := tm.client.ListTagsOfResource(ctx, &tagsInput)
-			if err != nil {
-				return nil, fmt.Errorf("%w", err)
+			tags := make(Tags, 0)
+
+			// https://pkg.go.dev/github.com/aws/aws-sdk-go-v2/service/dynamodb#ListTagsOfResourceInput
+			initTagMarker := ""
+			tagMarker := &initTagMarker
+
+			for tagMarker != nil {
+				// NextToken could not be empty string
+				var tagsInput dynamodb.ListTagsOfResourceInput
+				if *tagMarker == "" {
+					tagsInput = dynamodb.ListTagsOfResourceInput{ResourceArn: tableOutput.Table.TableArn}
+				} else {
+					tagsInput = dynamodb.ListTagsOfResourceInput{ResourceArn: tableOutput.Table.TableArn, NextToken: tagMarker}
+				}
+
+				tagsOutput, err := tm.client.ListTagsOfResource(ctx, &tagsInput)
+				if err != nil {
+					return nil, fmt.Errorf("%w", err)
+				}
+
+				for _, tag := range tagsOutput.Tags {
+					tags = append(tags, fmt.Sprintf("%s:%s", strings.ToLower(*tag.Key), strings.ToLower(*tag.Value)))
+				}
+
+				tagMarker = tagsOutput.NextToken
 			}
 
-			tags := make(Tags, len(tagsOutput.Tags))
-			for j, tag := range tagsOutput.Tags {
-				tags[j] = fmt.Sprintf("%s:%s", strings.ToLower(*tag.Key), strings.ToLower(*tag.Value))
-			}
 			mapping[name] = tags
 		}
 

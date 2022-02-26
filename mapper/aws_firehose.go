@@ -43,29 +43,68 @@ func (tm AwsFirehoseTagsMapper) GetTagsMapping(ctx context.Context) (map[string]
 
 	mapping := make(map[string]Tags)
 
+	// https://pkg.go.dev/github.com/aws/aws-sdk-go-v2/service/firehose#ListDeliveryStreamsInput
+	initMarker := ""
+	lastReturnedStreamName := &initMarker
+
 	// https://pkg.go.dev/github.com/aws/aws-sdk-go-v2/service/firehose#ListDeliveryStreamsOutput
 	hasMoreStream := true
 	for hasMoreStream {
-		input := firehose.ListDeliveryStreamsInput{}
+		// ExclusiveStartDeliveryStreamName could not be empty string
+		var input firehose.ListDeliveryStreamsInput
+		if *lastReturnedStreamName == "" {
+			input = firehose.ListDeliveryStreamsInput{}
+		} else {
+			input = firehose.ListDeliveryStreamsInput{ExclusiveStartDeliveryStreamName: lastReturnedStreamName}
+		}
 
 		output, err := tm.client.ListDeliveryStreams(ctx, &input)
 		if err != nil {
 			return nil, fmt.Errorf("%w", err)
 		}
 
-		for i := 0; i < len(output.DeliveryStreamNames); i++ {
+		returnedStreamNamesCount := len(output.DeliveryStreamNames)
+		if returnedStreamNamesCount > 0 {
+			lastReturnedStreamName = &output.DeliveryStreamNames[returnedStreamNamesCount-1]
+		}
+
+		for i := 0; i < returnedStreamNamesCount; i++ {
 			name := output.DeliveryStreamNames[i]
 
-			tagsInput := firehose.ListTagsForDeliveryStreamInput{DeliveryStreamName: &name}
-			tagsOutput, err := tm.client.ListTagsForDeliveryStream(ctx, &tagsInput)
-			if err != nil {
-				return nil, fmt.Errorf("%w", err)
+			tags := make(Tags, 0)
+
+			// https://pkg.go.dev/github.com/aws/aws-sdk-go-v2/service/firehose#ListTagsForDeliveryStreamInput
+			initTagMarker := ""
+			lastReturnedTagKey := &initTagMarker
+
+			// https://pkg.go.dev/github.com/aws/aws-sdk-go-v2/service/firehose#ListTagsForDeliveryStreamOutput
+			hasMoreTag := true
+			for hasMoreTag {
+				// ExclusiveStartTagKey could not be empty string
+				var tagsInput firehose.ListTagsForDeliveryStreamInput
+				if *lastReturnedTagKey == "" {
+					tagsInput = firehose.ListTagsForDeliveryStreamInput{DeliveryStreamName: &name}
+				} else {
+					tagsInput = firehose.ListTagsForDeliveryStreamInput{DeliveryStreamName: &name, ExclusiveStartTagKey: lastReturnedTagKey}
+				}
+
+				tagsOutput, err := tm.client.ListTagsForDeliveryStream(ctx, &tagsInput)
+				if err != nil {
+					return nil, fmt.Errorf("%w", err)
+				}
+
+				for _, tag := range tagsOutput.Tags {
+					tags = append(tags, fmt.Sprintf("%s:%s", strings.ToLower(*tag.Key), strings.ToLower(*tag.Value)))
+				}
+
+				returnedTagsCount := len(tagsOutput.Tags)
+				if returnedTagsCount > 0 {
+					lastReturnedTagKey = tagsOutput.Tags[returnedTagsCount-1].Key
+				}
+
+				hasMoreTag = *tagsOutput.HasMoreTags
 			}
 
-			tags := make(Tags, len(tagsOutput.Tags))
-			for j, tag := range tagsOutput.Tags {
-				tags[j] = fmt.Sprintf("%s:%s", strings.ToLower(*tag.Key), strings.ToLower(*tag.Value))
-			}
 			mapping[name] = tags
 		}
 
