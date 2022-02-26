@@ -50,6 +50,7 @@ func (e Evaluator) Evaluate(ctx context.Context, scopes []datadog.Scope, ddTags 
 	if err != nil {
 		return nil, fmt.Errorf("failed to get resource tags mapping: %w", err)
 	}
+
 	mapping, ok := v.(map[string][]string)
 	if !ok {
 		return nil, fmt.Errorf("failed type assertion: %w", err)

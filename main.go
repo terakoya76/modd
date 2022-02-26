@@ -110,9 +110,11 @@ func checkUnmonitored(
 	sort.Slice(monitorStatuses, func(i, j int) bool {
 		return monitorStatuses[i].Name < monitorStatuses[j].Name
 	})
+
 	for i := 0; i < len(monitorStatuses); i++ {
 		sort.Strings(monitorStatuses[i].Unmonitored)
 	}
+
 	sort.Strings(unsupported)
 
 	return monitorStatuses, unsupported, nil

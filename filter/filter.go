@@ -21,8 +21,8 @@ func BuildFilter(it datadog.IntegrationTarget) (Filter, error) {
 	envPrefix := string(it)
 
 	switch it {
-	case datadog.AwsElb:
-		var c AwsElbConfig
+	case datadog.AwsAPIGateway:
+		var c AwsAPIGatewayConfig
 		err := envconfig.Process(envPrefix, &c)
 		if err != nil {
 			return nil, err
@@ -59,6 +59,15 @@ func BuildFilter(it datadog.IntegrationTarget) (Filter, error) {
 		return f, nil
 	case datadog.AwsElastiCache:
 		var c AwsElastiCacheConfig
+		err := envconfig.Process(envPrefix, &c)
+		if err != nil {
+			return nil, err
+		}
+
+		f := AwsFilter(c)
+		return f, nil
+	case datadog.AwsElb:
+		var c AwsElbConfig
 		err := envconfig.Process(envPrefix, &c)
 		if err != nil {
 			return nil, err
