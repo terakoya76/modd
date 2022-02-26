@@ -35,8 +35,8 @@ func GetAwsElbClient(ctx context.Context) (*elasticloadbalancingv2.Client, error
 }
 
 // GetTagsMapping returns the latest tags mapping.
-func (aetm AwsElbTagsMapper) GetTagsMapping(ctx context.Context) (map[string]Tags, error) {
-	if cv, found := aetm.cache.Get(awsElbCacheKey); found {
+func (tm AwsElbTagsMapper) GetTagsMapping(ctx context.Context) (map[string]Tags, error) {
+	if cv, found := tm.cache.Get(awsElbCacheKey); found {
 		mapping := cv.(map[string]Tags)
 		return mapping, nil
 	}
@@ -60,7 +60,7 @@ func (aetm AwsElbTagsMapper) GetTagsMapping(ctx context.Context) (map[string]Tag
 			input = elasticloadbalancingv2.DescribeLoadBalancersInput{Marker: marker}
 		}
 
-		output, err := aetm.client.DescribeLoadBalancers(ctx, &input)
+		output, err := tm.client.DescribeLoadBalancers(ctx, &input)
 		if err != nil {
 			return nil, fmt.Errorf("%w", err)
 		}
@@ -79,7 +79,7 @@ func (aetm AwsElbTagsMapper) GetTagsMapping(ctx context.Context) (map[string]Tag
 			}
 
 			tagsInput := elasticloadbalancingv2.DescribeTagsInput{ResourceArns: arns}
-			tagsOutput, err := aetm.client.DescribeTags(ctx, &tagsInput)
+			tagsOutput, err := tm.client.DescribeTags(ctx, &tagsInput)
 			if err != nil {
 				return nil, fmt.Errorf("%w", err)
 			}
@@ -99,6 +99,6 @@ func (aetm AwsElbTagsMapper) GetTagsMapping(ctx context.Context) (map[string]Tag
 		marker = output.NextMarker
 	}
 
-	aetm.cache.Set(awsElbCacheKey, mapping, cache.DefaultExpiration)
+	tm.cache.Set(awsElbCacheKey, mapping, cache.DefaultExpiration)
 	return mapping, nil
 }

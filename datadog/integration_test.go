@@ -45,6 +45,11 @@ func TestMetricToIntegrationTarget(t *testing.T) {
 			expected: datadog.AwsElb,
 		},
 		{
+			name:     "when AWS Firehose",
+			metric:   "aws.firehose.incoming_records",
+			expected: datadog.AwsFirehose,
+		},
+		{
 			name:     "when AWS Kinesis",
 			metric:   "aws.kinesis.get_records_latency",
 			expected: datadog.AwsKinesis,

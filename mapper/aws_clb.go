@@ -35,8 +35,8 @@ func GetAwsClbClient(ctx context.Context) (*elasticloadbalancing.Client, error) 
 }
 
 // GetTagsMapping returns the latest tags mapping.
-func (actm AwsClbTagsMapper) GetTagsMapping(ctx context.Context) (map[string]Tags, error) {
-	if cv, found := actm.cache.Get(awsClbCacheKey); found {
+func (tm AwsClbTagsMapper) GetTagsMapping(ctx context.Context) (map[string]Tags, error) {
+	if cv, found := tm.cache.Get(awsClbCacheKey); found {
 		mapping := cv.(map[string]Tags)
 		return mapping, nil
 	}
@@ -60,7 +60,7 @@ func (actm AwsClbTagsMapper) GetTagsMapping(ctx context.Context) (map[string]Tag
 			input = elasticloadbalancing.DescribeLoadBalancersInput{Marker: marker}
 		}
 
-		output, err := actm.client.DescribeLoadBalancers(ctx, &input)
+		output, err := tm.client.DescribeLoadBalancers(ctx, &input)
 		if err != nil {
 			return nil, fmt.Errorf("%w", err)
 		}
@@ -79,7 +79,7 @@ func (actm AwsClbTagsMapper) GetTagsMapping(ctx context.Context) (map[string]Tag
 			}
 
 			tagsInput := elasticloadbalancing.DescribeTagsInput{LoadBalancerNames: names}
-			tagsOutput, err := actm.client.DescribeTags(ctx, &tagsInput)
+			tagsOutput, err := tm.client.DescribeTags(ctx, &tagsInput)
 			if err != nil {
 				return nil, fmt.Errorf("%w", err)
 			}
@@ -99,6 +99,6 @@ func (actm AwsClbTagsMapper) GetTagsMapping(ctx context.Context) (map[string]Tag
 		marker = output.NextMarker
 	}
 
-	actm.cache.Set(awsClbCacheKey, mapping, cache.DefaultExpiration)
+	tm.cache.Set(awsClbCacheKey, mapping, cache.DefaultExpiration)
 	return mapping, nil
 }

@@ -35,8 +35,8 @@ func GetAwsAPIGatewayClient(ctx context.Context) (*apigateway.Client, error) {
 }
 
 // GetTagsMapping returns the latest tags mapping.
-func (aagtm AwsAPIGatewayTagsMapper) GetTagsMapping(ctx context.Context) (map[string]Tags, error) {
-	if cv, found := aagtm.cache.Get(awsAPIGatewayCacheKey); found {
+func (tm AwsAPIGatewayTagsMapper) GetTagsMapping(ctx context.Context) (map[string]Tags, error) {
+	if cv, found := tm.cache.Get(awsAPIGatewayCacheKey); found {
 		mapping := cv.(map[string]Tags)
 		return mapping, nil
 	}
@@ -59,7 +59,7 @@ func (aagtm AwsAPIGatewayTagsMapper) GetTagsMapping(ctx context.Context) (map[st
 			input = apigateway.GetRestApisInput{Limit: &limit, Position: pos}
 		}
 
-		output, err := aagtm.client.GetRestApis(ctx, &input)
+		output, err := tm.client.GetRestApis(ctx, &input)
 		if err != nil {
 			return nil, fmt.Errorf("%w", err)
 		}
@@ -81,6 +81,6 @@ func (aagtm AwsAPIGatewayTagsMapper) GetTagsMapping(ctx context.Context) (map[st
 		pos = output.Position
 	}
 
-	aagtm.cache.Set(awsAPIGatewayCacheKey, mapping, cache.DefaultExpiration)
+	tm.cache.Set(awsAPIGatewayCacheKey, mapping, cache.DefaultExpiration)
 	return mapping, nil
 }

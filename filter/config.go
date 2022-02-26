@@ -36,6 +36,12 @@ type AwsElbConfig struct {
 	DdTagKey  string `envconfig:"datadog_tag_key" default:""`
 }
 
+// AwsFirehoseConfig holds metadata for AwsFilter for AWS Firehose.
+type AwsFirehoseConfig struct {
+	AwsTagKey string `envconfig:"aws_tag_key" default:""`
+	DdTagKey  string `envconfig:"datadog_tag_key" default:""`
+}
+
 // AwsKinesisConfig holds metadata for AwsFilter for AWS Kinesis.
 type AwsKinesisConfig struct {
 	AwsTagKey string `envconfig:"aws_tag_key" default:""`

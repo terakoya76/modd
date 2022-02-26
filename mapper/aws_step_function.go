@@ -35,8 +35,8 @@ func GetAwsStepFunctionClient(ctx context.Context) (*sfn.Client, error) {
 }
 
 // GetTagsMapping returns the latest tags mapping.
-func (asftm AwsStepFunctionTagsMapper) GetTagsMapping(ctx context.Context) (map[string]Tags, error) {
-	if cv, found := asftm.cache.Get(awsStepFunctionCacheKey); found {
+func (tm AwsStepFunctionTagsMapper) GetTagsMapping(ctx context.Context) (map[string]Tags, error) {
+	if cv, found := tm.cache.Get(awsStepFunctionCacheKey); found {
 		mapping := cv.(map[string]Tags)
 		return mapping, nil
 	}
@@ -59,7 +59,7 @@ func (asftm AwsStepFunctionTagsMapper) GetTagsMapping(ctx context.Context) (map[
 			input = sfn.ListStateMachinesInput{MaxResults: maxResults, NextToken: token}
 		}
 
-		output, err := asftm.client.ListStateMachines(ctx, &input)
+		output, err := tm.client.ListStateMachines(ctx, &input)
 
 		if err != nil {
 			return nil, fmt.Errorf("%w", err)
@@ -68,7 +68,7 @@ func (asftm AwsStepFunctionTagsMapper) GetTagsMapping(ctx context.Context) (map[
 		for i := 0; i < len(output.StateMachines); i++ {
 			sm := output.StateMachines[i]
 			tagsInput := sfn.ListTagsForResourceInput{ResourceArn: sm.StateMachineArn}
-			tagsOutput, err := asftm.client.ListTagsForResource(ctx, &tagsInput)
+			tagsOutput, err := tm.client.ListTagsForResource(ctx, &tagsInput)
 			if err != nil {
 				return nil, fmt.Errorf("%w", err)
 			}
@@ -83,6 +83,6 @@ func (asftm AwsStepFunctionTagsMapper) GetTagsMapping(ctx context.Context) (map[
 		token = output.NextToken
 	}
 
-	asftm.cache.Set(awsStepFunctionCacheKey, mapping, cache.DefaultExpiration)
+	tm.cache.Set(awsStepFunctionCacheKey, mapping, cache.DefaultExpiration)
 	return mapping, nil
 }

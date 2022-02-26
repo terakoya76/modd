@@ -35,8 +35,8 @@ func GetAwsKinesisClient(ctx context.Context) (*kinesis.Client, error) {
 }
 
 // GetTagsMapping returns the latest tags mapping.
-func (aktm AwsKinesisTagsMapper) GetTagsMapping(ctx context.Context) (map[string]Tags, error) {
-	if cv, found := aktm.cache.Get(awsKinesisCacheKey); found {
+func (tm AwsKinesisTagsMapper) GetTagsMapping(ctx context.Context) (map[string]Tags, error) {
+	if cv, found := tm.cache.Get(awsKinesisCacheKey); found {
 		mapping := cv.(map[string]Tags)
 		return mapping, nil
 	}
@@ -44,33 +44,73 @@ func (aktm AwsKinesisTagsMapper) GetTagsMapping(ctx context.Context) (map[string
 	mapping := make(map[string]Tags)
 
 	// https://pkg.go.dev/github.com/aws/aws-sdk-go-v2/service/kinesis#ListStreamsInput
+	initMarker := ""
+	lastReturnedStreamName := &initMarker
+
+	// https://pkg.go.dev/github.com/aws/aws-sdk-go-v2/service/kinesis#ListStreamsOutput
 	hasMoreStream := true
 	for hasMoreStream {
-		input := kinesis.ListStreamsInput{}
+		// ExclusiveStartStreamName could not be empty string
+		var input kinesis.ListStreamsInput
+		if *lastReturnedStreamName == "" {
+			input = kinesis.ListStreamsInput{}
+		} else {
+			input = kinesis.ListStreamsInput{ExclusiveStartStreamName: lastReturnedStreamName}
+		}
 
-		output, err := aktm.client.ListStreams(ctx, &input)
+		output, err := tm.client.ListStreams(ctx, &input)
 		if err != nil {
 			return nil, fmt.Errorf("%w", err)
 		}
 
-		for i := 0; i < len(output.StreamNames); i++ {
+		returnedStreamNamesCount := len(output.StreamNames)
+		if returnedStreamNamesCount > 0 {
+			lastReturnedStreamName = &output.StreamNames[returnedStreamNamesCount-1]
+		}
+
+		for i := 0; i < returnedStreamNamesCount; i++ {
 			name := output.StreamNames[i]
-			tagsInput := kinesis.ListTagsForStreamInput{StreamName: &name}
-			tagsOutput, err := aktm.client.ListTagsForStream(ctx, &tagsInput)
-			if err != nil {
-				return nil, fmt.Errorf("%w", err)
+
+			tags := make(Tags, 0)
+
+			// https://pkg.go.dev/github.com/aws/aws-sdk-go-v2/service/kinesis#ListTagsForStreamInput
+			initTagMarker := ""
+			lastReturnedTagKey := &initTagMarker
+
+			// https://pkg.go.dev/github.com/aws/aws-sdk-go-v2/service/kinesis#ListTagsForStreamOutput
+			hasMoreTag := true
+			for hasMoreTag {
+				// ExclusiveStartTagKey could not be empty string
+				var tagsInput kinesis.ListTagsForStreamInput
+				if *lastReturnedTagKey == "" {
+					tagsInput = kinesis.ListTagsForStreamInput{StreamName: &name}
+				} else {
+					tagsInput = kinesis.ListTagsForStreamInput{StreamName: &name, ExclusiveStartTagKey: lastReturnedTagKey}
+				}
+
+				tagsOutput, err := tm.client.ListTagsForStream(ctx, &tagsInput)
+				if err != nil {
+					return nil, fmt.Errorf("%w", err)
+				}
+
+				for _, tag := range tagsOutput.Tags {
+					tags = append(tags, fmt.Sprintf("%s:%s", strings.ToLower(*tag.Key), strings.ToLower(*tag.Value)))
+				}
+
+				returnedTagsCount := len(tagsOutput.Tags)
+				if returnedTagsCount > 0 {
+					lastReturnedTagKey = tagsOutput.Tags[returnedTagsCount-1].Key
+				}
+
+				hasMoreTag = *tagsOutput.HasMoreTags
 			}
 
-			tags := make(Tags, len(tagsOutput.Tags))
-			for j, tag := range tagsOutput.Tags {
-				tags[j] = fmt.Sprintf("%s:%s", strings.ToLower(*tag.Key), strings.ToLower(*tag.Value))
-			}
 			mapping[name] = tags
 		}
 
 		hasMoreStream = *output.HasMoreStreams
 	}
 
-	aktm.cache.Set(awsKinesisCacheKey, mapping, cache.DefaultExpiration)
+	tm.cache.Set(awsKinesisCacheKey, mapping, cache.DefaultExpiration)
 	return mapping, nil
 }
