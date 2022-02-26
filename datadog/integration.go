@@ -23,6 +23,8 @@ const (
 	AwsElastiCache IntegrationTarget = "aws_elasticache"
 	// AwsElb represents AWS ALB/NLB integration.
 	AwsElb IntegrationTarget = "aws_applicationelb"
+	// AwsFirehose represents AWS Firehose integration.
+	AwsFirehose IntegrationTarget = "aws_firehose"
 	// AwsKinesis represents AWS Kinesis integration.
 	AwsKinesis IntegrationTarget = "aws_kinesis"
 	// AwsOpenSearchService represents AWS OpenSearch Service integration.
@@ -55,6 +57,8 @@ func MetricToIntegrationTarget(metric string) IntegrationTarget {
 		return AwsElastiCache
 	case len(parts) >= 2 && parts[0] == AwsMetricsPrefix && parts[1] == "applicationelb":
 		return AwsElb
+	case len(parts) >= 2 && parts[0] == AwsMetricsPrefix && parts[1] == "firehose":
+		return AwsFirehose
 	case len(parts) >= 2 && parts[0] == AwsMetricsPrefix && parts[1] == "kinesis":
 		return AwsKinesis
 	case len(parts) >= 2 && parts[0] == AwsMetricsPrefix && parts[1] == "es":

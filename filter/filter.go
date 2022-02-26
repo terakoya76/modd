@@ -75,6 +75,15 @@ func BuildFilter(it datadog.IntegrationTarget) (Filter, error) {
 
 		f := AwsFilter(c)
 		return f, nil
+	case datadog.AwsFirehose:
+		var c AwsFirehoseConfig
+		err := envconfig.Process(envPrefix, &c)
+		if err != nil {
+			return nil, err
+		}
+
+		f := AwsFilter(c)
+		return f, nil
 	case datadog.AwsKinesis:
 		var c AwsKinesisConfig
 		err := envconfig.Process(envPrefix, &c)
