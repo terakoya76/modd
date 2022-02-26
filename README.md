@@ -100,6 +100,7 @@ AWS
 * DynamoDB
 * Elasticache
 * ELB (CLB, ALB, NLB)
+* Firehose
 * Kinesis
 * OpenSearch Service
 * RDS
