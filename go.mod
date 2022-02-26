@@ -11,7 +11,7 @@ require (
 	github.com/aws/aws-sdk-go-v2/service/elasticache v1.18.0
 	github.com/aws/aws-sdk-go-v2/service/elasticloadbalancing v1.13.0
 	github.com/aws/aws-sdk-go-v2/service/elasticloadbalancingv2 v1.16.0
-	github.com/aws/aws-sdk-go-v2/service/elasticsearchservice v1.13.0
+	github.com/aws/aws-sdk-go-v2/service/elasticsearchservice v1.14.0
 	github.com/aws/aws-sdk-go-v2/service/kinesis v1.13.0
 	github.com/aws/aws-sdk-go-v2/service/rds v1.16.0
 	github.com/aws/aws-sdk-go-v2/service/sfn v1.11.0
