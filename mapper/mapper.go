@@ -24,6 +24,18 @@ func BuildTagsMapper(it datadog.IntegrationTarget) (TagsMapper, error) {
 	c := cache.New(60*time.Minute, 10*time.Minute)
 
 	switch it {
+	case datadog.AwsAPIGateway:
+		client, err := GetAwsAPIGatewayClient(context.TODO())
+		if err != nil {
+			return nil, fmt.Errorf("%w", err)
+		}
+
+		m := AwsAPIGatewayTagsMapper{
+			cache:  c,
+			client: client,
+		}
+
+		return m, nil
 	case datadog.AwsAutoScalingGroup:
 		client, err := GetAwsAutoScalingGroupClient(context.TODO())
 		if err != nil {

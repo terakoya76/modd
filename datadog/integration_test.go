@@ -15,6 +15,11 @@ func TestMetricToIntegrationTarget(t *testing.T) {
 		expected datadog.IntegrationTarget
 	}{
 		{
+			name:     "when AWS API Gateway",
+			metric:   "aws.apigateway.count",
+			expected: datadog.AwsAPIGateway,
+		},
+		{
 			name:     "when AWS AutoScalingGroup",
 			metric:   "aws.autoscaling.group_desired_capacity",
 			expected: datadog.AwsAutoScalingGroup,

@@ -11,8 +11,8 @@ const (
 	// AwsMetricsPrefix represents Datadog AWS Integration metrics prefix.
 	AwsMetricsPrefix = "aws"
 
-	// UnknownIntegration represents unknonwn integration.
-	UnknownIntegration IntegrationTarget = "unknown"
+	// AwsAPIGateway represents AWS API Gateway integration.
+	AwsAPIGateway IntegrationTarget = "aws_apigateway"
 	// AwsAutoScalingGroup represents AWS AutoScalingGroup integration.
 	AwsAutoScalingGroup IntegrationTarget = "aws_autoscaling"
 	// AwsClb represents AWS CLB integration.
@@ -33,6 +33,9 @@ const (
 	AwsStepFunction IntegrationTarget = "aws_states"
 	// AwsSqs represents AWS SQS integration.
 	AwsSqs IntegrationTarget = "aws_sqs"
+
+	// UnknownIntegration represents unknonwn integration.
+	UnknownIntegration IntegrationTarget = "unknown"
 )
 
 // MetricToIntegrationTarget returns the IntegrationTarget to which the specified metric belongs.
@@ -40,6 +43,8 @@ const (
 func MetricToIntegrationTarget(metric string) IntegrationTarget {
 	parts := strings.Split(metric, ".")
 	switch {
+	case len(parts) >= 2 && parts[0] == AwsMetricsPrefix && parts[1] == "apigateway":
+		return AwsAPIGateway
 	case len(parts) >= 2 && parts[0] == AwsMetricsPrefix && parts[1] == "autoscaling":
 		return AwsAutoScalingGroup
 	case len(parts) >= 2 && parts[0] == AwsMetricsPrefix && parts[1] == "elb":
