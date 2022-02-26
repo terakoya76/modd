@@ -35,8 +35,8 @@ func GetAwsFirehoseClient(ctx context.Context) (*firehose.Client, error) {
 }
 
 // GetTagsMapping returns the latest tags mapping.
-func (aftm AwsFirehoseTagsMapper) GetTagsMapping(ctx context.Context) (map[string]Tags, error) {
-	if cv, found := aftm.cache.Get(awsFirehoseCacheKey); found {
+func (tm AwsFirehoseTagsMapper) GetTagsMapping(ctx context.Context) (map[string]Tags, error) {
+	if cv, found := tm.cache.Get(awsFirehoseCacheKey); found {
 		mapping := cv.(map[string]Tags)
 		return mapping, nil
 	}
@@ -48,7 +48,7 @@ func (aftm AwsFirehoseTagsMapper) GetTagsMapping(ctx context.Context) (map[strin
 	for hasMoreStream {
 		input := firehose.ListDeliveryStreamsInput{}
 
-		output, err := aftm.client.ListDeliveryStreams(ctx, &input)
+		output, err := tm.client.ListDeliveryStreams(ctx, &input)
 		if err != nil {
 			return nil, fmt.Errorf("%w", err)
 		}
@@ -57,7 +57,7 @@ func (aftm AwsFirehoseTagsMapper) GetTagsMapping(ctx context.Context) (map[strin
 			name := output.DeliveryStreamNames[i]
 
 			tagsInput := firehose.ListTagsForDeliveryStreamInput{DeliveryStreamName: &name}
-			tagsOutput, err := aftm.client.ListTagsForDeliveryStream(ctx, &tagsInput)
+			tagsOutput, err := tm.client.ListTagsForDeliveryStream(ctx, &tagsInput)
 			if err != nil {
 				return nil, fmt.Errorf("%w", err)
 			}
@@ -72,6 +72,6 @@ func (aftm AwsFirehoseTagsMapper) GetTagsMapping(ctx context.Context) (map[strin
 		hasMoreStream = *output.HasMoreDeliveryStreams
 	}
 
-	aftm.cache.Set(awsFirehoseCacheKey, mapping, cache.DefaultExpiration)
+	tm.cache.Set(awsFirehoseCacheKey, mapping, cache.DefaultExpiration)
 	return mapping, nil
 }

@@ -35,8 +35,8 @@ func GetAwsKinesisClient(ctx context.Context) (*kinesis.Client, error) {
 }
 
 // GetTagsMapping returns the latest tags mapping.
-func (aktm AwsKinesisTagsMapper) GetTagsMapping(ctx context.Context) (map[string]Tags, error) {
-	if cv, found := aktm.cache.Get(awsKinesisCacheKey); found {
+func (tm AwsKinesisTagsMapper) GetTagsMapping(ctx context.Context) (map[string]Tags, error) {
+	if cv, found := tm.cache.Get(awsKinesisCacheKey); found {
 		mapping := cv.(map[string]Tags)
 		return mapping, nil
 	}
@@ -48,7 +48,7 @@ func (aktm AwsKinesisTagsMapper) GetTagsMapping(ctx context.Context) (map[string
 	for hasMoreStream {
 		input := kinesis.ListStreamsInput{}
 
-		output, err := aktm.client.ListStreams(ctx, &input)
+		output, err := tm.client.ListStreams(ctx, &input)
 		if err != nil {
 			return nil, fmt.Errorf("%w", err)
 		}
@@ -56,7 +56,7 @@ func (aktm AwsKinesisTagsMapper) GetTagsMapping(ctx context.Context) (map[string
 		for i := 0; i < len(output.StreamNames); i++ {
 			name := output.StreamNames[i]
 			tagsInput := kinesis.ListTagsForStreamInput{StreamName: &name}
-			tagsOutput, err := aktm.client.ListTagsForStream(ctx, &tagsInput)
+			tagsOutput, err := tm.client.ListTagsForStream(ctx, &tagsInput)
 			if err != nil {
 				return nil, fmt.Errorf("%w", err)
 			}
@@ -71,6 +71,6 @@ func (aktm AwsKinesisTagsMapper) GetTagsMapping(ctx context.Context) (map[string
 		hasMoreStream = *output.HasMoreStreams
 	}
 
-	aktm.cache.Set(awsKinesisCacheKey, mapping, cache.DefaultExpiration)
+	tm.cache.Set(awsKinesisCacheKey, mapping, cache.DefaultExpiration)
 	return mapping, nil
 }

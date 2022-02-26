@@ -35,8 +35,8 @@ func GetAwsOpenSearchServiceClient(ctx context.Context) (*elasticsearchservice.C
 }
 
 // GetTagsMapping returns the latest tags mapping.
-func (aosstm AwsOpenSearchServiceTagsMapper) GetTagsMapping(ctx context.Context) (map[string]Tags, error) {
-	if cv, found := aosstm.cache.Get(awsOpenSearchServiceCacheKey); found {
+func (tm AwsOpenSearchServiceTagsMapper) GetTagsMapping(ctx context.Context) (map[string]Tags, error) {
+	if cv, found := tm.cache.Get(awsOpenSearchServiceCacheKey); found {
 		mapping := cv.(map[string]Tags)
 		return mapping, nil
 	}
@@ -44,7 +44,7 @@ func (aosstm AwsOpenSearchServiceTagsMapper) GetTagsMapping(ctx context.Context)
 	mapping := make(map[string]Tags)
 
 	domainsInput := elasticsearchservice.ListDomainNamesInput{}
-	domainsOutput, err := aosstm.client.ListDomainNames(ctx, &domainsInput)
+	domainsOutput, err := tm.client.ListDomainNames(ctx, &domainsInput)
 	if err != nil {
 		return nil, fmt.Errorf("%w", err)
 	}
@@ -64,7 +64,7 @@ func (aosstm AwsOpenSearchServiceTagsMapper) GetTagsMapping(ctx context.Context)
 		input := elasticsearchservice.DescribeElasticsearchDomainsInput{
 			DomainNames: domainNames,
 		}
-		output, err := aosstm.client.DescribeElasticsearchDomains(ctx, &input)
+		output, err := tm.client.DescribeElasticsearchDomains(ctx, &input)
 		if err != nil {
 			return nil, fmt.Errorf("%w", err)
 		}
@@ -72,7 +72,7 @@ func (aosstm AwsOpenSearchServiceTagsMapper) GetTagsMapping(ctx context.Context)
 		for j := 0; j < len(output.DomainStatusList); j++ {
 			domain := output.DomainStatusList[j]
 			tagsInput := elasticsearchservice.ListTagsInput{ARN: domain.ARN}
-			tagsOutput, err := aosstm.client.ListTags(ctx, &tagsInput)
+			tagsOutput, err := tm.client.ListTags(ctx, &tagsInput)
 			if err != nil {
 				return nil, fmt.Errorf("%w", err)
 			}
@@ -85,6 +85,6 @@ func (aosstm AwsOpenSearchServiceTagsMapper) GetTagsMapping(ctx context.Context)
 		}
 	}
 
-	aosstm.cache.Set(awsOpenSearchServiceCacheKey, mapping, cache.DefaultExpiration)
+	tm.cache.Set(awsOpenSearchServiceCacheKey, mapping, cache.DefaultExpiration)
 	return mapping, nil
 }

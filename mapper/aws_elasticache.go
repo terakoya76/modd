@@ -35,8 +35,8 @@ func GetAwsElastiCacheClient(ctx context.Context) (*elasticache.Client, error) {
 }
 
 // GetTagsMapping returns the latest tags mapping.
-func (aetm AwsElastiCacheTagsMapper) GetTagsMapping(ctx context.Context) (map[string]Tags, error) {
-	if cv, found := aetm.cache.Get(awsElastiCacheCacheKey); found {
+func (tm AwsElastiCacheTagsMapper) GetTagsMapping(ctx context.Context) (map[string]Tags, error) {
+	if cv, found := tm.cache.Get(awsElastiCacheCacheKey); found {
 		mapping := cv.(map[string]Tags)
 		return mapping, nil
 	}
@@ -56,7 +56,7 @@ func (aetm AwsElastiCacheTagsMapper) GetTagsMapping(ctx context.Context) (map[st
 			input = elasticache.DescribeCacheClustersInput{Marker: marker}
 		}
 
-		output, err := aetm.client.DescribeCacheClusters(ctx, &input)
+		output, err := tm.client.DescribeCacheClusters(ctx, &input)
 		if err != nil {
 			return nil, fmt.Errorf("%w", err)
 		}
@@ -64,7 +64,7 @@ func (aetm AwsElastiCacheTagsMapper) GetTagsMapping(ctx context.Context) (map[st
 		for i := 0; i < len(output.CacheClusters); i++ {
 			cluster := output.CacheClusters[i]
 			tagsInput := elasticache.ListTagsForResourceInput{ResourceName: cluster.ARN}
-			tagsOutput, err := aetm.client.ListTagsForResource(ctx, &tagsInput)
+			tagsOutput, err := tm.client.ListTagsForResource(ctx, &tagsInput)
 			if err != nil {
 				return nil, fmt.Errorf("%w", err)
 			}
@@ -79,6 +79,6 @@ func (aetm AwsElastiCacheTagsMapper) GetTagsMapping(ctx context.Context) (map[st
 		marker = output.Marker
 	}
 
-	aetm.cache.Set(awsElastiCacheCacheKey, mapping, cache.DefaultExpiration)
+	tm.cache.Set(awsElastiCacheCacheKey, mapping, cache.DefaultExpiration)
 	return mapping, nil
 }

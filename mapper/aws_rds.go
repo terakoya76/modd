@@ -35,8 +35,8 @@ func GetAwsRdsClient(ctx context.Context) (*rds.Client, error) {
 }
 
 // GetTagsMapping returns the latest tags mapping.
-func (artm AwsRdsTagsMapper) GetTagsMapping(ctx context.Context) (map[string]Tags, error) {
-	if cv, found := artm.cache.Get(awsRdsCacheKey); found {
+func (tm AwsRdsTagsMapper) GetTagsMapping(ctx context.Context) (map[string]Tags, error) {
+	if cv, found := tm.cache.Get(awsRdsCacheKey); found {
 		mapping := cv.(map[string]Tags)
 		return mapping, nil
 	}
@@ -56,7 +56,7 @@ func (artm AwsRdsTagsMapper) GetTagsMapping(ctx context.Context) (map[string]Tag
 			input = rds.DescribeDBInstancesInput{Marker: marker}
 		}
 
-		output, err := artm.client.DescribeDBInstances(ctx, &input)
+		output, err := tm.client.DescribeDBInstances(ctx, &input)
 		if err != nil {
 			return nil, fmt.Errorf("%w", err)
 		}
@@ -74,6 +74,6 @@ func (artm AwsRdsTagsMapper) GetTagsMapping(ctx context.Context) (map[string]Tag
 		marker = output.Marker
 	}
 
-	artm.cache.Set(awsRdsCacheKey, mapping, cache.DefaultExpiration)
+	tm.cache.Set(awsRdsCacheKey, mapping, cache.DefaultExpiration)
 	return mapping, nil
 }

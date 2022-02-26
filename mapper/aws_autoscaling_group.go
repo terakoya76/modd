@@ -35,8 +35,8 @@ func GetAwsAutoScalingGroupClient(ctx context.Context) (*autoscaling.Client, err
 }
 
 // GetTagsMapping returns the latest tags mapping.
-func (aasgtm AwsAutoScalingGroupTagsMapper) GetTagsMapping(ctx context.Context) (map[string]Tags, error) {
-	if cv, found := aasgtm.cache.Get(awsAutoScalingGroupCacheKey); found {
+func (tm AwsAutoScalingGroupTagsMapper) GetTagsMapping(ctx context.Context) (map[string]Tags, error) {
+	if cv, found := tm.cache.Get(awsAutoScalingGroupCacheKey); found {
 		mapping := cv.(map[string]Tags)
 		return mapping, nil
 	}
@@ -56,7 +56,7 @@ func (aasgtm AwsAutoScalingGroupTagsMapper) GetTagsMapping(ctx context.Context) 
 			input = autoscaling.DescribeAutoScalingGroupsInput{NextToken: token}
 		}
 
-		output, err := aasgtm.client.DescribeAutoScalingGroups(ctx, &input)
+		output, err := tm.client.DescribeAutoScalingGroups(ctx, &input)
 		if err != nil {
 			return nil, fmt.Errorf("%w", err)
 		}
@@ -73,6 +73,6 @@ func (aasgtm AwsAutoScalingGroupTagsMapper) GetTagsMapping(ctx context.Context) 
 		token = output.NextToken
 	}
 
-	aasgtm.cache.Set(awsAutoScalingGroupCacheKey, mapping, cache.DefaultExpiration)
+	tm.cache.Set(awsAutoScalingGroupCacheKey, mapping, cache.DefaultExpiration)
 	return mapping, nil
 }

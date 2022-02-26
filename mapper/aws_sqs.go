@@ -35,8 +35,8 @@ func GetAwsSqsClient(ctx context.Context) (*sqs.Client, error) {
 }
 
 // GetTagsMapping returns the latest tags mapping.
-func (astm AwsSqsTagsMapper) GetTagsMapping(ctx context.Context) (map[string]Tags, error) {
-	if cv, found := astm.cache.Get(awsSqsCacheKey); found {
+func (tm AwsSqsTagsMapper) GetTagsMapping(ctx context.Context) (map[string]Tags, error) {
+	if cv, found := tm.cache.Get(awsSqsCacheKey); found {
 		mapping := cv.(map[string]Tags)
 		return mapping, nil
 	}
@@ -59,7 +59,7 @@ func (astm AwsSqsTagsMapper) GetTagsMapping(ctx context.Context) (map[string]Tag
 			input = sqs.ListQueuesInput{MaxResults: &maxResults, NextToken: token}
 		}
 
-		output, err := astm.client.ListQueues(ctx, &input)
+		output, err := tm.client.ListQueues(ctx, &input)
 		if err != nil {
 			return nil, fmt.Errorf("%w", err)
 		}
@@ -67,7 +67,7 @@ func (astm AwsSqsTagsMapper) GetTagsMapping(ctx context.Context) (map[string]Tag
 		for i := 0; i < len(output.QueueUrls); i++ {
 			queueURL := output.QueueUrls[i]
 			tagsInput := sqs.ListQueueTagsInput{QueueUrl: &queueURL}
-			tagsOutput, err := astm.client.ListQueueTags(ctx, &tagsInput)
+			tagsOutput, err := tm.client.ListQueueTags(ctx, &tagsInput)
 			if err != nil {
 				return nil, fmt.Errorf("%w", err)
 			}
@@ -87,6 +87,6 @@ func (astm AwsSqsTagsMapper) GetTagsMapping(ctx context.Context) (map[string]Tag
 		token = output.NextToken
 	}
 
-	astm.cache.Set(awsSqsCacheKey, mapping, cache.DefaultExpiration)
+	tm.cache.Set(awsSqsCacheKey, mapping, cache.DefaultExpiration)
 	return mapping, nil
 }
