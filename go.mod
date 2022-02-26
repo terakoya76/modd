@@ -13,7 +13,7 @@ require (
 	github.com/aws/aws-sdk-go-v2/service/elasticloadbalancingv2 v1.17.0
 	github.com/aws/aws-sdk-go-v2/service/elasticsearchservice v1.14.0
 	github.com/aws/aws-sdk-go-v2/service/kinesis v1.14.0
-	github.com/aws/aws-sdk-go-v2/service/rds v1.16.0
+	github.com/aws/aws-sdk-go-v2/service/rds v1.17.0
 	github.com/aws/aws-sdk-go-v2/service/sfn v1.11.0
 	github.com/aws/aws-sdk-go-v2/service/sqs v1.17.0
 	github.com/kelseyhightower/envconfig v1.4.0
