@@ -58,8 +58,8 @@ github.com/aws/aws-sdk-go-v2/service/apigateway v1.14.0 h1:67VkCwWXMpIHvYLmtC33w
 github.com/aws/aws-sdk-go-v2/service/apigateway v1.14.0/go.mod h1:Squd9NmUCQuDyXQw4Y9TvqDqHKMfPcVK0cvF3773dGA=
 github.com/aws/aws-sdk-go-v2/service/autoscaling v1.21.0 h1:S7FsIuYQP9bP9fZ71Oq+GXYTjvaoc/001plSQY10j5k=
 github.com/aws/aws-sdk-go-v2/service/autoscaling v1.21.0/go.mod h1:WlHBXCrs0pVvCBlMwqqtRFVF5lHwjdVmFXwsIS3ED+I=
-github.com/aws/aws-sdk-go-v2/service/dynamodb v1.13.0 h1:Xlmdkxi8WcIwX5Cy9BS+scWcmvARw8pg0bi7kaeERUY=
-github.com/aws/aws-sdk-go-v2/service/dynamodb v1.13.0/go.mod h1:eNvoR4P1XQN7xElmYA8cWeFENLY3pfsj/5nFRItzXnA=
+github.com/aws/aws-sdk-go-v2/service/dynamodb v1.14.0 h1:P+eF8PKkeaiTfN/VBe5GI3uNdhwCPVYCQxchRewJcWk=
+github.com/aws/aws-sdk-go-v2/service/dynamodb v1.14.0/go.mod h1:15NiwrGGBpsC7C3zScmoaqNo1QJ9SRjdM5jxEPnCUR8=
 github.com/aws/aws-sdk-go-v2/service/elasticache v1.19.0 h1:XvFgY9AD7A0SotZopGYYlIxUUDrmq8yQ2zG4jLt0RWI=
 github.com/aws/aws-sdk-go-v2/service/elasticache v1.19.0/go.mod h1:+nOda2FOfMwSjWqkvAsG+eut5Sj2khHgvmXYm0NmnOM=
 github.com/aws/aws-sdk-go-v2/service/elasticloadbalancing v1.13.0 h1:mBmHTNhf3CBa+yt3KNt3SiOoMIFO4lH5f/NYCloUuI4=
@@ -70,10 +70,10 @@ github.com/aws/aws-sdk-go-v2/service/elasticsearchservice v1.14.0 h1:2x7IbID2ZE3
 github.com/aws/aws-sdk-go-v2/service/elasticsearchservice v1.14.0/go.mod h1:5d2XlBEcDroakuJvFPcvyP8yXCjNVaU234azevvLI+8=
 github.com/aws/aws-sdk-go-v2/service/firehose v1.13.0 h1:VsgRBKL2U6y7yMh4ayyxWx999UHr1AnnXZUPCm3tjv0=
 github.com/aws/aws-sdk-go-v2/service/firehose v1.13.0/go.mod h1:kRGKpG+yrVtvG2gKzlpLcw6Z+toca9E5D/rRnFmTyE4=
-github.com/aws/aws-sdk-go-v2/service/internal/accept-encoding v1.7.0 h1:F1diQIOkNn8jcez4173r+PLPdkWK7chy74r3fKpDrLI=
-github.com/aws/aws-sdk-go-v2/service/internal/accept-encoding v1.7.0/go.mod h1:8ctElVINyp+SjhoZZceUAZw78glZH6R8ox5MVNu5j2s=
-github.com/aws/aws-sdk-go-v2/service/internal/endpoint-discovery v1.5.0 h1:tzVhIPr/psp8Gb2Blst9mq6HklkhAGPqv2eaiSq6yoU=
-github.com/aws/aws-sdk-go-v2/service/internal/endpoint-discovery v1.5.0/go.mod h1:u0rI/Mm45zCJe86J5kvPfG7pYzkVZzNjEkoTVbfOYE8=
+github.com/aws/aws-sdk-go-v2/service/internal/accept-encoding v1.8.0 h1:wS94St7YDmLhrPJw3mjJfCfHHOABS3G9c//mDZRzELU=
+github.com/aws/aws-sdk-go-v2/service/internal/accept-encoding v1.8.0/go.mod h1:mEqrz8QJ8KnXvoSGOb7R7eoJ7nJZlaL5PPNwrJERUmg=
+github.com/aws/aws-sdk-go-v2/service/internal/endpoint-discovery v1.6.0 h1:q/O6wGx7MFwWfRNgTIVmGgXGBz9UKv16eSX1uuWdM7A=
+github.com/aws/aws-sdk-go-v2/service/internal/endpoint-discovery v1.6.0/go.mod h1:av5EvWSzwpAL0mqX8XcKlPIbtewpcltQ0hLBfyLL4oo=
 github.com/aws/aws-sdk-go-v2/service/internal/presigned-url v1.8.0 h1:JNMALY8/ZnFsfAzBHtC4gq8JeZPANmIoI2VaBgYzbf8=
 github.com/aws/aws-sdk-go-v2/service/internal/presigned-url v1.8.0/go.mod h1:rBDLgXDAwHOfxZKLRDl8OGTPzFDC+a2pLqNNj8+QwfI=
 github.com/aws/aws-sdk-go-v2/service/kinesis v1.14.0 h1:pmUzc9qHn/7N1lQdYLDzlrd2QGYdoRp8dyiwCMwtJ88=
