@@ -60,6 +60,12 @@ type AwsRdsConfig struct {
 	DdTagKey  string `envconfig:"datadog_tag_key" default:""`
 }
 
+// AwsSnsConfig holds metadata for AwsFilter for AWS SNS.
+type AwsSnsConfig struct {
+	AwsTagKey string `envconfig:"aws_tag_key" default:""`
+	DdTagKey  string `envconfig:"datadog_tag_key" default:""`
+}
+
 // AwsStepFunctionConfig holds metadata for AwsFilter for AWS StepFunction.
 type AwsStepFunctionConfig struct {
 	AwsTagKey string `envconfig:"aws_tag_key" default:""`

@@ -104,5 +104,6 @@ AWS
 * Kinesis
 * OpenSearch Service
 * RDS
+* SNS
 * StepFunction
 * SQS

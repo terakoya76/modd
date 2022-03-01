@@ -65,6 +65,11 @@ func TestMetricToIntegrationTarget(t *testing.T) {
 			expected: datadog.AwsRds,
 		},
 		{
+			name:     "when AWS SNS",
+			metric:   "aws.sns.number_of_notifications_failed",
+			expected: datadog.AwsSns,
+		},
+		{
 			name:     "when AWS StepFunction",
 			metric:   "aws.states.executions_failed",
 			expected: datadog.AwsStepFunction,
