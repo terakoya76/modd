@@ -1,5 +1,6 @@
 # modd
 [![test](https://github.com/terakoya76/modd/actions/workflows/test.yml/badge.svg)](https://github.com/terakoya76/modd/actions/workflows/test.yml)
+[![Coverage Status](https://coveralls.io/repos/github/terakoya76/modd/badge.svg?branch=main)](https://coveralls.io/github/terakoya76/modd?branch=main)
 
 monitor of datadog monitors
 
