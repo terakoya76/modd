@@ -144,6 +144,18 @@ func BuildTagsMapper(it datadog.IntegrationTarget) (TagsMapper, error) {
 		}
 
 		return m, nil
+	case datadog.AwsSns:
+		client, err := GetAwsSnsClient(context.TODO())
+		if err != nil {
+			return nil, fmt.Errorf("%w", err)
+		}
+
+		m := AwsSnsTagsMapper{
+			cache:  c,
+			client: client,
+		}
+
+		return m, nil
 	case datadog.AwsStepFunction:
 		client, err := GetAwsStepFunctionClient(context.TODO())
 		if err != nil {

@@ -111,6 +111,15 @@ func BuildFilter(it datadog.IntegrationTarget) (Filter, error) {
 
 		f := AwsFilter(c)
 		return f, nil
+	case datadog.AwsSns:
+		var c AwsSnsConfig
+		err := envconfig.Process(envPrefix, &c)
+		if err != nil {
+			return nil, err
+		}
+
+		f := AwsFilter(c)
+		return f, nil
 	case datadog.AwsStepFunction:
 		var c AwsStepFunctionConfig
 		err := envconfig.Process(envPrefix, &c)

@@ -31,6 +31,8 @@ const (
 	AwsOpenSearchService IntegrationTarget = "aws_elasticsearchservice"
 	// AwsRds represents AWS RDS integration.
 	AwsRds IntegrationTarget = "aws_rds"
+	// AwsSns represents AWS SNS integration.
+	AwsSns IntegrationTarget = "aws_sns"
 	// AwsStepFunction represents AWS StepFunction integration.
 	AwsStepFunction IntegrationTarget = "aws_states"
 	// AwsSqs represents AWS SQS integration.
@@ -65,6 +67,8 @@ func MetricToIntegrationTarget(metric string) IntegrationTarget {
 		return AwsOpenSearchService
 	case len(parts) >= 2 && parts[0] == AwsMetricsPrefix && parts[1] == "rds":
 		return AwsRds
+	case len(parts) >= 2 && parts[0] == AwsMetricsPrefix && parts[1] == "sns":
+		return AwsSns
 	case len(parts) >= 2 && parts[0] == AwsMetricsPrefix && parts[1] == "states":
 		return AwsStepFunction
 	case len(parts) >= 2 && parts[0] == AwsMetricsPrefix && parts[1] == "sqs":
