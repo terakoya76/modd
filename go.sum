@@ -66,8 +66,8 @@ github.com/aws/aws-sdk-go-v2/service/elasticloadbalancing v1.13.0 h1:mBmHTNhf3CB
 github.com/aws/aws-sdk-go-v2/service/elasticloadbalancing v1.13.0/go.mod h1:I4Zj4mmc5KyJpkLnBycQTcyvcRzrrlxsja7BAf59cHA=
 github.com/aws/aws-sdk-go-v2/service/elasticloadbalancingv2 v1.17.0 h1:ojOgWSwFT8uVqVslyX6r6f/xbUlse9pF/aTy9zrMNmc=
 github.com/aws/aws-sdk-go-v2/service/elasticloadbalancingv2 v1.17.0/go.mod h1:1rNJvFLGrUPdtoGPxwMTJ7pJoJ5r6bLRkRflv9X5J9c=
-github.com/aws/aws-sdk-go-v2/service/elasticsearchservice v1.14.0 h1:2x7IbID2ZE3GUHUx6UfWKYTnRZ/n/LVirOR7laQ/zvo=
-github.com/aws/aws-sdk-go-v2/service/elasticsearchservice v1.14.0/go.mod h1:5d2XlBEcDroakuJvFPcvyP8yXCjNVaU234azevvLI+8=
+github.com/aws/aws-sdk-go-v2/service/elasticsearchservice v1.15.0 h1:0haenQtXohS6WEh3MjriM6HWPACHSLEJIZegrWMgB0g=
+github.com/aws/aws-sdk-go-v2/service/elasticsearchservice v1.15.0/go.mod h1:ojfn9bConwRv/VhRN/xYOMji5MmManoI8MBEffbgXos=
 github.com/aws/aws-sdk-go-v2/service/firehose v1.13.0 h1:VsgRBKL2U6y7yMh4ayyxWx999UHr1AnnXZUPCm3tjv0=
 github.com/aws/aws-sdk-go-v2/service/firehose v1.13.0/go.mod h1:kRGKpG+yrVtvG2gKzlpLcw6Z+toca9E5D/rRnFmTyE4=
 github.com/aws/aws-sdk-go-v2/service/internal/accept-encoding v1.8.0 h1:wS94St7YDmLhrPJw3mjJfCfHHOABS3G9c//mDZRzELU=
