@@ -10,7 +10,7 @@ require (
 	github.com/aws/aws-sdk-go-v2/service/autoscaling v1.22.0
 	github.com/aws/aws-sdk-go-v2/service/dynamodb v1.15.0
 	github.com/aws/aws-sdk-go-v2/service/elasticache v1.20.0
-	github.com/aws/aws-sdk-go-v2/service/elasticloadbalancing v1.13.0
+	github.com/aws/aws-sdk-go-v2/service/elasticloadbalancing v1.14.0
 	github.com/aws/aws-sdk-go-v2/service/elasticloadbalancingv2 v1.17.0
 	github.com/aws/aws-sdk-go-v2/service/elasticsearchservice v1.15.0
 	github.com/aws/aws-sdk-go-v2/service/firehose v1.14.0
