@@ -70,11 +70,7 @@ func BuildTagsMapper(it datadog.IntegrationTarget) (TagsMapper, error) {
 			return nil, fmt.Errorf("%w", err)
 		}
 
-		m := AwsElastiCacheTagsMapper{
-			cache:  c,
-			client: client,
-		}
-
+		m := BuildAwsElastiCacheTagsMapper(c, client)
 		return m, nil
 
 	case datadog.AwsElb:

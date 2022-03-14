@@ -9,17 +9,39 @@ import (
 	"github.com/aws/aws-sdk-go-v2/aws/retry"
 	"github.com/aws/aws-sdk-go-v2/config"
 	"github.com/aws/aws-sdk-go-v2/service/elasticache"
-	"github.com/patrickmn/go-cache"
+	goCache "github.com/patrickmn/go-cache"
 
 	"github.com/terakoya76/modd/datadog"
 )
 
 const awsElastiCacheCacheKey string = string(datadog.AwsElastiCache)
 
+// AwsElastiCacheClient is abstract interface of *elasticache.Client.
+type AwsElastiCacheClient interface {
+	DescribeCacheClusters(
+		ctx context.Context,
+		params *elasticache.DescribeCacheClustersInput,
+		optFns ...func(*elasticache.Options),
+	) (*elasticache.DescribeCacheClustersOutput, error)
+	ListTagsForResource(
+		ctx context.Context,
+		params *elasticache.ListTagsForResourceInput,
+		optFns ...func(*elasticache.Options),
+	) (*elasticache.ListTagsForResourceOutput, error)
+}
+
 // AwsElastiCacheTagsMapper implements TagsMapper for AWS ElastiCache.
 type AwsElastiCacheTagsMapper struct {
-	cache  *cache.Cache
-	client *elasticache.Client
+	cache  *goCache.Cache
+	client AwsElastiCacheClient
+}
+
+// BuildAwsElastiCacheTagsMapper builds AwsElastiCacheTagsMapper from args.
+func BuildAwsElastiCacheTagsMapper(cache *goCache.Cache, client AwsElastiCacheClient) AwsElastiCacheTagsMapper {
+	return AwsElastiCacheTagsMapper{
+		cache:  cache,
+		client: client,
+	}
 }
 
 // GetAwsElastiCacheClient returns AWS ElastiCache client.
@@ -44,8 +66,7 @@ func (tm AwsElastiCacheTagsMapper) GetTagsMapping(ctx context.Context) (map[stri
 	mapping := make(map[string]Tags)
 
 	// https://pkg.go.dev/github.com/aws/aws-sdk-go-v2/service/elasticache#DescribeCacheClustersInput
-	initMarker := ""
-	marker := &initMarker
+	marker := aws.String("")
 
 	for marker != nil {
 		// Marker could not be empty string
@@ -79,6 +100,6 @@ func (tm AwsElastiCacheTagsMapper) GetTagsMapping(ctx context.Context) (map[stri
 		marker = output.Marker
 	}
 
-	tm.cache.Set(awsElastiCacheCacheKey, mapping, cache.DefaultExpiration)
+	tm.cache.Set(awsElastiCacheCacheKey, mapping, goCache.DefaultExpiration)
 	return mapping, nil
 }
