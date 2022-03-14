@@ -53,8 +53,8 @@ github.com/aws/aws-sdk-go-v2/internal/ini v1.3.7 h1:QOMEP8jnO8sm0SX/4G7dbaIq2eEP
 github.com/aws/aws-sdk-go-v2/internal/ini v1.3.7/go.mod h1:P5sjYYf2nc5dE6cZIzEMsVtq6XeLD7c4rM+kQJPrByA=
 github.com/aws/aws-sdk-go-v2/service/apigateway v1.15.0 h1:CTAocdVF3ZOnnbIfYg5iZEf+e9VaedCYd4K3UThWgCU=
 github.com/aws/aws-sdk-go-v2/service/apigateway v1.15.0/go.mod h1:HqyNvp1n7zL4mjIIwAocJwGPYItPST0s/5qMv8yAnG0=
-github.com/aws/aws-sdk-go-v2/service/autoscaling v1.22.0 h1:oO7E8M2lonF5yGm2b33dJZbYhpTMQzTFtvC7B5/l+sU=
-github.com/aws/aws-sdk-go-v2/service/autoscaling v1.22.0/go.mod h1:Rj8xktogEjzRs4G7uGkm/y62b0FGuE8m2sFk5sl8gHU=
+github.com/aws/aws-sdk-go-v2/service/autoscaling v1.22.1 h1:9kvgpjvAJynrMyNKE71rf4MFOl9XjMGSh0QLs0hgd4w=
+github.com/aws/aws-sdk-go-v2/service/autoscaling v1.22.1/go.mod h1:Rj8xktogEjzRs4G7uGkm/y62b0FGuE8m2sFk5sl8gHU=
 github.com/aws/aws-sdk-go-v2/service/dynamodb v1.15.0 h1:qnx+WyIH9/AD+wAxi05WCMNanO236ceqHg6hChCWs3M=
 github.com/aws/aws-sdk-go-v2/service/dynamodb v1.15.0/go.mod h1:+Kc1UmbE37ijaAsb3KogW6FR8z0myjX6VtdcCkQEK0k=
 github.com/aws/aws-sdk-go-v2/service/elasticache v1.20.0 h1:6I1NugSycELV/3T45Z/waQ5mwu2D9O5oB0gWX4R9dp8=
