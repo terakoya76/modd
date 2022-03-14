@@ -8,7 +8,7 @@ import (
 	"github.com/terakoya76/modd/evaluator"
 )
 
-func TestGetIdentifiersFromMaaping(t *testing.T) {
+func Test_GetIdentifiersFromMaaping(t *testing.T) {
 	cases := []struct {
 		name     string
 		mapping  map[string][]string
