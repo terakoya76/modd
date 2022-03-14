@@ -102,11 +102,7 @@ func BuildTagsMapper(it datadog.IntegrationTarget) (TagsMapper, error) {
 			return nil, fmt.Errorf("%w", err)
 		}
 
-		m := AwsFirehoseTagsMapper{
-			cache:  c,
-			client: client,
-		}
-
+		m := BuildAwsFirehoseTagsMapper(c, client)
 		return m, nil
 	case datadog.AwsKinesis:
 		client, err := GetAwsKinesisClient(context.TODO())
