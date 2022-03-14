@@ -32,6 +32,7 @@ func BuildTagsMapper(it datadog.IntegrationTarget) (TagsMapper, error) {
 
 		m := BuildAwsAPIGatewayTagsMapper(c, client)
 		return m, nil
+
 	case datadog.AwsAutoScalingGroup:
 		client, err := GetAwsAutoScalingGroupClient(context.TODO())
 		if err != nil {
@@ -44,6 +45,7 @@ func BuildTagsMapper(it datadog.IntegrationTarget) (TagsMapper, error) {
 		}
 
 		return m, nil
+
 	case datadog.AwsClb:
 		client, err := GetAwsClbClient(context.TODO())
 		if err != nil {
@@ -56,6 +58,7 @@ func BuildTagsMapper(it datadog.IntegrationTarget) (TagsMapper, error) {
 		}
 
 		return m, nil
+
 	case datadog.AwsDynamoDB:
 		client, err := GetAwsDynamoDBClient(context.TODO())
 		if err != nil {
@@ -68,6 +71,7 @@ func BuildTagsMapper(it datadog.IntegrationTarget) (TagsMapper, error) {
 		}
 
 		return m, nil
+
 	case datadog.AwsElastiCache:
 		client, err := GetAwsElastiCacheClient(context.TODO())
 		if err != nil {
@@ -80,6 +84,7 @@ func BuildTagsMapper(it datadog.IntegrationTarget) (TagsMapper, error) {
 		}
 
 		return m, nil
+
 	case datadog.AwsElb:
 		client, err := GetAwsElbClient(context.TODO())
 		if err != nil {
@@ -92,6 +97,7 @@ func BuildTagsMapper(it datadog.IntegrationTarget) (TagsMapper, error) {
 		}
 
 		return m, nil
+
 	case datadog.AwsFirehose:
 		client, err := GetAwsFirehoseClient(context.TODO())
 		if err != nil {
@@ -100,6 +106,7 @@ func BuildTagsMapper(it datadog.IntegrationTarget) (TagsMapper, error) {
 
 		m := BuildAwsFirehoseTagsMapper(c, client)
 		return m, nil
+
 	case datadog.AwsKinesis:
 		client, err := GetAwsKinesisClient(context.TODO())
 		if err != nil {
@@ -108,6 +115,7 @@ func BuildTagsMapper(it datadog.IntegrationTarget) (TagsMapper, error) {
 
 		m := BuildAwsKinesisTagsMapper(c, client)
 		return m, nil
+
 	case datadog.AwsOpenSearchService:
 		client, err := GetAwsOpenSearchServiceClient(context.TODO())
 		if err != nil {
@@ -120,6 +128,7 @@ func BuildTagsMapper(it datadog.IntegrationTarget) (TagsMapper, error) {
 		}
 
 		return m, nil
+
 	case datadog.AwsRds:
 		client, err := GetAwsRdsClient(context.TODO())
 		if err != nil {
@@ -132,6 +141,7 @@ func BuildTagsMapper(it datadog.IntegrationTarget) (TagsMapper, error) {
 		}
 
 		return m, nil
+
 	case datadog.AwsSns:
 		client, err := GetAwsSnsClient(context.TODO())
 		if err != nil {
@@ -144,6 +154,7 @@ func BuildTagsMapper(it datadog.IntegrationTarget) (TagsMapper, error) {
 		}
 
 		return m, nil
+
 	case datadog.AwsStepFunction:
 		client, err := GetAwsStepFunctionClient(context.TODO())
 		if err != nil {
@@ -156,6 +167,7 @@ func BuildTagsMapper(it datadog.IntegrationTarget) (TagsMapper, error) {
 		}
 
 		return m, nil
+
 	case datadog.AwsSqs:
 		client, err := GetAwsSqsClient(context.TODO())
 		if err != nil {
@@ -168,6 +180,7 @@ func BuildTagsMapper(it datadog.IntegrationTarget) (TagsMapper, error) {
 		}
 
 		return m, nil
+
 	case datadog.UnknownIntegration:
 		return nil, fmt.Errorf("unsupported IntegrationTarget")
 	default:
