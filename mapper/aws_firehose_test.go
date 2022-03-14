@@ -15,11 +15,11 @@ import (
 	"github.com/terakoya76/modd/mapper"
 )
 
-// dummyFirehoseClient implements AwsFirehoseClient interface for faking AWS API.
-type dummyFirehoseClient struct{}
+// dummyAwsFirehoseClient implements AwsFirehoseClient interface for faking AWS API.
+type dummyAwsFirehoseClient struct{}
 
-// ListStreams implements AwsFirehoseClient for dummyFirehoseClient.
-func (c *dummyFirehoseClient) ListDeliveryStreams(
+// ListStreams implements AwsFirehoseClient for dummyAwsFirehoseClient.
+func (c *dummyAwsFirehoseClient) ListDeliveryStreams(
 	ctx context.Context,
 	params *firehose.ListDeliveryStreamsInput,
 	optFns ...func(*firehose.Options),
@@ -43,8 +43,8 @@ func (c *dummyFirehoseClient) ListDeliveryStreams(
 	return &output, nil
 }
 
-// ListTagsForStream implements AwsFirehoseClient for dummyFirehoseClient.
-func (c *dummyFirehoseClient) ListTagsForDeliveryStream(
+// ListTagsForStream implements AwsFirehoseClient for dummyAwsFirehoseClient.
+func (c *dummyAwsFirehoseClient) ListTagsForDeliveryStream(
 	ctx context.Context,
 	params *firehose.ListTagsForDeliveryStreamInput,
 	optFns ...func(*firehose.Options),
@@ -107,7 +107,7 @@ func Test_AwsFirehose_GetTagsMapping(t *testing.T) {
 	}
 
 	for _, c := range cases {
-		client := dummyFirehoseClient{}
+		client := dummyAwsFirehoseClient{}
 		m := mapper.BuildAwsFirehoseTagsMapper(cache, &client)
 		actual, err := m.GetTagsMapping(context.TODO())
 		if !assert.Equal(t, c.err, err) {

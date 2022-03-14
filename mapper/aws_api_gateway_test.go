@@ -15,11 +15,11 @@ import (
 	"github.com/terakoya76/modd/mapper"
 )
 
-// dummyAPIGatewayClient implements AwsAPIGatewayClient interface for faking AWS API.
-type dummyAPIGatewayClient struct{}
+// dummyAwsAPIGatewayClient implements AwsAPIGatewayClient interface for faking AWS API.
+type dummyAwsAPIGatewayClient struct{}
 
-// GetRestApis implements AwsAPIGatewayClient for dummyAPIGatewayClient.
-func (c *dummyAPIGatewayClient) GetRestApis(
+// GetRestApis implements AwsAPIGatewayClient for dummyAwsAPIGatewayClient.
+func (c *dummyAwsAPIGatewayClient) GetRestApis(
 	ctx context.Context,
 	params *apigateway.GetRestApisInput,
 	optFns ...func(*apigateway.Options),
@@ -90,7 +90,7 @@ func Test_AwsAPIGateway_GetTagsMapping(t *testing.T) {
 	}
 
 	for _, c := range cases {
-		client := dummyAPIGatewayClient{}
+		client := dummyAwsAPIGatewayClient{}
 		m := mapper.BuildAwsAPIGatewayTagsMapper(cache, &client)
 		actual, err := m.GetTagsMapping(context.TODO())
 		if !assert.Equal(t, c.err, err) {

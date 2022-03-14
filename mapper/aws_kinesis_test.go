@@ -15,11 +15,11 @@ import (
 	"github.com/terakoya76/modd/mapper"
 )
 
-// dummyKinesisClient implements AwsKinesisClient interface for faking AWS API.
-type dummyKinesisClient struct{}
+// dummyAwsKinesisClient implements AwsKinesisClient interface for faking AWS API.
+type dummyAwsKinesisClient struct{}
 
-// ListStreams implements AwsKinesisClient for dummyKinesisClient.
-func (c *dummyKinesisClient) ListStreams(
+// ListStreams implements AwsKinesisClient for dummyAwsKinesisClient.
+func (c *dummyAwsKinesisClient) ListStreams(
 	ctx context.Context,
 	params *kinesis.ListStreamsInput,
 	optFns ...func(*kinesis.Options),
@@ -43,8 +43,8 @@ func (c *dummyKinesisClient) ListStreams(
 	return &output, nil
 }
 
-// ListTagsForStream implements AwsKinesisClient for dummyKinesisClient.
-func (c *dummyKinesisClient) ListTagsForStream(
+// ListTagsForStream implements AwsKinesisClient for dummyAwsKinesisClient.
+func (c *dummyAwsKinesisClient) ListTagsForStream(
 	ctx context.Context,
 	params *kinesis.ListTagsForStreamInput,
 	optFns ...func(*kinesis.Options),
@@ -107,7 +107,7 @@ func Test_AwsKinesis_GetTagsMapping(t *testing.T) {
 	}
 
 	for _, c := range cases {
-		client := dummyKinesisClient{}
+		client := dummyAwsKinesisClient{}
 		m := mapper.BuildAwsKinesisTagsMapper(cache, &client)
 		actual, err := m.GetTagsMapping(context.TODO())
 		if !assert.Equal(t, c.err, err) {
