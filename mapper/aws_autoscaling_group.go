@@ -9,17 +9,34 @@ import (
 	"github.com/aws/aws-sdk-go-v2/aws/retry"
 	"github.com/aws/aws-sdk-go-v2/config"
 	"github.com/aws/aws-sdk-go-v2/service/autoscaling"
-	"github.com/patrickmn/go-cache"
+	goCache "github.com/patrickmn/go-cache"
 
 	"github.com/terakoya76/modd/datadog"
 )
 
 const awsAutoScalingGroupCacheKey string = string(datadog.AwsAutoScalingGroup)
 
+// AwsAutoScalingGroupClient is abstract interface of *autoscaling.Client.
+type AwsAutoScalingGroupClient interface {
+	DescribeAutoScalingGroups(
+		ctx context.Context,
+		params *autoscaling.DescribeAutoScalingGroupsInput,
+		optFns ...func(*autoscaling.Options),
+	) (*autoscaling.DescribeAutoScalingGroupsOutput, error)
+}
+
 // AwsAutoScalingGroupTagsMapper implements TagsMapper for AWS AutoScalingGroup.
 type AwsAutoScalingGroupTagsMapper struct {
-	cache  *cache.Cache
-	client *autoscaling.Client
+	cache  *goCache.Cache
+	client AwsAutoScalingGroupClient
+}
+
+// BuildAwsAutoScalingGroupTagsMapper builds AwsAutoScalingGroupTagsMapper from args.
+func BuildAwsAutoScalingGroupTagsMapper(cache *goCache.Cache, client AwsAutoScalingGroupClient) AwsAutoScalingGroupTagsMapper {
+	return AwsAutoScalingGroupTagsMapper{
+		cache:  cache,
+		client: client,
+	}
 }
 
 // GetAwsAutoScalingGroupClient returns AWS AutoScalingGroup client.
@@ -44,8 +61,7 @@ func (tm AwsAutoScalingGroupTagsMapper) GetTagsMapping(ctx context.Context) (map
 	mapping := make(map[string]Tags)
 
 	// https://pkg.go.dev/github.com/aws/aws-sdk-go-v2/service/autoscaling#DescribeAutoScalingGroupsInput
-	initToken := ""
-	token := &initToken
+	token := aws.String("")
 
 	for token != nil {
 		// NextToken could not be empty string
@@ -73,6 +89,6 @@ func (tm AwsAutoScalingGroupTagsMapper) GetTagsMapping(ctx context.Context) (map
 		token = output.NextToken
 	}
 
-	tm.cache.Set(awsAutoScalingGroupCacheKey, mapping, cache.DefaultExpiration)
+	tm.cache.Set(awsAutoScalingGroupCacheKey, mapping, goCache.DefaultExpiration)
 	return mapping, nil
 }

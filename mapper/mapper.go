@@ -39,11 +39,7 @@ func BuildTagsMapper(it datadog.IntegrationTarget) (TagsMapper, error) {
 			return nil, fmt.Errorf("%w", err)
 		}
 
-		m := AwsAutoScalingGroupTagsMapper{
-			cache:  c,
-			client: client,
-		}
-
+		m := BuildAwsAutoScalingGroupTagsMapper(c, client)
 		return m, nil
 
 	case datadog.AwsClb:
