@@ -9,17 +9,34 @@ import (
 	"github.com/aws/aws-sdk-go-v2/aws/retry"
 	"github.com/aws/aws-sdk-go-v2/config"
 	"github.com/aws/aws-sdk-go-v2/service/apigateway"
-	"github.com/patrickmn/go-cache"
+	goCache "github.com/patrickmn/go-cache"
 
 	"github.com/terakoya76/modd/datadog"
 )
 
 const awsAPIGatewayCacheKey string = string(datadog.AwsAPIGateway)
 
+// AwsAPIGatewayClient is abstract interface of *apigateway.Client.
+type AwsAPIGatewayClient interface {
+	GetRestApis(
+		ctx context.Context,
+		params *apigateway.GetRestApisInput,
+		optFns ...func(*apigateway.Options),
+	) (*apigateway.GetRestApisOutput, error)
+}
+
 // AwsAPIGatewayTagsMapper implements TagsMapper for AWS API Gateway.
 type AwsAPIGatewayTagsMapper struct {
-	cache  *cache.Cache
-	client *apigateway.Client
+	cache  *goCache.Cache
+	client AwsAPIGatewayClient
+}
+
+// BuildAwsAPIGatewayTagsMapper builds AwsAPIGatewayTagsMapper from args.
+func BuildAwsAPIGatewayTagsMapper(cache *goCache.Cache, client AwsAPIGatewayClient) AwsAPIGatewayTagsMapper {
+	return AwsAPIGatewayTagsMapper{
+		cache:  cache,
+		client: client,
+	}
 }
 
 // GetAwsAPIGatewayClient returns AWS API Gateway client.
@@ -44,19 +61,16 @@ func (tm AwsAPIGatewayTagsMapper) GetTagsMapping(ctx context.Context) (map[strin
 	mapping := make(map[string]Tags)
 
 	// https://pkg.go.dev/github.com/aws/aws-sdk-go-v2/service/apigateway#GetRestApisInput
-	initPos := ""
-	pos := &initPos
-
-	// https://pkg.go.dev/github.com/aws/aws-sdk-go-v2/service/apigateway#GetRestApisInput
-	var limit int32 = 500
+	pos := aws.String("")
+	limit := aws.Int32(500)
 
 	for pos != nil {
 		// Position could not be empty string
 		var input apigateway.GetRestApisInput
 		if *pos == "" {
-			input = apigateway.GetRestApisInput{Limit: &limit}
+			input = apigateway.GetRestApisInput{Limit: limit}
 		} else {
-			input = apigateway.GetRestApisInput{Limit: &limit, Position: pos}
+			input = apigateway.GetRestApisInput{Limit: limit, Position: pos}
 		}
 
 		output, err := tm.client.GetRestApis(ctx, &input)
@@ -81,6 +95,6 @@ func (tm AwsAPIGatewayTagsMapper) GetTagsMapping(ctx context.Context) (map[strin
 		pos = output.Position
 	}
 
-	tm.cache.Set(awsAPIGatewayCacheKey, mapping, cache.DefaultExpiration)
+	tm.cache.Set(awsAPIGatewayCacheKey, mapping, goCache.DefaultExpiration)
 	return mapping, nil
 }
