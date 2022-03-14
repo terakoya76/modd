@@ -15,10 +15,10 @@ import (
 	"github.com/terakoya76/modd/mapper"
 )
 
-// dummyKinesisClient implements KinesisClient interface for faking AWS API.
-type dummyKinesisClient struct {}
+// dummyKinesisClient implements AwsKinesisClient interface for faking AWS API.
+type dummyKinesisClient struct{}
 
-// ListStreams implements KinesisClient for dummyKinesisClient.
+// ListStreams implements AwsKinesisClient for dummyKinesisClient.
 func (c *dummyKinesisClient) ListStreams(
 	ctx context.Context,
 	params *kinesis.ListStreamsInput,
@@ -43,7 +43,7 @@ func (c *dummyKinesisClient) ListStreams(
 	return &output, nil
 }
 
-// ListTagsForStream implements KinesisClient for dummyKinesisClient.
+// ListTagsForStream implements AwsKinesisClient for dummyKinesisClient.
 func (c *dummyKinesisClient) ListTagsForStream(
 	ctx context.Context,
 	params *kinesis.ListTagsForStreamInput,

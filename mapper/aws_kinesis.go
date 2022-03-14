@@ -16,8 +16,8 @@ import (
 
 const awsKinesisCacheKey string = string(datadog.AwsKinesis)
 
-// KinesisClient is abstract interface of *kinesis.Client.
-type KinesisClient interface {
+// AwsKinesisClient is abstract interface of *kinesis.Client.
+type AwsKinesisClient interface {
 	ListStreams(
 		ctx context.Context,
 		params *kinesis.ListStreamsInput,
@@ -33,11 +33,11 @@ type KinesisClient interface {
 // AwsKinesisTagsMapper implements TagsMapper for AWS Kinesis.
 type AwsKinesisTagsMapper struct {
 	cache  *goCache.Cache
-	client KinesisClient
+	client AwsKinesisClient
 }
 
 // BuildAwsKinesisTagsMapper builds AwsKinesisTagsMapper from args.
-func BuildAwsKinesisTagsMapper(cache *goCache.Cache, client KinesisClient) AwsKinesisTagsMapper {
+func BuildAwsKinesisTagsMapper(cache *goCache.Cache, client AwsKinesisClient) AwsKinesisTagsMapper {
 	return AwsKinesisTagsMapper{
 		cache:  cache,
 		client: client,
