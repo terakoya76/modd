@@ -79,11 +79,7 @@ func BuildTagsMapper(it datadog.IntegrationTarget) (TagsMapper, error) {
 			return nil, fmt.Errorf("%w", err)
 		}
 
-		m := AwsElbTagsMapper{
-			cache:  c,
-			client: client,
-		}
-
+		m := BuildAwsElbTagsMapper(c, client)
 		return m, nil
 
 	case datadog.AwsFirehose:
