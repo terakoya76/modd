@@ -48,11 +48,7 @@ func BuildTagsMapper(it datadog.IntegrationTarget) (TagsMapper, error) {
 			return nil, fmt.Errorf("%w", err)
 		}
 
-		m := AwsClbTagsMapper{
-			cache:  c,
-			client: client,
-		}
-
+		m := BuildAwsClbTagsMapper(c, client)
 		return m, nil
 
 	case datadog.AwsDynamoDB:

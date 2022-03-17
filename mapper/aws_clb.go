@@ -9,17 +9,31 @@ import (
 	"github.com/aws/aws-sdk-go-v2/aws/retry"
 	"github.com/aws/aws-sdk-go-v2/config"
 	"github.com/aws/aws-sdk-go-v2/service/elasticloadbalancing"
-	"github.com/patrickmn/go-cache"
+	goCache "github.com/patrickmn/go-cache"
 
 	"github.com/terakoya76/modd/datadog"
 )
 
 const awsClbCacheKey string = string(datadog.AwsClb)
 
+// AwsClbClient is abstract interface of *elasticloadbalancing.Client.
+type AwsClbClient interface {
+	DescribeLoadBalancers(
+		ctx context.Context,
+		params *elasticloadbalancing.DescribeLoadBalancersInput,
+		optFns ...func(*elasticloadbalancing.Options),
+	) (*elasticloadbalancing.DescribeLoadBalancersOutput, error)
+	DescribeTags(
+		ctx context.Context,
+		params *elasticloadbalancing.DescribeTagsInput,
+		optFns ...func(*elasticloadbalancing.Options),
+	) (*elasticloadbalancing.DescribeTagsOutput, error)
+}
+
 // AwsClbTagsMapper implements TagsMapper for AWS CLB.
 type AwsClbTagsMapper struct {
-	cache  *cache.Cache
-	client *elasticloadbalancing.Client
+	cache  *goCache.Cache
+	client AwsClbClient
 }
 
 // GetAwsClbClient returns AWS CLB client.
@@ -34,6 +48,14 @@ func GetAwsClbClient(ctx context.Context) (*elasticloadbalancing.Client, error) 
 	return elasticloadbalancing.NewFromConfig(cfg), nil
 }
 
+// BuildAwsClbTagsMapper builds AwsClbTagsMapper from args.
+func BuildAwsClbTagsMapper(cache *goCache.Cache, client AwsClbClient) AwsClbTagsMapper {
+	return AwsClbTagsMapper{
+		cache:  cache,
+		client: client,
+	}
+}
+
 // GetTagsMapping returns the latest tags mapping.
 func (tm AwsClbTagsMapper) GetTagsMapping(ctx context.Context) (map[string]Tags, error) {
 	if cv, found := tm.cache.Get(awsClbCacheKey); found {
@@ -44,8 +66,7 @@ func (tm AwsClbTagsMapper) GetTagsMapping(ctx context.Context) (map[string]Tags,
 	mapping := make(map[string]Tags)
 
 	// https://pkg.go.dev/github.com/aws/aws-sdk-go-v2/service/elasticloadbalancing#DescribeLoadBalancersInput
-	initMarker := ""
-	marker := &initMarker
+	marker := aws.String("")
 
 	// Although there is no description, we can fetch load balancers upto 20 in a single call.
 	// https://pkg.go.dev/github.com/aws/aws-sdk-go-v2/service/elasticloadbalancing#DescribeLoadBalancersInput
@@ -69,11 +90,11 @@ func (tm AwsClbTagsMapper) GetTagsMapping(ctx context.Context) (map[string]Tags,
 		for i := 0; i < iter; i++ {
 			names := []string{}
 			for j := 0; j < maxItemsPerReq; j++ {
-				idx := iter*i + j
 				if j >= len(output.LoadBalancerDescriptions) {
 					continue
 				}
 
+				idx := iter*i + j
 				lb := output.LoadBalancerDescriptions[idx]
 				names = append(names, *lb.LoadBalancerName)
 			}
@@ -99,6 +120,6 @@ func (tm AwsClbTagsMapper) GetTagsMapping(ctx context.Context) (map[string]Tags,
 		marker = output.NextMarker
 	}
 
-	tm.cache.Set(awsClbCacheKey, mapping, cache.DefaultExpiration)
+	tm.cache.Set(awsClbCacheKey, mapping, goCache.DefaultExpiration)
 	return mapping, nil
 }
