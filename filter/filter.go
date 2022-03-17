@@ -30,6 +30,7 @@ func BuildFilter(it datadog.IntegrationTarget) (Filter, error) {
 
 		f := AwsFilter(c)
 		return f, nil
+
 	case datadog.AwsAutoScalingGroup:
 		var c AwsAutoScalingGroupConfig
 		err := envconfig.Process(envPrefix, &c)
@@ -39,6 +40,7 @@ func BuildFilter(it datadog.IntegrationTarget) (Filter, error) {
 
 		f := AwsFilter(c)
 		return f, nil
+
 	case datadog.AwsClb:
 		var c AwsClbConfig
 		err := envconfig.Process(envPrefix, &c)
@@ -48,6 +50,7 @@ func BuildFilter(it datadog.IntegrationTarget) (Filter, error) {
 
 		f := AwsFilter(c)
 		return f, nil
+
 	case datadog.AwsDynamoDB:
 		var c AwsDynamoDBConfig
 		err := envconfig.Process(envPrefix, &c)
@@ -57,6 +60,7 @@ func BuildFilter(it datadog.IntegrationTarget) (Filter, error) {
 
 		f := AwsFilter(c)
 		return f, nil
+
 	case datadog.AwsElastiCache:
 		var c AwsElastiCacheConfig
 		err := envconfig.Process(envPrefix, &c)
@@ -66,6 +70,7 @@ func BuildFilter(it datadog.IntegrationTarget) (Filter, error) {
 
 		f := AwsFilter(c)
 		return f, nil
+
 	case datadog.AwsElb:
 		var c AwsElbConfig
 		err := envconfig.Process(envPrefix, &c)
@@ -75,6 +80,7 @@ func BuildFilter(it datadog.IntegrationTarget) (Filter, error) {
 
 		f := AwsFilter(c)
 		return f, nil
+
 	case datadog.AwsFirehose:
 		var c AwsFirehoseConfig
 		err := envconfig.Process(envPrefix, &c)
@@ -84,6 +90,7 @@ func BuildFilter(it datadog.IntegrationTarget) (Filter, error) {
 
 		f := AwsFilter(c)
 		return f, nil
+
 	case datadog.AwsKinesis:
 		var c AwsKinesisConfig
 		err := envconfig.Process(envPrefix, &c)
@@ -93,6 +100,7 @@ func BuildFilter(it datadog.IntegrationTarget) (Filter, error) {
 
 		f := AwsFilter(c)
 		return f, nil
+
 	case datadog.AwsOpenSearchService:
 		var c AwsOpenSeardhServiceConfig
 		err := envconfig.Process(envPrefix, &c)
@@ -102,6 +110,7 @@ func BuildFilter(it datadog.IntegrationTarget) (Filter, error) {
 
 		f := AwsFilter(c)
 		return f, nil
+
 	case datadog.AwsRds:
 		var c AwsRdsConfig
 		err := envconfig.Process(envPrefix, &c)
@@ -111,6 +120,7 @@ func BuildFilter(it datadog.IntegrationTarget) (Filter, error) {
 
 		f := AwsFilter(c)
 		return f, nil
+
 	case datadog.AwsSns:
 		var c AwsSnsConfig
 		err := envconfig.Process(envPrefix, &c)
@@ -120,6 +130,7 @@ func BuildFilter(it datadog.IntegrationTarget) (Filter, error) {
 
 		f := AwsFilter(c)
 		return f, nil
+
 	case datadog.AwsStepFunction:
 		var c AwsStepFunctionConfig
 		err := envconfig.Process(envPrefix, &c)
@@ -129,6 +140,7 @@ func BuildFilter(it datadog.IntegrationTarget) (Filter, error) {
 
 		f := AwsFilter(c)
 		return f, nil
+
 	case datadog.AwsSqs:
 		var c AwsSqsConfig
 		err := envconfig.Process(envPrefix, &c)
@@ -138,6 +150,7 @@ func BuildFilter(it datadog.IntegrationTarget) (Filter, error) {
 
 		f := AwsFilter(c)
 		return f, nil
+
 	case datadog.UnknownIntegration:
 		return nil, fmt.Errorf("unsupported IntegrationTarget")
 	default:

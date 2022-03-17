@@ -30,156 +30,117 @@ func BuildTagsMapper(it datadog.IntegrationTarget) (TagsMapper, error) {
 			return nil, fmt.Errorf("%w", err)
 		}
 
-		m := AwsAPIGatewayTagsMapper{
-			cache:  c,
-			client: client,
-		}
-
+		m := BuildAwsAPIGatewayTagsMapper(c, client)
 		return m, nil
+
 	case datadog.AwsAutoScalingGroup:
 		client, err := GetAwsAutoScalingGroupClient(context.TODO())
 		if err != nil {
 			return nil, fmt.Errorf("%w", err)
 		}
 
-		m := AwsAutoScalingGroupTagsMapper{
-			cache:  c,
-			client: client,
-		}
-
+		m := BuildAwsAutoScalingGroupTagsMapper(c, client)
 		return m, nil
+
 	case datadog.AwsClb:
 		client, err := GetAwsClbClient(context.TODO())
 		if err != nil {
 			return nil, fmt.Errorf("%w", err)
 		}
 
-		m := AwsClbTagsMapper{
-			cache:  c,
-			client: client,
-		}
-
+		m := BuildAwsClbTagsMapper(c, client)
 		return m, nil
+
 	case datadog.AwsDynamoDB:
 		client, err := GetAwsDynamoDBClient(context.TODO())
 		if err != nil {
 			return nil, fmt.Errorf("%w", err)
 		}
 
-		m := AwsDynamoDBTagsMapper{
-			cache:  c,
-			client: client,
-		}
-
+		m := BuildAwsDynamoDBTagsMapper(c, client)
 		return m, nil
+
 	case datadog.AwsElastiCache:
 		client, err := GetAwsElastiCacheClient(context.TODO())
 		if err != nil {
 			return nil, fmt.Errorf("%w", err)
 		}
 
-		m := AwsElastiCacheTagsMapper{
-			cache:  c,
-			client: client,
-		}
-
+		m := BuildAwsElastiCacheTagsMapper(c, client)
 		return m, nil
+
 	case datadog.AwsElb:
 		client, err := GetAwsElbClient(context.TODO())
 		if err != nil {
 			return nil, fmt.Errorf("%w", err)
 		}
 
-		m := AwsElbTagsMapper{
-			cache:  c,
-			client: client,
-		}
-
+		m := BuildAwsElbTagsMapper(c, client)
 		return m, nil
+
 	case datadog.AwsFirehose:
 		client, err := GetAwsFirehoseClient(context.TODO())
 		if err != nil {
 			return nil, fmt.Errorf("%w", err)
 		}
 
-		m := AwsFirehoseTagsMapper{
-			cache:  c,
-			client: client,
-		}
-
+		m := BuildAwsFirehoseTagsMapper(c, client)
 		return m, nil
+
 	case datadog.AwsKinesis:
 		client, err := GetAwsKinesisClient(context.TODO())
 		if err != nil {
 			return nil, fmt.Errorf("%w", err)
 		}
 
-		m := AwsKinesisTagsMapper{
-			cache:  c,
-			client: client,
-		}
-
+		m := BuildAwsKinesisTagsMapper(c, client)
 		return m, nil
+
 	case datadog.AwsOpenSearchService:
 		client, err := GetAwsOpenSearchServiceClient(context.TODO())
 		if err != nil {
 			return nil, fmt.Errorf("%w", err)
 		}
 
-		m := AwsOpenSearchServiceTagsMapper{
-			cache:  c,
-			client: client,
-		}
-
+		m := BuildAwsOpenSearchServiceTagsMapper(c, client)
 		return m, nil
+
 	case datadog.AwsRds:
 		client, err := GetAwsRdsClient(context.TODO())
 		if err != nil {
 			return nil, fmt.Errorf("%w", err)
 		}
 
-		m := AwsRdsTagsMapper{
-			cache:  c,
-			client: client,
-		}
-
+		m := BuildAwsRdsTagsMapper(c, client)
 		return m, nil
+
 	case datadog.AwsSns:
 		client, err := GetAwsSnsClient(context.TODO())
 		if err != nil {
 			return nil, fmt.Errorf("%w", err)
 		}
 
-		m := AwsSnsTagsMapper{
-			cache:  c,
-			client: client,
-		}
-
+		m := BuildAwsSnsTagsMapper(c, client)
 		return m, nil
+
 	case datadog.AwsStepFunction:
 		client, err := GetAwsStepFunctionClient(context.TODO())
 		if err != nil {
 			return nil, fmt.Errorf("%w", err)
 		}
 
-		m := AwsStepFunctionTagsMapper{
-			cache:  c,
-			client: client,
-		}
-
+		m := BuildAwsStepFunctionTagsMapper(c, client)
 		return m, nil
+
 	case datadog.AwsSqs:
 		client, err := GetAwsSqsClient(context.TODO())
 		if err != nil {
 			return nil, fmt.Errorf("%w", err)
 		}
 
-		m := AwsSqsTagsMapper{
-			cache:  c,
-			client: client,
-		}
-
+		m := BuildAwsSqsTagsMapper(c, client)
 		return m, nil
+
 	case datadog.UnknownIntegration:
 		return nil, fmt.Errorf("unsupported IntegrationTarget")
 	default:

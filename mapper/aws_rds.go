@@ -9,17 +9,26 @@ import (
 	"github.com/aws/aws-sdk-go-v2/aws/retry"
 	"github.com/aws/aws-sdk-go-v2/config"
 	"github.com/aws/aws-sdk-go-v2/service/rds"
-	"github.com/patrickmn/go-cache"
+	goCache "github.com/patrickmn/go-cache"
 
 	"github.com/terakoya76/modd/datadog"
 )
 
 const awsRdsCacheKey string = string(datadog.AwsRds)
 
+// AwsRdsClient is abstract interface of *rds.Client.
+type AwsRdsClient interface {
+	DescribeDBInstances(
+		ctx context.Context,
+		params *rds.DescribeDBInstancesInput,
+		optFns ...func(*rds.Options),
+	) (*rds.DescribeDBInstancesOutput, error)
+}
+
 // AwsRdsTagsMapper implements TagsMapper for AWS RDS.
 type AwsRdsTagsMapper struct {
-	cache  *cache.Cache
-	client *rds.Client
+	cache  *goCache.Cache
+	client AwsRdsClient
 }
 
 // GetAwsRdsClient returns AWS RDS client.
@@ -34,6 +43,14 @@ func GetAwsRdsClient(ctx context.Context) (*rds.Client, error) {
 	return rds.NewFromConfig(cfg), nil
 }
 
+// BuildAwsRdsTagsMapper builds AwsRdsTagsMapper from args.
+func BuildAwsRdsTagsMapper(cache *goCache.Cache, client AwsRdsClient) AwsRdsTagsMapper {
+	return AwsRdsTagsMapper{
+		cache:  cache,
+		client: client,
+	}
+}
+
 // GetTagsMapping returns the latest tags mapping.
 func (tm AwsRdsTagsMapper) GetTagsMapping(ctx context.Context) (map[string]Tags, error) {
 	if cv, found := tm.cache.Get(awsRdsCacheKey); found {
@@ -44,8 +61,7 @@ func (tm AwsRdsTagsMapper) GetTagsMapping(ctx context.Context) (map[string]Tags,
 	mapping := make(map[string]Tags)
 
 	// https://pkg.go.dev/github.com/aws/aws-sdk-go-v2/service/rds#DescribeDBInstancesInput
-	initMarker := ""
-	marker := &initMarker
+	marker := aws.String("")
 
 	for marker != nil {
 		// Marker could not be empty string
@@ -74,6 +90,6 @@ func (tm AwsRdsTagsMapper) GetTagsMapping(ctx context.Context) (map[string]Tags,
 		marker = output.Marker
 	}
 
-	tm.cache.Set(awsRdsCacheKey, mapping, cache.DefaultExpiration)
+	tm.cache.Set(awsRdsCacheKey, mapping, goCache.DefaultExpiration)
 	return mapping, nil
 }

@@ -8,7 +8,7 @@ import (
 	"github.com/terakoya76/modd/datadog"
 )
 
-func TestMetricToIntegrationTarget(t *testing.T) {
+func Test_MetricToIntegrationTarget(t *testing.T) {
 	cases := []struct {
 		name     string
 		metric   string

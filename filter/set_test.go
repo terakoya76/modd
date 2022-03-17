@@ -8,7 +8,7 @@ import (
 	"github.com/terakoya76/modd/filter"
 )
 
-func TestIntersect(t *testing.T) {
+func Test_Intersect(t *testing.T) {
 	cases := []struct {
 		name     string
 		arg1     []string
@@ -55,7 +55,7 @@ func TestIntersect(t *testing.T) {
 	}
 }
 
-func TestDifference(t *testing.T) {
+func Test_Difference(t *testing.T) {
 	cases := []struct {
 		name     string
 		arg1     []string

@@ -8,7 +8,7 @@ import (
 	"github.com/terakoya76/modd/datadog"
 )
 
-func TestMakeUniq(t *testing.T) {
+func Test_MakeUniq(t *testing.T) {
 	cases := []struct {
 		name     string
 		arr      [][]string

@@ -9,17 +9,39 @@ import (
 	"github.com/aws/aws-sdk-go-v2/aws/retry"
 	"github.com/aws/aws-sdk-go-v2/config"
 	"github.com/aws/aws-sdk-go-v2/service/kinesis"
-	"github.com/patrickmn/go-cache"
+	goCache "github.com/patrickmn/go-cache"
 
 	"github.com/terakoya76/modd/datadog"
 )
 
 const awsKinesisCacheKey string = string(datadog.AwsKinesis)
 
+// AwsKinesisClient is abstract interface of *kinesis.Client.
+type AwsKinesisClient interface {
+	ListStreams(
+		ctx context.Context,
+		params *kinesis.ListStreamsInput,
+		optFns ...func(*kinesis.Options),
+	) (*kinesis.ListStreamsOutput, error)
+	ListTagsForStream(
+		ctx context.Context,
+		params *kinesis.ListTagsForStreamInput,
+		optFns ...func(*kinesis.Options),
+	) (*kinesis.ListTagsForStreamOutput, error)
+}
+
 // AwsKinesisTagsMapper implements TagsMapper for AWS Kinesis.
 type AwsKinesisTagsMapper struct {
-	cache  *cache.Cache
-	client *kinesis.Client
+	cache  *goCache.Cache
+	client AwsKinesisClient
+}
+
+// BuildAwsKinesisTagsMapper builds AwsKinesisTagsMapper from args.
+func BuildAwsKinesisTagsMapper(cache *goCache.Cache, client AwsKinesisClient) AwsKinesisTagsMapper {
+	return AwsKinesisTagsMapper{
+		cache:  cache,
+		client: client,
+	}
 }
 
 // GetAwsKinesisClient returns AWS Kinesis client.
@@ -44,8 +66,7 @@ func (tm AwsKinesisTagsMapper) GetTagsMapping(ctx context.Context) (map[string]T
 	mapping := make(map[string]Tags)
 
 	// https://pkg.go.dev/github.com/aws/aws-sdk-go-v2/service/kinesis#ListStreamsInput
-	initMarker := ""
-	lastReturnedStreamName := &initMarker
+	lastReturnedStreamName := aws.String("")
 
 	// https://pkg.go.dev/github.com/aws/aws-sdk-go-v2/service/kinesis#ListStreamsOutput
 	hasMoreStream := true
@@ -74,8 +95,7 @@ func (tm AwsKinesisTagsMapper) GetTagsMapping(ctx context.Context) (map[string]T
 			tags := make(Tags, 0)
 
 			// https://pkg.go.dev/github.com/aws/aws-sdk-go-v2/service/kinesis#ListTagsForStreamInput
-			initTagMarker := ""
-			lastReturnedTagKey := &initTagMarker
+			lastReturnedTagKey := aws.String("")
 
 			// https://pkg.go.dev/github.com/aws/aws-sdk-go-v2/service/kinesis#ListTagsForStreamOutput
 			hasMoreTag := true
@@ -111,6 +131,6 @@ func (tm AwsKinesisTagsMapper) GetTagsMapping(ctx context.Context) (map[string]T
 		hasMoreStream = *output.HasMoreStreams
 	}
 
-	tm.cache.Set(awsKinesisCacheKey, mapping, cache.DefaultExpiration)
+	tm.cache.Set(awsKinesisCacheKey, mapping, goCache.DefaultExpiration)
 	return mapping, nil
 }

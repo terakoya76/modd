@@ -9,17 +9,39 @@ import (
 	"github.com/aws/aws-sdk-go-v2/aws/retry"
 	"github.com/aws/aws-sdk-go-v2/config"
 	"github.com/aws/aws-sdk-go-v2/service/firehose"
-	"github.com/patrickmn/go-cache"
+	goCache "github.com/patrickmn/go-cache"
 
 	"github.com/terakoya76/modd/datadog"
 )
 
 const awsFirehoseCacheKey string = string(datadog.AwsFirehose)
 
+// AwsFirehoseClient is abstract interface of *firehose.Client.
+type AwsFirehoseClient interface {
+	ListDeliveryStreams(
+		ctx context.Context,
+		params *firehose.ListDeliveryStreamsInput,
+		optFns ...func(*firehose.Options),
+	) (*firehose.ListDeliveryStreamsOutput, error)
+	ListTagsForDeliveryStream(
+		ctx context.Context,
+		params *firehose.ListTagsForDeliveryStreamInput,
+		optFns ...func(*firehose.Options),
+	) (*firehose.ListTagsForDeliveryStreamOutput, error)
+}
+
 // AwsFirehoseTagsMapper implements TagsMapper for AWS Firehose.
 type AwsFirehoseTagsMapper struct {
-	cache  *cache.Cache
-	client *firehose.Client
+	cache  *goCache.Cache
+	client AwsFirehoseClient
+}
+
+// BuildAwsFirehoseTagsMapper builds AwsFirehoseTagsMapper from args.
+func BuildAwsFirehoseTagsMapper(cache *goCache.Cache, client AwsFirehoseClient) AwsFirehoseTagsMapper {
+	return AwsFirehoseTagsMapper{
+		cache:  cache,
+		client: client,
+	}
 }
 
 // GetAwsFirehoseClient returns AWS Firehose client.
@@ -44,8 +66,7 @@ func (tm AwsFirehoseTagsMapper) GetTagsMapping(ctx context.Context) (map[string]
 	mapping := make(map[string]Tags)
 
 	// https://pkg.go.dev/github.com/aws/aws-sdk-go-v2/service/firehose#ListDeliveryStreamsInput
-	initMarker := ""
-	lastReturnedStreamName := &initMarker
+	lastReturnedStreamName := aws.String("")
 
 	// https://pkg.go.dev/github.com/aws/aws-sdk-go-v2/service/firehose#ListDeliveryStreamsOutput
 	hasMoreStream := true
@@ -74,8 +95,7 @@ func (tm AwsFirehoseTagsMapper) GetTagsMapping(ctx context.Context) (map[string]
 			tags := make(Tags, 0)
 
 			// https://pkg.go.dev/github.com/aws/aws-sdk-go-v2/service/firehose#ListTagsForDeliveryStreamInput
-			initTagMarker := ""
-			lastReturnedTagKey := &initTagMarker
+			lastReturnedTagKey := aws.String("")
 
 			// https://pkg.go.dev/github.com/aws/aws-sdk-go-v2/service/firehose#ListTagsForDeliveryStreamOutput
 			hasMoreTag := true
@@ -111,6 +131,6 @@ func (tm AwsFirehoseTagsMapper) GetTagsMapping(ctx context.Context) (map[string]
 		hasMoreStream = *output.HasMoreDeliveryStreams
 	}
 
-	tm.cache.Set(awsFirehoseCacheKey, mapping, cache.DefaultExpiration)
+	tm.cache.Set(awsFirehoseCacheKey, mapping, goCache.DefaultExpiration)
 	return mapping, nil
 }

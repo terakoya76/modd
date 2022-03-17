@@ -9,17 +9,44 @@ import (
 	"github.com/aws/aws-sdk-go-v2/aws/retry"
 	"github.com/aws/aws-sdk-go-v2/config"
 	"github.com/aws/aws-sdk-go-v2/service/dynamodb"
-	"github.com/patrickmn/go-cache"
+	goCache "github.com/patrickmn/go-cache"
 
 	"github.com/terakoya76/modd/datadog"
 )
 
 const awsDynamoDBCacheKey string = string(datadog.AwsDynamoDB)
 
+// AwsDynamoDBClient is abstract interface of *dynamodb.Client.
+type AwsDynamoDBClient interface {
+	DescribeTable(
+		ctx context.Context,
+		params *dynamodb.DescribeTableInput,
+		optFns ...func(*dynamodb.Options),
+	) (*dynamodb.DescribeTableOutput, error)
+	ListTables(
+		ctx context.Context,
+		params *dynamodb.ListTablesInput,
+		optFns ...func(*dynamodb.Options),
+	) (*dynamodb.ListTablesOutput, error)
+	ListTagsOfResource(
+		ctx context.Context,
+		params *dynamodb.ListTagsOfResourceInput,
+		optFns ...func(*dynamodb.Options),
+	) (*dynamodb.ListTagsOfResourceOutput, error)
+}
+
 // AwsDynamoDBTagsMapper implements TagsMapper for AWS DynamoDB.
 type AwsDynamoDBTagsMapper struct {
-	cache  *cache.Cache
-	client *dynamodb.Client
+	cache  *goCache.Cache
+	client AwsDynamoDBClient
+}
+
+// BuildAwsDynamoDBTagsMapper builds AwsDynamoDBTagsMapper from args.
+func BuildAwsDynamoDBTagsMapper(cache *goCache.Cache, client AwsDynamoDBClient) AwsDynamoDBTagsMapper {
+	return AwsDynamoDBTagsMapper{
+		cache:  cache,
+		client: client,
+	}
 }
 
 // GetAwsDynamoDBClient returns AWS DynamoDB client.
@@ -44,8 +71,7 @@ func (tm AwsDynamoDBTagsMapper) GetTagsMapping(ctx context.Context) (map[string]
 	mapping := make(map[string]Tags)
 
 	// https://pkg.go.dev/github.com/aws/aws-sdk-go-v2/service/dynamodb#ListTablesInput
-	initMarker := ""
-	marker := &initMarker
+	marker := aws.String("")
 
 	for marker != nil {
 		// ExclusiveStartTableName could not be empty string
@@ -73,8 +99,7 @@ func (tm AwsDynamoDBTagsMapper) GetTagsMapping(ctx context.Context) (map[string]
 			tags := make(Tags, 0)
 
 			// https://pkg.go.dev/github.com/aws/aws-sdk-go-v2/service/dynamodb#ListTagsOfResourceInput
-			initTagMarker := ""
-			tagMarker := &initTagMarker
+			tagMarker := aws.String("")
 
 			for tagMarker != nil {
 				// NextToken could not be empty string
@@ -105,6 +130,6 @@ func (tm AwsDynamoDBTagsMapper) GetTagsMapping(ctx context.Context) (map[string]
 		marker = output.LastEvaluatedTableName
 	}
 
-	tm.cache.Set(awsDynamoDBCacheKey, mapping, cache.DefaultExpiration)
+	tm.cache.Set(awsDynamoDBCacheKey, mapping, goCache.DefaultExpiration)
 	return mapping, nil
 }

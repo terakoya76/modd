@@ -10,7 +10,7 @@ import (
 	"github.com/terakoya76/modd/mapper"
 )
 
-func TestCheckScopeWithTags(t *testing.T) {
+func Test_CheckScopeWithTags(t *testing.T) {
 	cases := []struct {
 		name     string
 		scope    datadog.Scope
@@ -93,7 +93,7 @@ func TestCheckScopeWithTags(t *testing.T) {
 	}
 }
 
-func TestCheckTagsWithTags_Aws(t *testing.T) {
+func Test_CheckTagsWithTags_Aws(t *testing.T) {
 	cases := []struct {
 		name     string
 		filter   filter.Filter
