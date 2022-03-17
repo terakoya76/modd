@@ -154,11 +154,7 @@ func BuildTagsMapper(it datadog.IntegrationTarget) (TagsMapper, error) {
 			return nil, fmt.Errorf("%w", err)
 		}
 
-		m := AwsSqsTagsMapper{
-			cache:  c,
-			client: client,
-		}
-
+		m := BuildAwsSqsTagsMapper(c, client)
 		return m, nil
 
 	case datadog.UnknownIntegration:
