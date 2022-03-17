@@ -9,17 +9,31 @@ import (
 	"github.com/aws/aws-sdk-go-v2/aws/retry"
 	"github.com/aws/aws-sdk-go-v2/config"
 	"github.com/aws/aws-sdk-go-v2/service/sfn"
-	"github.com/patrickmn/go-cache"
+	goCache "github.com/patrickmn/go-cache"
 
 	"github.com/terakoya76/modd/datadog"
 )
 
 const awsStepFunctionCacheKey string = string(datadog.AwsStepFunction)
 
+// AwsStepFunctionClient is abstract interface of *sfn.Client.
+type AwsStepFunctionClient interface {
+	ListStateMachines(
+		ctx context.Context,
+		params *sfn.ListStateMachinesInput,
+		optFns ...func(*sfn.Options),
+	) (*sfn.ListStateMachinesOutput, error)
+	ListTagsForResource(
+		ctx context.Context,
+		params *sfn.ListTagsForResourceInput,
+		optFns ...func(*sfn.Options),
+	) (*sfn.ListTagsForResourceOutput, error)
+}
+
 // AwsStepFunctionTagsMapper implements TagsMapper for AWS StepFunction.
 type AwsStepFunctionTagsMapper struct {
-	cache  *cache.Cache
-	client *sfn.Client
+	cache  *goCache.Cache
+	client AwsStepFunctionClient
 }
 
 // GetAwsStepFunctionClient returns AWS StepFunction client.
@@ -34,6 +48,14 @@ func GetAwsStepFunctionClient(ctx context.Context) (*sfn.Client, error) {
 	return sfn.NewFromConfig(cfg), nil
 }
 
+// BuildAwsStepFunctionTagsMapper builds AwsStepFunctionTagsMapper from args.
+func BuildAwsStepFunctionTagsMapper(cache *goCache.Cache, client AwsStepFunctionClient) AwsStepFunctionTagsMapper {
+	return AwsStepFunctionTagsMapper{
+		cache:  cache,
+		client: client,
+	}
+}
+
 // GetTagsMapping returns the latest tags mapping.
 func (tm AwsStepFunctionTagsMapper) GetTagsMapping(ctx context.Context) (map[string]Tags, error) {
 	if cv, found := tm.cache.Get(awsStepFunctionCacheKey); found {
@@ -44,8 +66,7 @@ func (tm AwsStepFunctionTagsMapper) GetTagsMapping(ctx context.Context) (map[str
 	mapping := make(map[string]Tags)
 
 	// https://pkg.go.dev/github.com/aws/aws-sdk-go-v2/service/sfn#ListStateMachinesInput
-	initToken := ""
-	token := &initToken
+	token := aws.String("")
 
 	// https://pkg.go.dev/github.com/aws/aws-sdk-go-v2/service/sfn#ListStateMachinesInput
 	var maxResults int32 = 1000
@@ -83,6 +104,6 @@ func (tm AwsStepFunctionTagsMapper) GetTagsMapping(ctx context.Context) (map[str
 		token = output.NextToken
 	}
 
-	tm.cache.Set(awsStepFunctionCacheKey, mapping, cache.DefaultExpiration)
+	tm.cache.Set(awsStepFunctionCacheKey, mapping, goCache.DefaultExpiration)
 	return mapping, nil
 }
