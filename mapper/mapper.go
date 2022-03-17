@@ -110,11 +110,7 @@ func BuildTagsMapper(it datadog.IntegrationTarget) (TagsMapper, error) {
 			return nil, fmt.Errorf("%w", err)
 		}
 
-		m := AwsOpenSearchServiceTagsMapper{
-			cache:  c,
-			client: client,
-		}
-
+		m := BuildAwsOpenSearchServiceTagsMapper(c, client)
 		return m, nil
 
 	case datadog.AwsRds:

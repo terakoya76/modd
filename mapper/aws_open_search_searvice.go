@@ -9,17 +9,44 @@ import (
 	"github.com/aws/aws-sdk-go-v2/aws/retry"
 	"github.com/aws/aws-sdk-go-v2/config"
 	"github.com/aws/aws-sdk-go-v2/service/elasticsearchservice"
-	"github.com/patrickmn/go-cache"
+	goCache "github.com/patrickmn/go-cache"
 
 	"github.com/terakoya76/modd/datadog"
 )
 
 const awsOpenSearchServiceCacheKey string = string(datadog.AwsOpenSearchService)
 
+// AwsOpenSearchServiceClient is abstract interface of *elasticsearchservice.Client.
+type AwsOpenSearchServiceClient interface {
+	ListDomainNames(
+		ctx context.Context,
+		params *elasticsearchservice.ListDomainNamesInput,
+		optFns ...func(*elasticsearchservice.Options),
+	) (*elasticsearchservice.ListDomainNamesOutput, error)
+	DescribeElasticsearchDomains(
+		ctx context.Context,
+		params *elasticsearchservice.DescribeElasticsearchDomainsInput,
+		optFns ...func(*elasticsearchservice.Options),
+	) (*elasticsearchservice.DescribeElasticsearchDomainsOutput, error)
+	ListTags(
+		ctx context.Context,
+		params *elasticsearchservice.ListTagsInput,
+		optFns ...func(*elasticsearchservice.Options),
+	) (*elasticsearchservice.ListTagsOutput, error)
+}
+
 // AwsOpenSearchServiceTagsMapper implements TagsMapper for AWS OpenSearch Service.
 type AwsOpenSearchServiceTagsMapper struct {
-	cache  *cache.Cache
-	client *elasticsearchservice.Client
+	cache  *goCache.Cache
+	client AwsOpenSearchServiceClient
+}
+
+// BuildAwsOpenSearchServiceTagsMapper builds AwsOpenSearchServiceTagsMapper from args.
+func BuildAwsOpenSearchServiceTagsMapper(cache *goCache.Cache, client AwsOpenSearchServiceClient) AwsOpenSearchServiceTagsMapper {
+	return AwsOpenSearchServiceTagsMapper{
+		cache:  cache,
+		client: client,
+	}
 }
 
 // GetAwsOpenSearchServiceClient returns AWS OpenSearch Service client.
@@ -49,16 +76,16 @@ func (tm AwsOpenSearchServiceTagsMapper) GetTagsMapping(ctx context.Context) (ma
 		return nil, fmt.Errorf("%w", err)
 	}
 
+	// https://pkg.go.dev/github.com/aws/aws-sdk-go-v2/service/elasticsearchservice#DescribeElasticsearchDomainsInput
 	maxItemsPerReq := 5
 
 	// https://pkg.go.dev/github.com/aws/aws-sdk-go-v2/service/elasticsearchservice#DescribeElasticsearchDomainsInput
-	domainNames := make([]string, maxItemsPerReq)
-	for i := 0; i < len(domainsOutput.DomainNames); i++ {
-		idx := (i + 1) % maxItemsPerReq
-		domainNames[idx] = *domainsOutput.DomainNames[i].DomainName
-
-		if idx != 0 {
-			continue
+	for i := 0; i < len(domainsOutput.DomainNames); i += 5 {
+		domainNamesCap := len(domainsOutput.DomainNames) % maxItemsPerReq
+		domainNames := make([]string, 0)
+		for j := 0; j < domainNamesCap; j++ {
+			domain := domainsOutput.DomainNames[i+j].DomainName
+			domainNames = append(domainNames, *domain)
 		}
 
 		input := elasticsearchservice.DescribeElasticsearchDomainsInput{
@@ -85,6 +112,6 @@ func (tm AwsOpenSearchServiceTagsMapper) GetTagsMapping(ctx context.Context) (ma
 		}
 	}
 
-	tm.cache.Set(awsOpenSearchServiceCacheKey, mapping, cache.DefaultExpiration)
+	tm.cache.Set(awsOpenSearchServiceCacheKey, mapping, goCache.DefaultExpiration)
 	return mapping, nil
 }
