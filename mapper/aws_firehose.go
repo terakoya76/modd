@@ -36,7 +36,7 @@ type AwsFirehoseTagsMapper struct {
 	client AwsFirehoseClient
 }
 
-// BuildAwsFirehoseTagsMapper builds AwsKinesisTagsMapper from args.
+// BuildAwsFirehoseTagsMapper builds AwsFirehoseTagsMapper from args.
 func BuildAwsFirehoseTagsMapper(cache *goCache.Cache, client AwsFirehoseClient) AwsFirehoseTagsMapper {
 	return AwsFirehoseTagsMapper{
 		cache:  cache,
