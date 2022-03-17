@@ -96,6 +96,19 @@ func BuildTagsMapper(it datadog.IntegrationTarget) (TagsMapper, error) {
 		m := BuildAwsKinesisTagsMapper(c, client)
 		return m, nil
 
+	case datadog.AwsLambda:
+		client, err := GetAwsLambdaClient(context.TODO())
+		if err != nil {
+			return nil, fmt.Errorf("%w", err)
+		}
+
+		m := AwsLambdaTagsMapper{
+			cache:  c,
+			client: client,
+		}
+
+		return m, nil
+
 	case datadog.AwsOpenSearchService:
 		client, err := GetAwsOpenSearchServiceClient(context.TODO())
 		if err != nil {

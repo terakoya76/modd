@@ -27,6 +27,8 @@ const (
 	AwsFirehose IntegrationTarget = "aws_firehose"
 	// AwsKinesis represents AWS Kinesis integration.
 	AwsKinesis IntegrationTarget = "aws_kinesis"
+	// AwsLambda represents AWS Lambda integration.
+	AwsLambda IntegrationTarget = "aws_lambda"
 	// AwsOpenSearchService represents AWS OpenSearch Service integration.
 	AwsOpenSearchService IntegrationTarget = "aws_elasticsearchservice"
 	// AwsRds represents AWS RDS integration.
@@ -63,6 +65,8 @@ func MetricToIntegrationTarget(metric string) IntegrationTarget {
 		return AwsFirehose
 	case len(parts) >= 2 && parts[0] == AwsMetricsPrefix && parts[1] == "kinesis":
 		return AwsKinesis
+	case len(parts) >= 2 && parts[0] == AwsMetricsPrefix && parts[1] == "lambda":
+		return AwsLambda
 	case len(parts) >= 2 && parts[0] == AwsMetricsPrefix && parts[1] == "es":
 		return AwsOpenSearchService
 	case len(parts) >= 2 && parts[0] == AwsMetricsPrefix && parts[1] == "rds":
