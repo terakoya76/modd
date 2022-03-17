@@ -9,17 +9,31 @@ import (
 	"github.com/aws/aws-sdk-go-v2/aws/retry"
 	"github.com/aws/aws-sdk-go-v2/config"
 	"github.com/aws/aws-sdk-go-v2/service/sns"
-	"github.com/patrickmn/go-cache"
+	goCache "github.com/patrickmn/go-cache"
 
 	"github.com/terakoya76/modd/datadog"
 )
 
 const awsSnsCacheKey string = string(datadog.AwsSns)
 
+// AwsSnsClient is abstract interface of *sns.Client.
+type AwsSnsClient interface {
+	ListTopics(
+		ctx context.Context,
+		params *sns.ListTopicsInput,
+		optFns ...func(*sns.Options),
+	) (*sns.ListTopicsOutput, error)
+	ListTagsForResource(
+		ctx context.Context,
+		params *sns.ListTagsForResourceInput,
+		optFns ...func(*sns.Options),
+	) (*sns.ListTagsForResourceOutput, error)
+}
+
 // AwsSnsTagsMapper implements TagsMapper for AWS SNS.
 type AwsSnsTagsMapper struct {
-	cache  *cache.Cache
-	client *sns.Client
+	cache  *goCache.Cache
+	client AwsSnsClient
 }
 
 // GetAwsSnsClient returns AWS SNS client.
@@ -34,6 +48,14 @@ func GetAwsSnsClient(ctx context.Context) (*sns.Client, error) {
 	return sns.NewFromConfig(cfg), nil
 }
 
+// BuildAwsSnsTagsMapper builds AwsSnsTagsMapper from args.
+func BuildAwsSnsTagsMapper(cache *goCache.Cache, client AwsSnsClient) AwsSnsTagsMapper {
+	return AwsSnsTagsMapper{
+		cache:  cache,
+		client: client,
+	}
+}
+
 // GetTagsMapping returns the latest tags mapping.
 func (tm AwsSnsTagsMapper) GetTagsMapping(ctx context.Context) (map[string]Tags, error) {
 	if cv, found := tm.cache.Get(awsSnsCacheKey); found {
@@ -44,8 +66,7 @@ func (tm AwsSnsTagsMapper) GetTagsMapping(ctx context.Context) (map[string]Tags,
 	mapping := make(map[string]Tags)
 
 	// https://pkg.go.dev/github.com/aws/aws-sdk-go-v2/service/sns#ListTopicsInput
-	initToken := ""
-	token := &initToken
+	token := aws.String("")
 
 	for token != nil {
 		// NextToken could not be empty string
@@ -82,6 +103,6 @@ func (tm AwsSnsTagsMapper) GetTagsMapping(ctx context.Context) (map[string]Tags,
 		token = output.NextToken
 	}
 
-	tm.cache.Set(awsSnsCacheKey, mapping, cache.DefaultExpiration)
+	tm.cache.Set(awsSnsCacheKey, mapping, goCache.DefaultExpiration)
 	return mapping, nil
 }
