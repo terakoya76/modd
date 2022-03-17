@@ -9,7 +9,7 @@ require (
 	github.com/aws/aws-sdk-go-v2/service/apigateway v1.15.0
 	github.com/aws/aws-sdk-go-v2/service/autoscaling v1.22.1
 	github.com/aws/aws-sdk-go-v2/service/dynamodb v1.15.0
-	github.com/aws/aws-sdk-go-v2/service/elasticache v1.20.0
+	github.com/aws/aws-sdk-go-v2/service/elasticache v1.20.1
 	github.com/aws/aws-sdk-go-v2/service/elasticloadbalancing v1.14.0
 	github.com/aws/aws-sdk-go-v2/service/elasticloadbalancingv2 v1.18.0
 	github.com/aws/aws-sdk-go-v2/service/elasticsearchservice v1.15.0
