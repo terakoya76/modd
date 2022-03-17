@@ -92,8 +92,11 @@ func Test_AwsSqs_GetTagsMapping(t *testing.T) {
 		if !assert.Equal(t, c.err, err) {
 			t.Errorf("case: %s is failed, expected: %+v, actual: %+v\n", c.name, c.err, err)
 		}
-		if !assert.Equal(t, c.expected, actual) {
-			t.Errorf("case: %s is failed, expected: %+v, actual: %+v\n", c.name, c.expected, actual)
+
+		for k, v := range c.expected {
+			if !assert.ElementsMatch(t, v, actual[k]) {
+				t.Errorf("case: %s is failed with the key %s, expected: %+v, actual: %+v\n", c.name, k, v, actual[k])
+			}
 		}
 	}
 }
