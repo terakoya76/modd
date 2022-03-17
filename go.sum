@@ -75,8 +75,8 @@ github.com/aws/aws-sdk-go-v2/service/internal/presigned-url v1.9.0 h1:YQ3fTXACo7
 github.com/aws/aws-sdk-go-v2/service/internal/presigned-url v1.9.0/go.mod h1:R31ot6BgESRCIoxwfKtIHzZMo/vsZn2un81g9BJ4nmo=
 github.com/aws/aws-sdk-go-v2/service/kinesis v1.15.0 h1:j/5CYFPw4P8t3Y/wZhc+mBI6oQJ+tsIixZ7LT/5Rho8=
 github.com/aws/aws-sdk-go-v2/service/kinesis v1.15.0/go.mod h1:fIuruSOYuNxcxUuN/RgUd6pw1iIhFI8AGJjhXVcwJn8=
-github.com/aws/aws-sdk-go-v2/service/rds v1.18.0 h1:OaXSjnvT5kZzW2xTxf8fPKRz3MJuscKScshdc5JMS8Q=
-github.com/aws/aws-sdk-go-v2/service/rds v1.18.0/go.mod h1:OS3GuUefOXcwQ/DDtFY82tet594/QBWJiNLN76euOTs=
+github.com/aws/aws-sdk-go-v2/service/rds v1.18.1 h1:EuoGxjD3vL0pjI5zKdPAYHhKtQ1VMKOg3Hn7rsEbgvY=
+github.com/aws/aws-sdk-go-v2/service/rds v1.18.1/go.mod h1:OS3GuUefOXcwQ/DDtFY82tet594/QBWJiNLN76euOTs=
 github.com/aws/aws-sdk-go-v2/service/sfn v1.13.0 h1:EqiJf0ILIU8VDJtI1fhDCyDgGYglDfFf0pVQWHqJf28=
 github.com/aws/aws-sdk-go-v2/service/sfn v1.13.0/go.mod h1:k/07XAI0WHnNV575RkdXgqVmsqGcSITk9WHIeeIZw8U=
 github.com/aws/aws-sdk-go-v2/service/sns v1.17.1 h1:QCtDM6fUb1YKGfgAqrpwmYxxN0H7pHUCu6As1qKZtKo=
