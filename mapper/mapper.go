@@ -119,11 +119,7 @@ func BuildTagsMapper(it datadog.IntegrationTarget) (TagsMapper, error) {
 			return nil, fmt.Errorf("%w", err)
 		}
 
-		m := AwsRdsTagsMapper{
-			cache:  c,
-			client: client,
-		}
-
+		m := BuildAwsRdsTagsMapper(c, client)
 		return m, nil
 
 	case datadog.AwsSns:
