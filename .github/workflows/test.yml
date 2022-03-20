@@ -34,6 +34,9 @@ jobs:
       if: steps.cache-go-sum.outputs.cache-hit != 'true'
       run: go mod download
 
+    - name: lint
+      run: make go.lint
+
     - name: test
       run: go test -race -v -coverprofile coverage.out -covermode atomic ./...
 
