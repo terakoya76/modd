@@ -5,6 +5,8 @@ updates:
   directory: "/"
   schedule:
     interval: daily
+  assignees:
+  - terakoya76
   ignore:
   - dependency-name: aws/*
     update-types: ["version-update:semver-patch"]
