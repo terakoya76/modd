@@ -14,7 +14,7 @@ require (
 	github.com/aws/aws-sdk-go-v2/service/elasticloadbalancingv2 v1.18.0
 	github.com/aws/aws-sdk-go-v2/service/elasticsearchservice v1.15.0
 	github.com/aws/aws-sdk-go-v2/service/firehose v1.14.0
-	github.com/aws/aws-sdk-go-v2/service/kinesis v1.15.0
+	github.com/aws/aws-sdk-go-v2/service/kinesis v1.15.4
 	github.com/aws/aws-sdk-go-v2/service/rds v1.18.1
 	github.com/aws/aws-sdk-go-v2/service/sfn v1.13.0
 	github.com/aws/aws-sdk-go-v2/service/sns v1.17.1
@@ -27,7 +27,7 @@ require (
 )
 
 require (
-	github.com/aws/aws-sdk-go-v2/aws/protocol/eventstream v1.4.0 // indirect
+	github.com/aws/aws-sdk-go-v2/aws/protocol/eventstream v1.4.1 // indirect
 	github.com/aws/aws-sdk-go-v2/credentials v1.10.0 // indirect
 	github.com/aws/aws-sdk-go-v2/feature/ec2/imds v1.12.0 // indirect
 	github.com/aws/aws-sdk-go-v2/internal/configsources v1.1.9 // indirect
