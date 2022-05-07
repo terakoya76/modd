@@ -91,7 +91,8 @@ func ListMonitors(
 func GetMonitorTagsMapping(monitors []dd.MonitorSearchResult) (MonitorTagsMapping, error) {
 	mapping := make(MonitorTagsMapping)
 
-	for _, monitor := range monitors {
+	for i := 0; i < len(monitors); i++ {
+		monitor := monitors[i]
 		tags := monitor.GetTags()
 
 		for _, metric := range monitor.GetMetrics() {
@@ -110,7 +111,8 @@ func GetMonitorTagsMapping(monitors []dd.MonitorSearchResult) (MonitorTagsMappin
 func GetMonitorScopesMapping(monitors []dd.MonitorSearchResult) (MonitorScopesMapping, error) {
 	mapping := make(MonitorScopesMapping)
 
-	for _, monitor := range monitors {
+	for i := 0; i < len(monitors); i++ {
+		monitor := monitors[i]
 		scopes := monitor.GetScopes()
 
 		for _, metric := range monitor.GetMetrics() {
