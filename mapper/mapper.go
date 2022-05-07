@@ -5,7 +5,7 @@ import (
 	"fmt"
 	"time"
 
-	"github.com/patrickmn/go-cache"
+	goCache "github.com/patrickmn/go-cache"
 
 	"github.com/terakoya76/modd/datadog"
 )
@@ -21,7 +21,7 @@ type TagsMapper interface {
 // BuildTagsMapper build the proper TagsMapper implementation.
 //nolint:funlen,gocyclo
 func BuildTagsMapper(it datadog.IntegrationTarget) (TagsMapper, error) {
-	c := cache.New(60*time.Minute, 10*time.Minute)
+	c := goCache.New(60*time.Minute, 10*time.Minute)
 
 	switch it {
 	case datadog.AwsAPIGateway:
