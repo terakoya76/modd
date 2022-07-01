@@ -19,7 +19,7 @@ require (
 	github.com/aws/aws-sdk-go-v2/service/sfn v1.13.0
 	github.com/aws/aws-sdk-go-v2/service/sns v1.17.1
 	github.com/aws/aws-sdk-go-v2/service/sqs v1.18.0
-	github.com/aws/smithy-go v1.11.3
+	github.com/aws/smithy-go v1.12.0
 	github.com/kelseyhightower/envconfig v1.4.0
 	github.com/patrickmn/go-cache v2.1.0+incompatible
 	github.com/stretchr/testify v1.8.0
