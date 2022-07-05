@@ -3,7 +3,7 @@ module github.com/terakoya76/modd
 go 1.17
 
 require (
-	github.com/DataDog/datadog-api-client-go v1.14.0
+	github.com/DataDog/datadog-api-client-go v1.15.0
 	github.com/aws/aws-sdk-go-v2 v1.16.4
 	github.com/aws/aws-sdk-go-v2/config v1.15.0
 	github.com/aws/aws-sdk-go-v2/service/apigateway v1.15.0
@@ -27,6 +27,7 @@ require (
 )
 
 require (
+	github.com/DataDog/zstd v1.5.0 // indirect
 	github.com/aws/aws-sdk-go-v2/aws/protocol/eventstream v1.4.0 // indirect
 	github.com/aws/aws-sdk-go-v2/credentials v1.10.0 // indirect
 	github.com/aws/aws-sdk-go-v2/feature/ec2/imds v1.12.0 // indirect
