@@ -4,7 +4,7 @@ go 1.17
 
 require (
 	github.com/DataDog/datadog-api-client-go v1.14.0
-	github.com/aws/aws-sdk-go-v2 v1.16.4
+	github.com/aws/aws-sdk-go-v2 v1.16.11
 	github.com/aws/aws-sdk-go-v2/config v1.15.0
 	github.com/aws/aws-sdk-go-v2/service/apigateway v1.15.0
 	github.com/aws/aws-sdk-go-v2/service/autoscaling v1.23.0
@@ -19,7 +19,7 @@ require (
 	github.com/aws/aws-sdk-go-v2/service/sfn v1.13.0
 	github.com/aws/aws-sdk-go-v2/service/sns v1.17.1
 	github.com/aws/aws-sdk-go-v2/service/sqs v1.18.0
-	github.com/aws/smithy-go v1.11.3
+	github.com/aws/smithy-go v1.12.1
 	github.com/kelseyhightower/envconfig v1.4.0
 	github.com/patrickmn/go-cache v2.1.0+incompatible
 	github.com/stretchr/testify v1.8.0
