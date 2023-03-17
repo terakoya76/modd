@@ -10,7 +10,7 @@ jobs:
   build:
     strategy:
       matrix:
-        go: [1.16, 1.17, 1.18]
+        go: [1.17, 1.18, 1.19]
         os: [ubuntu-20.04, ubuntu-22.04]
 
     name: all
@@ -41,7 +41,7 @@ jobs:
       run: go test -race -v -coverprofile coverage.out -covermode atomic ./...
 
     - name: Convert coverage to lcov
-      uses: jandelgado/gcov2lcov-action@v1.0.0
+      uses: jandelgado/gcov2lcov-action@v1
       with:
         infile: coverage.out
         outfile: coverage.lcov
