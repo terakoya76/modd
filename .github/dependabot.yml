@@ -4,10 +4,17 @@ updates:
 - package-ecosystem: gomod
   directory: "/"
   schedule:
-    interval: daily
+    interval: weekly
   assignees:
   - terakoya76
   ignore:
   - dependency-name: github.com/aws/aws-sdk-go-v2/*
     update-types: ["version-update:semver-patch"]
   open-pull-requests-limit: 10
+
+- package-ecosystem: github-actions
+  directory: /
+  schedule:
+    interval: weekly
+  assignees:
+    - terakoya76
