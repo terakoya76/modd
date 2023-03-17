@@ -10,7 +10,7 @@ jobs:
   build:
     strategy:
       matrix:
-        go: [1.16, 1.17, 1.18]
+        go: [1.17, 1.18, 1.19]
         os: [ubuntu-20.04, ubuntu-22.04]
 
     name: all
