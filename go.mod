@@ -4,7 +4,7 @@ go 1.17
 
 require (
 	github.com/DataDog/datadog-api-client-go v1.14.0
-	github.com/aws/aws-sdk-go-v2 v1.16.4
+	github.com/aws/aws-sdk-go-v2 v1.17.8
 	github.com/aws/aws-sdk-go-v2/config v1.15.0
 	github.com/aws/aws-sdk-go-v2/service/apigateway v1.15.0
 	github.com/aws/aws-sdk-go-v2/service/autoscaling v1.23.0
@@ -15,11 +15,11 @@ require (
 	github.com/aws/aws-sdk-go-v2/service/elasticsearchservice v1.15.0
 	github.com/aws/aws-sdk-go-v2/service/firehose v1.14.0
 	github.com/aws/aws-sdk-go-v2/service/kinesis v1.15.0
-	github.com/aws/aws-sdk-go-v2/service/rds v1.21.1
+	github.com/aws/aws-sdk-go-v2/service/rds v1.42.2
 	github.com/aws/aws-sdk-go-v2/service/sfn v1.13.0
 	github.com/aws/aws-sdk-go-v2/service/sns v1.17.1
 	github.com/aws/aws-sdk-go-v2/service/sqs v1.18.0
-	github.com/aws/smithy-go v1.13.3
+	github.com/aws/smithy-go v1.13.5
 	github.com/kelseyhightower/envconfig v1.4.0
 	github.com/patrickmn/go-cache v2.1.0+incompatible
 	github.com/stretchr/testify v1.8.0
@@ -30,12 +30,12 @@ require (
 	github.com/aws/aws-sdk-go-v2/aws/protocol/eventstream v1.4.0 // indirect
 	github.com/aws/aws-sdk-go-v2/credentials v1.10.0 // indirect
 	github.com/aws/aws-sdk-go-v2/feature/ec2/imds v1.12.0 // indirect
-	github.com/aws/aws-sdk-go-v2/internal/configsources v1.1.11 // indirect
-	github.com/aws/aws-sdk-go-v2/internal/endpoints/v2 v2.4.5 // indirect
+	github.com/aws/aws-sdk-go-v2/internal/configsources v1.1.32 // indirect
+	github.com/aws/aws-sdk-go-v2/internal/endpoints/v2 v2.4.26 // indirect
 	github.com/aws/aws-sdk-go-v2/internal/ini v1.3.7 // indirect
 	github.com/aws/aws-sdk-go-v2/service/internal/accept-encoding v1.9.0 // indirect
 	github.com/aws/aws-sdk-go-v2/service/internal/endpoint-discovery v1.7.0 // indirect
-	github.com/aws/aws-sdk-go-v2/service/internal/presigned-url v1.9.4 // indirect
+	github.com/aws/aws-sdk-go-v2/service/internal/presigned-url v1.9.26 // indirect
 	github.com/aws/aws-sdk-go-v2/service/sso v1.11.0 // indirect
 	github.com/aws/aws-sdk-go-v2/service/sts v1.16.0 // indirect
 	github.com/davecgh/go-spew v1.1.1 // indirect
