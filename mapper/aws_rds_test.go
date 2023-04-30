@@ -20,9 +20,9 @@ type dummyAwsRdsClient struct{}
 
 // ListTopics implements AwsRdsClient for dummyAwsRdsClient.
 func (c *dummyAwsRdsClient) DescribeDBInstances(
-	ctx context.Context,
+	_ context.Context,
 	params *rds.DescribeDBInstancesInput,
-	optFns ...func(*rds.Options),
+	_ ...func(*rds.Options),
 ) (*rds.DescribeDBInstancesOutput, error) {
 	var output rds.DescribeDBInstancesOutput
 

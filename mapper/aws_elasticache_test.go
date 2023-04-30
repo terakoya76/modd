@@ -20,9 +20,9 @@ type dummyAwsElastiCacheClient struct{}
 
 // DescribeCacheClusters implements AwsElastiCacheClient for dummyAwsElastiCacheClient.
 func (c *dummyAwsElastiCacheClient) DescribeCacheClusters(
-	ctx context.Context,
+	_ context.Context,
 	params *elasticache.DescribeCacheClustersInput,
-	optFns ...func(*elasticache.Options),
+	_ ...func(*elasticache.Options),
 ) (*elasticache.DescribeCacheClustersOutput, error) {
 	var output elasticache.DescribeCacheClustersOutput
 
@@ -63,9 +63,9 @@ func (c *dummyAwsElastiCacheClient) DescribeCacheClusters(
 
 // ListTagsForResource implements AwsElastiCacheClient for dummyAwsElastiCacheClient.
 func (c *dummyAwsElastiCacheClient) ListTagsForResource(
-	ctx context.Context,
-	params *elasticache.ListTagsForResourceInput,
-	optFns ...func(*elasticache.Options),
+	_ context.Context,
+	_ *elasticache.ListTagsForResourceInput,
+	_ ...func(*elasticache.Options),
 ) (*elasticache.ListTagsForResourceOutput, error) {
 	output := elasticache.ListTagsForResourceOutput{
 		TagList: []types.Tag{

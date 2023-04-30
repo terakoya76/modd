@@ -20,9 +20,9 @@ type dummyAwsDynamoDBClient struct{}
 
 // DescribeTable implements AwsDynamoDBClient for dummyAwsDynamoDBClient.
 func (c *dummyAwsDynamoDBClient) DescribeTable(
-	ctx context.Context,
-	params *dynamodb.DescribeTableInput,
-	optFns ...func(*dynamodb.Options),
+	_ context.Context,
+	_ *dynamodb.DescribeTableInput,
+	_ ...func(*dynamodb.Options),
 ) (*dynamodb.DescribeTableOutput, error) {
 	output := dynamodb.DescribeTableOutput{
 		Table: &types.TableDescription{
@@ -36,9 +36,9 @@ func (c *dummyAwsDynamoDBClient) DescribeTable(
 
 // ListTables implements AwsDynamoDBClient for dummyAwsDynamoDBClient.
 func (c *dummyAwsDynamoDBClient) ListTables(
-	ctx context.Context,
+	_ context.Context,
 	params *dynamodb.ListTablesInput,
-	optFns ...func(*dynamodb.Options),
+	_ ...func(*dynamodb.Options),
 ) (*dynamodb.ListTablesOutput, error) {
 	var output dynamodb.ListTablesOutput
 
@@ -61,9 +61,9 @@ func (c *dummyAwsDynamoDBClient) ListTables(
 
 // ListTagsOfResource implements AwsDynamoDBClient for dummyAwsDynamoDBClient.
 func (c *dummyAwsDynamoDBClient) ListTagsOfResource(
-	ctx context.Context,
+	_ context.Context,
 	params *dynamodb.ListTagsOfResourceInput,
-	optFns ...func(*dynamodb.Options),
+	_ ...func(*dynamodb.Options),
 ) (*dynamodb.ListTagsOfResourceOutput, error) {
 	var output dynamodb.ListTagsOfResourceOutput
 

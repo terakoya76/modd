@@ -19,6 +19,7 @@ type TagsMapper interface {
 }
 
 // BuildTagsMapper build the proper TagsMapper implementation.
+//
 //nolint:funlen,gocyclo
 func BuildTagsMapper(it datadog.IntegrationTarget) (TagsMapper, error) {
 	c := goCache.New(60*time.Minute, 10*time.Minute)

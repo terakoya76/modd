@@ -20,9 +20,9 @@ type dummyAwsOpenSearchServiceClient struct{}
 
 // ListDomainNames implements AwsOpenSearchServiceClient for dummyAwsOpenSearchServiceClient.
 func (c *dummyAwsOpenSearchServiceClient) ListDomainNames(
-	ctx context.Context,
-	params *elasticsearchservice.ListDomainNamesInput,
-	optFns ...func(*elasticsearchservice.Options),
+	_ context.Context,
+	_ *elasticsearchservice.ListDomainNamesInput,
+	_ ...func(*elasticsearchservice.Options),
 ) (*elasticsearchservice.ListDomainNamesOutput, error) {
 	output := elasticsearchservice.ListDomainNamesOutput{
 		DomainNames: []types.DomainInfo{
@@ -43,9 +43,9 @@ func (c *dummyAwsOpenSearchServiceClient) ListDomainNames(
 
 // DescribeElasticsearchDomains implements AwsOpenSearchServiceClient for dummyAwsOpenSearchServiceClient.
 func (c *dummyAwsOpenSearchServiceClient) DescribeElasticsearchDomains(
-	ctx context.Context,
-	params *elasticsearchservice.DescribeElasticsearchDomainsInput,
-	optFns ...func(*elasticsearchservice.Options),
+	_ context.Context,
+	_ *elasticsearchservice.DescribeElasticsearchDomainsInput,
+	_ ...func(*elasticsearchservice.Options),
 ) (*elasticsearchservice.DescribeElasticsearchDomainsOutput, error) {
 	output := elasticsearchservice.DescribeElasticsearchDomainsOutput{
 		DomainStatusList: []types.ElasticsearchDomainStatus{
@@ -66,9 +66,9 @@ func (c *dummyAwsOpenSearchServiceClient) DescribeElasticsearchDomains(
 
 // ListTags implements AwsOpenSearchServiceClient for dummyAwsOpenSearchServiceClient.
 func (c *dummyAwsOpenSearchServiceClient) ListTags(
-	ctx context.Context,
-	params *elasticsearchservice.ListTagsInput,
-	optFns ...func(*elasticsearchservice.Options),
+	_ context.Context,
+	_ *elasticsearchservice.ListTagsInput,
+	_ ...func(*elasticsearchservice.Options),
 ) (*elasticsearchservice.ListTagsOutput, error) {
 	output := elasticsearchservice.ListTagsOutput{
 		TagList: []types.Tag{

@@ -20,9 +20,9 @@ type dummyAwsFirehoseClient struct{}
 
 // ListStreams implements AwsFirehoseClient for dummyAwsFirehoseClient.
 func (c *dummyAwsFirehoseClient) ListDeliveryStreams(
-	ctx context.Context,
+	_ context.Context,
 	params *firehose.ListDeliveryStreamsInput,
-	optFns ...func(*firehose.Options),
+	_ ...func(*firehose.Options),
 ) (*firehose.ListDeliveryStreamsOutput, error) {
 	var output firehose.ListDeliveryStreamsOutput
 
@@ -45,9 +45,9 @@ func (c *dummyAwsFirehoseClient) ListDeliveryStreams(
 
 // ListTagsForStream implements AwsFirehoseClient for dummyAwsFirehoseClient.
 func (c *dummyAwsFirehoseClient) ListTagsForDeliveryStream(
-	ctx context.Context,
+	_ context.Context,
 	params *firehose.ListTagsForDeliveryStreamInput,
-	optFns ...func(*firehose.Options),
+	_ ...func(*firehose.Options),
 ) (*firehose.ListTagsForDeliveryStreamOutput, error) {
 	var output firehose.ListTagsForDeliveryStreamOutput
 

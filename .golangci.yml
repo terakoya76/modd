@@ -62,7 +62,6 @@ linters:
   enable:
     - asciicheck
     - bodyclose
-    - deadcode
     - depguard
     - dogsled
     - errcheck
@@ -74,7 +73,6 @@ linters:
     - gocyclo
     - godot
     - godox
-    - gofmt
     - goimports
     - gomnd
     - goprintffuncname
@@ -91,14 +89,12 @@ linters:
     - revive
     - rowserrcheck
     - staticcheck
-    - structcheck
     - stylecheck
     - testpackage
     - typecheck
     - unconvert
     - unparam
     - unused
-    - varcheck
     - whitespace
 
     # don't enable:
@@ -112,6 +108,6 @@ linters:
 # golangci.com configuration
 # https://github.com/golangci/golangci/wiki/Configuration
 service:
-  golangci-lint-version: 1.43.x # use the fixed version to not introduce new linters unexpectedly
+  golangci-lint-version: 1.52.x # use the fixed version to not introduce new linters unexpectedly
   prepare:
     - echo "here I can run custom commands, but no preparation needed for this repo"

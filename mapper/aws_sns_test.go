@@ -20,9 +20,9 @@ type dummyAwsSnsClient struct{}
 
 // ListTopics implements AwsSnsClient for dummyAwsSnsClient.
 func (c *dummyAwsSnsClient) ListTopics(
-	ctx context.Context,
+	_ context.Context,
 	params *sns.ListTopicsInput,
-	optFns ...func(*sns.Options),
+	_ ...func(*sns.Options),
 ) (*sns.ListTopicsOutput, error) {
 	var output sns.ListTopicsOutput
 
@@ -59,9 +59,9 @@ func (c *dummyAwsSnsClient) ListTopics(
 
 // ListTagsForResource implements AwsSnsClient for dummyAwsSnsClient.
 func (c *dummyAwsSnsClient) ListTagsForResource(
-	ctx context.Context,
-	params *sns.ListTagsForResourceInput,
-	optFns ...func(*sns.Options),
+	_ context.Context,
+	_ *sns.ListTagsForResourceInput,
+	_ ...func(*sns.Options),
 ) (*sns.ListTagsForResourceOutput, error) {
 	output := sns.ListTagsForResourceOutput{
 		Tags: []types.Tag{

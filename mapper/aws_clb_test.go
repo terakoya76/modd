@@ -20,9 +20,9 @@ type dummyAwsClbClient struct{}
 
 // DescribeLoadBalancers implements AwsClbClient for dummyAwsClbClient.
 func (c *dummyAwsClbClient) DescribeLoadBalancers(
-	ctx context.Context,
+	_ context.Context,
 	params *elasticloadbalancing.DescribeLoadBalancersInput,
-	optFns ...func(*elasticloadbalancing.Options),
+	_ ...func(*elasticloadbalancing.Options),
 ) (*elasticloadbalancing.DescribeLoadBalancersOutput, error) {
 	var output elasticloadbalancing.DescribeLoadBalancersOutput
 
@@ -59,9 +59,9 @@ func (c *dummyAwsClbClient) DescribeLoadBalancers(
 
 // DescribeTags implements AwsClbClient for dummyAwsClbClient.
 func (c *dummyAwsClbClient) DescribeTags(
-	ctx context.Context,
+	_ context.Context,
 	params *elasticloadbalancing.DescribeTagsInput,
-	optFns ...func(*elasticloadbalancing.Options),
+	_ ...func(*elasticloadbalancing.Options),
 ) (*elasticloadbalancing.DescribeTagsOutput, error) {
 	tags := make([]types.TagDescription, len(params.LoadBalancerNames))
 
