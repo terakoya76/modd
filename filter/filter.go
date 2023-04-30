@@ -16,6 +16,7 @@ type Filter interface {
 }
 
 // BuildFilter build the proper Filter implementation.
+//
 //nolint:funlen,gocyclo
 func BuildFilter(it datadog.IntegrationTarget) (Filter, error) {
 	envPrefix := string(it)

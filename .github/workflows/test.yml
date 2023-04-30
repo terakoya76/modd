@@ -10,7 +10,7 @@ jobs:
   build:
     strategy:
       matrix:
-        go: ["1.17", "1.18", "1.19"]
+        go: ["1.18", "1.19", "1.20"]
 
     name: all
     runs-on: ubuntu-latest
@@ -44,14 +44,14 @@ jobs:
       with:
         infile: coverage.out
         outfile: coverage.lcov
-      if: "matrix.go == 1.19"
+      if: "matrix.go == 1.20"
 
     - name: Coveralls
       uses: coverallsapp/github-action@master
       with:
         github-token: ${{ secrets.github_token }}
         path-to-lcov: coverage.lcov
-      if: "matrix.go == 1.19"
+      if: "matrix.go == 1.20"
 
   dependabot:
     runs-on: ubuntu-latest

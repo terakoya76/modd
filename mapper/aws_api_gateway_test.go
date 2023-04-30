@@ -20,9 +20,9 @@ type dummyAwsAPIGatewayClient struct{}
 
 // GetRestApis implements AwsAPIGatewayClient for dummyAwsAPIGatewayClient.
 func (c *dummyAwsAPIGatewayClient) GetRestApis(
-	ctx context.Context,
+	_ context.Context,
 	params *apigateway.GetRestApisInput,
-	optFns ...func(*apigateway.Options),
+	_ ...func(*apigateway.Options),
 ) (*apigateway.GetRestApisOutput, error) {
 	var output apigateway.GetRestApisOutput
 

@@ -19,9 +19,9 @@ type dummyAwsSqsClient struct{}
 
 // ListQueues implements AwsSqsClient for dummyAwsSqsClient.
 func (c *dummyAwsSqsClient) ListQueues(
-	ctx context.Context,
+	_ context.Context,
 	params *sqs.ListQueuesInput,
-	optFns ...func(*sqs.Options),
+	_ ...func(*sqs.Options),
 ) (*sqs.ListQueuesOutput, error) {
 	var output sqs.ListQueuesOutput
 
@@ -50,9 +50,9 @@ func (c *dummyAwsSqsClient) ListQueues(
 
 // ListQueueTags implements AwsSqsClient for dummyAwsSqsClient.
 func (c *dummyAwsSqsClient) ListQueueTags(
-	ctx context.Context,
-	params *sqs.ListQueueTagsInput,
-	optFns ...func(*sqs.Options),
+	_ context.Context,
+	_ *sqs.ListQueueTagsInput,
+	_ ...func(*sqs.Options),
 ) (*sqs.ListQueueTagsOutput, error) {
 	output := sqs.ListQueueTagsOutput{
 		Tags: map[string]string{

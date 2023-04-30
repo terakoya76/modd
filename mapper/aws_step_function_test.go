@@ -20,9 +20,9 @@ type dummyAwsStepFunctionClient struct{}
 
 // ListStateMachines implements AwsStepFunctionClient for dummyAwsStepFunctionClient.
 func (c *dummyAwsStepFunctionClient) ListStateMachines(
-	ctx context.Context,
+	_ context.Context,
 	params *sfn.ListStateMachinesInput,
-	optFns ...func(*sfn.Options),
+	_ ...func(*sfn.Options),
 ) (*sfn.ListStateMachinesOutput, error) {
 	var output sfn.ListStateMachinesOutput
 
@@ -63,9 +63,9 @@ func (c *dummyAwsStepFunctionClient) ListStateMachines(
 
 // ListTagsForResource implements AwsStepFunctionClient for dummyAwsStepFunctionClient.
 func (c *dummyAwsStepFunctionClient) ListTagsForResource(
-	ctx context.Context,
-	params *sfn.ListTagsForResourceInput,
-	optFns ...func(*sfn.Options),
+	_ context.Context,
+	_ *sfn.ListTagsForResourceInput,
+	_ ...func(*sfn.Options),
 ) (*sfn.ListTagsForResourceOutput, error) {
 	output := sfn.ListTagsForResourceOutput{
 		Tags: []types.Tag{

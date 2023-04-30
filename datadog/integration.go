@@ -43,6 +43,7 @@ const (
 )
 
 // MetricToIntegrationTarget returns the IntegrationTarget to which the specified metric belongs.
+//
 //nolint:gocyclo
 func MetricToIntegrationTarget(metric string) IntegrationTarget {
 	parts := strings.Split(metric, ".")

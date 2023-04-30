@@ -20,9 +20,9 @@ type dummyAwsElbClient struct{}
 
 // DescribeLoadBalancers implements AwsElbClient for dummyAwsElbClient.
 func (c *dummyAwsElbClient) DescribeLoadBalancers(
-	ctx context.Context,
+	_ context.Context,
 	params *elasticloadbalancingv2.DescribeLoadBalancersInput,
-	optFns ...func(*elasticloadbalancingv2.Options),
+	_ ...func(*elasticloadbalancingv2.Options),
 ) (*elasticloadbalancingv2.DescribeLoadBalancersOutput, error) {
 	var output elasticloadbalancingv2.DescribeLoadBalancersOutput
 
@@ -63,9 +63,9 @@ func (c *dummyAwsElbClient) DescribeLoadBalancers(
 
 // DescribeTags implements AwsElbClient for dummyAwsElbClient.
 func (c *dummyAwsElbClient) DescribeTags(
-	ctx context.Context,
+	_ context.Context,
 	params *elasticloadbalancingv2.DescribeTagsInput,
-	optFns ...func(*elasticloadbalancingv2.Options),
+	_ ...func(*elasticloadbalancingv2.Options),
 ) (*elasticloadbalancingv2.DescribeTagsOutput, error) {
 	tags := make([]types.TagDescription, len(params.ResourceArns))
 

@@ -20,9 +20,9 @@ type dummyAwsKinesisClient struct{}
 
 // ListStreams implements AwsKinesisClient for dummyAwsKinesisClient.
 func (c *dummyAwsKinesisClient) ListStreams(
-	ctx context.Context,
+	_ context.Context,
 	params *kinesis.ListStreamsInput,
-	optFns ...func(*kinesis.Options),
+	_ ...func(*kinesis.Options),
 ) (*kinesis.ListStreamsOutput, error) {
 	var output kinesis.ListStreamsOutput
 
@@ -45,9 +45,9 @@ func (c *dummyAwsKinesisClient) ListStreams(
 
 // ListTagsForStream implements AwsKinesisClient for dummyAwsKinesisClient.
 func (c *dummyAwsKinesisClient) ListTagsForStream(
-	ctx context.Context,
+	_ context.Context,
 	params *kinesis.ListTagsForStreamInput,
-	optFns ...func(*kinesis.Options),
+	_ ...func(*kinesis.Options),
 ) (*kinesis.ListTagsForStreamOutput, error) {
 	var output kinesis.ListTagsForStreamOutput
 

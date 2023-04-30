@@ -20,9 +20,9 @@ type dummyAwsAutoScalingGroupClient struct{}
 
 // DescribeAutoScalingGroups implements AwsAutoScalingGroupClient for dummyAwsAutoScalingGroupClient.
 func (c *dummyAwsAutoScalingGroupClient) DescribeAutoScalingGroups(
-	ctx context.Context,
+	_ context.Context,
 	params *autoscaling.DescribeAutoScalingGroupsInput,
-	optFns ...func(*autoscaling.Options),
+	_ ...func(*autoscaling.Options),
 ) (*autoscaling.DescribeAutoScalingGroupsOutput, error) {
 	var output autoscaling.DescribeAutoScalingGroupsOutput
 
